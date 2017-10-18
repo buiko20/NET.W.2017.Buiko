@@ -1,0 +1,4 @@
+D:\epam\homework_git\NET.W.2017.Buiko.01\GACLibrary\GACLibrary\bin\Debug\GACLibrary.dll
+D:\epam\homework_git\NET.W.2017.Buiko.01\GACLibrary\GACLibrary\bin\Debug\GACLibrary.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.01\GACLibrary\GACLibrary\obj\Debug\GACLibrary.dll
+D:\epam\homework_git\NET.W.2017.Buiko.01\GACLibrary\GACLibrary\obj\Debug\GACLibrary.pdb

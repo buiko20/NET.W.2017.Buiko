@@ -1,0 +1,7 @@
+D:\epam\homework_git\NET.W.2017.Buiko.01\AssemblyTask4\GACTest\GACTest\bin\Debug\GACTest.exe.config
+D:\epam\homework_git\NET.W.2017.Buiko.01\AssemblyTask4\GACTest\GACTest\bin\Debug\GACTest.exe
+D:\epam\homework_git\NET.W.2017.Buiko.01\AssemblyTask4\GACTest\GACTest\bin\Debug\GACTest.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.01\AssemblyTask4\GACTest\GACTest\bin\Debug\GACLibrary.dll
+D:\epam\homework_git\NET.W.2017.Buiko.01\AssemblyTask4\GACTest\GACTest\obj\Debug\GACTest.csprojResolveAssemblyReference.cache
+D:\epam\homework_git\NET.W.2017.Buiko.01\AssemblyTask4\GACTest\GACTest\obj\Debug\GACTest.exe
+D:\epam\homework_git\NET.W.2017.Buiko.01\AssemblyTask4\GACTest\GACTest\obj\Debug\GACTest.pdb
