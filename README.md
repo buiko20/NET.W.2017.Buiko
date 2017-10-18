@@ -1,0 +1,1 @@
+This repository contains .NET.W.2017.Buiko homework 
