@@ -1,0 +1,5 @@
+D:\epam\day1\homework\NET.W.2017.Buiko.01\Algorithm\bin\Debug\Algorithm.dll
+D:\epam\day1\homework\NET.W.2017.Buiko.01\Algorithm\bin\Debug\Algorithm.pdb
+D:\epam\day1\homework\NET.W.2017.Buiko.01\Algorithm\obj\Debug\SortAlgorithm.csprojResolveAssemblyReference.cache
+D:\epam\day1\homework\NET.W.2017.Buiko.01\Algorithm\obj\Debug\Algorithm.dll
+D:\epam\day1\homework\NET.W.2017.Buiko.01\Algorithm\obj\Debug\Algorithm.pdb
