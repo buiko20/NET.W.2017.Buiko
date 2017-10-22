@@ -1,0 +1,5 @@
+D:\epam\NET.W.2017.Buiko.02\Algorithm\bin\Debug\Algorithm.dll
+D:\epam\NET.W.2017.Buiko.02\Algorithm\bin\Debug\Algorithm.pdb
+D:\epam\NET.W.2017.Buiko.02\Algorithm\obj\Debug\Algorithm.csprojResolveAssemblyReference.cache
+D:\epam\NET.W.2017.Buiko.02\Algorithm\obj\Debug\Algorithm.dll
+D:\epam\NET.W.2017.Buiko.02\Algorithm\obj\Debug\Algorithm.pdb
