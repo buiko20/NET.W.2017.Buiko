@@ -7,3 +7,12 @@ D:\epam\NET.W.2017.Buiko.02\Algorithm.NUnitTests\bin\Debug\nunit.framework.xml
 D:\epam\NET.W.2017.Buiko.02\Algorithm.NUnitTests\obj\Debug\Algorithm.NUnitTests.csprojResolveAssemblyReference.cache
 D:\epam\NET.W.2017.Buiko.02\Algorithm.NUnitTests\obj\Debug\Algorithm.NUnitTests.dll
 D:\epam\NET.W.2017.Buiko.02\Algorithm.NUnitTests\obj\Debug\Algorithm.NUnitTests.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.NUnitTests\bin\Debug\Algorithm.NUnitTests.dll
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.NUnitTests\bin\Debug\Algorithm.NUnitTests.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.NUnitTests\bin\Debug\Algorithm.dll
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.NUnitTests\bin\Debug\nunit.framework.dll
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.NUnitTests\bin\Debug\Algorithm.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.NUnitTests\bin\Debug\nunit.framework.xml
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.NUnitTests\obj\Debug\Algorithm.NUnitTests.csprojResolveAssemblyReference.cache
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.NUnitTests\obj\Debug\Algorithm.NUnitTests.dll
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.NUnitTests\obj\Debug\Algorithm.NUnitTests.pdb

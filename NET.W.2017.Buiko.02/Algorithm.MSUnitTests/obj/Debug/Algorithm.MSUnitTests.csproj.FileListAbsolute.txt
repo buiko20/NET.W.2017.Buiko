@@ -7,3 +7,12 @@ D:\epam\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\bin\Debug\Microsoft.VisualStud
 D:\epam\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\obj\Debug\Algorithm.MSUnitTests.csprojResolveAssemblyReference.cache
 D:\epam\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\obj\Debug\Algorithm.MSUnitTests.dll
 D:\epam\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\obj\Debug\Algorithm.MSUnitTests.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\bin\Debug\Algorithm.MSUnitTests.dll
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\bin\Debug\Algorithm.MSUnitTests.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\bin\Debug\Algorithm.dll
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\bin\Debug\Algorithm.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\obj\Debug\Algorithm.MSUnitTests.csprojResolveAssemblyReference.cache
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\obj\Debug\Algorithm.MSUnitTests.dll
+D:\epam\homework_git\NET.W.2017.Buiko.02\Algorithm.MSUnitTests\obj\Debug\Algorithm.MSUnitTests.pdb

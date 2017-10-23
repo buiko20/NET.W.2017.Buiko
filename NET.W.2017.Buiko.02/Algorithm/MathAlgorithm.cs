@@ -6,6 +6,9 @@ namespace Algorithm
 {
     public class MathAlgorithm
     {
+        private const int RightBorder = 31;
+        private const int LeftBorder = 0;
+
         /// <summary>
         /// Inserts bits of the 2nd number starting from position startPosition to endPosition
         /// to the 1st number.
@@ -24,20 +27,11 @@ namespace Algorithm
             if (startPosition > endPosition)
                 throw new ArgumentException($"{nameof(startPosition)} must be less than {nameof(endPosition)}");
 
-            if ((startPosition < 0) || (startPosition > 31) || (endPosition < 0) || (endPosition > 31))
-                throw new ArgumentException(
-                    $"{nameof(startPosition)} and {nameof(endPosition)} must be greater than 0 and less than 32");
+            if ((startPosition < LeftBorder) || (startPosition > RightBorder) || (endPosition < LeftBorder) || (endPosition > RightBorder))
+                throw new ArgumentException($"{nameof(startPosition)} and {nameof(endPosition)} must be greater than 0 and less than 32");
 
-            BitArray number1Bits = new BitArray(new[] { number1 });
-            BitArray number2Bits = new BitArray(new[] { number2 });
-
-            int j = 0;
-            for (int i = startPosition; i <= endPosition; i++)
-                number1Bits.Set(i, number2Bits.Get(j++));
-
-            int[] result = new int[1];
-            number1Bits.CopyTo(result, 0);
-            return result[0];
+            int mask = ((2 << (endPosition - startPosition)) - 1) << startPosition;
+            return (number1 & ~mask) | ((number2 << startPosition) & mask);
         }
 
         /// <summary>
