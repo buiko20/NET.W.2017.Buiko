@@ -1,0 +1,4 @@
+D:\epam\homework_git\NET.W.2017.Buiko.03-4\Algorithm\bin\Debug\Algorithm.dll
+D:\epam\homework_git\NET.W.2017.Buiko.03-4\Algorithm\bin\Debug\Algorithm.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.03-4\Algorithm\obj\Debug\Algorithm.dll
+D:\epam\homework_git\NET.W.2017.Buiko.03-4\Algorithm\obj\Debug\Algorithm.pdb

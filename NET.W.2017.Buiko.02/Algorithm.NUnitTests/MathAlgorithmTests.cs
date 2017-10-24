@@ -10,6 +10,7 @@ namespace Algorithm.NUnitTests
         [TestCase(8, 15, 0, 0, ExpectedResult = 9)]
         [TestCase(8, 15, 3, 8, ExpectedResult = 120)]
         [TestCase(42, 42, 0, 33, ExpectedResult = -2)]
+        [TestCase(8, 15, 0, 31, ExpectedResult = 15)]
         public int BitInsertTest(int number1, int number2, int startPosition, int endPosition)
         {
             try
