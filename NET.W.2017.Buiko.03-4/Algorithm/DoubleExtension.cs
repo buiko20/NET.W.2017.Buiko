@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,8 +11,6 @@ namespace Algorithm
 {
     public static class DoubleExtension
     {
-        private const int BitCount = sizeof(double) * 8;
-
         #region public methods
         /// <summary>
         /// Convert double into string which represents it in IEEE 754.
@@ -21,10 +20,10 @@ namespace Algorithm
         public static string ToBitStringUsingBitArray(this double number)
         {
             var bitArray = new BitArray(BitConverter.GetBytes(number));
-            var result = new StringBuilder(BitCount);
+            var result = new StringBuilder(sizeof(double) * 8);
 
             for (int i = bitArray.Length - 1; i >= 0; i--)
-                result.Append(bitArray[i] ? '1' : '0');
+                result.Append(bitArray[i] ? TrueBit : FalseBit);
 
             return result.ToString();
         }
@@ -36,75 +35,15 @@ namespace Algorithm
         /// <returns>bit string which represents it in IEEE 754</returns>
         public static string ToBitString(this double number)
         {
-            // Алгоритм не доделан, работает не всегда правильно, много костылей.  
+            var result = new StringBuilder(sizeof(double) * 8);
 
-            if ((number == 0.0) && (double.IsNegativeInfinity(1.0 / number)))
-            {
-                string res = new string('0', 64);
-                res = res.Insert(0, "1");
-                res = res.Remove(res.Length - 1);
-                return res;
-            }
-
-            if ((number == 0.0) && (!double.IsNegativeInfinity(1.0 / number)))
-                return new string('0', 64);
-
-            if (number == double.Epsilon)
-            {
-                string res = new string('0', 64);
-                res = res.Insert(res.Length - 1, "1");
-                res = res.Remove(res.Length - 1);
-                return res;
-            }
-
-            char sign = number > 0 ? '0' : '1';
-            long integerPart = (long)Math.Truncate(number);
-            double fraction = number - integerPart;
-            fraction = Math.Abs(fraction);
-
-            var result = new StringBuilder(BitCount);
-            string intPart = IntToBitString(integerPart);
-            string fracPart = FractionToString(fraction);
-
-            int exp = GetExponent(intPart);
-
-            string temp = IntToBitString(exp + 1023);
+            char sign = GetSignBinary(number);
+            number = sign == TrueBit ? -number : number;
+            string exponent = GetExponentBinary(number);
+            string mantissa = GetMantissaBinary(number);
 
             result.Append(sign);
-            int j = temp.Length - 11;
-            int delta1 = 0, delta2 = 0;
-            if (number == double.MinValue || number == double.MaxValue || double.IsNaN(number) ||
-                number == double.NegativeInfinity || number == Double.PositiveInfinity)
-            {
-                j = temp.Length - 1;
-                for (int i = 0; i < 11; i++)
-                    result.Append(temp[j--]);
-                if (double.IsNaN(number))
-                {
-                    result.Remove(result.Length - 1, 1);
-                    result.Append("11");
-                    delta1 = -1;
-                }
-                if (number == double.NegativeInfinity || number == Double.PositiveInfinity)
-                {
-                    delta2 = 63;
-                    result.Remove(result.Length - 1, 1);
-                    result.Append("1");
-                }
-                    
-            }
-            else
-            {
-                for (int i = 0; i < 11; i++)
-                    result.Append(temp[j++]);
-            }
-
-            temp = intPart + fracPart;
-            string mantissa = "";
-            j = intPart.Length - exp;
-            for (int i = j - delta2; i < 52 + delta1 + j - delta2; i++)
-                mantissa += temp[i];
-
+            result.Append(exponent);
             result.Append(mantissa);
 
             return result.ToString();
@@ -112,57 +51,142 @@ namespace Algorithm
 
         #endregion
 
+        #region private constants
+
+        private const char TrueBit = '1';
+        private const char FalseBit = '0';
+
+        private const int Bias = 1023;
+        private const int ExponentLength = 11;
+        private const int MantissaLength = 52;
+        private const int DenormalizedBias = -1022;
+
+
+        #endregion
+
         #region private methods
-        private static int GetExponent(string bits)
+
+        private static char GetSignBinary(double number)
         {
-            int i = 2;
-            while ((bits[i - 1] == '0') && (i < bits.Length)) i++;
-            return bits.Length - i;
+            bool isNegativeInfinity = double.IsNegativeInfinity(1.0 / number);
+
+            if ((number < 0.0) || (isNegativeInfinity))
+                return TrueBit;
+
+            return FalseBit;
         }
 
-        private static string IntToBitString(long number)
+        private static string GetExponentBinary(double number)
         {
-            if (number == long.MaxValue || number == long.MinValue)
-                return Convert.ToString(number, 2);
-            if (number < 0)
-                number = ~number + 1;
-            int i;          
-            char[] result = new char[sizeof(long) * 8];
-            for (i = 0; i < result.Length; i++)
-                result[i] = '0';
+            /*
+             * An attempt to calculate the exponent through working with strings 
+             * leads to success only in extreme cases, such as double.MinValue
+             * double.MaxValue e.c.
 
-            i = 0;
-            long temp = Math.Abs(number);
-            while (temp >= 2)
+             long integerPart = (long)Math.Truncate(number);
+             string binary = IntegerToBinary(integerPart);
+
+             int exponent = binary.Length - binary.IndexOf(TrueBit) - 1;
+             exponent = exponent >= 64 ? 0 : exponent + Bias;
+
+             string result = IntegerToBinary(exponent);
+             result = result.Substring(result.Length - ExponentLength, ExponentLength);
+
+             return result;*/
+
+            int exponent = GetExponent(number);
+            exponent += Bias;
+            exponent = exponent < 0 ? 0 : exponent;
+
+            string result = IntegerToBinary(exponent);
+            return result.Substring(result.Length - ExponentLength, ExponentLength);
+        }
+
+        private static int GetExponent(double number)
+        {
+            int power = 0;
+
+            double fraction = number / Math.Pow(2, power) - 1;
+
+            while ((fraction < 0) || (fraction >= 1))
             {
-                char bit = (temp % 2).ToString()[0];
-                result[i++] = bit;
-                temp /= 2;
+                power = fraction < 1 ? --power : ++power;
+                fraction = number / Math.Pow(2, power) - 1;
             }
-            result[i] = temp.ToString()[0];
 
-          //  if (number < 0) Not(result);
-                
-            Reverse(result);
-
-            return new string(result);
+            return power;
         }
 
-        private static string FractionToString(double fraction)
+        private static string GetMantissaBinary(double number)
         {
-            char[] result = new char[sizeof(double) * 8];
+            /* long integerPart = (long)Math.Truncate(number);
+             double fraction = number - integerPart;
+             fraction = Math.Abs(fraction);
 
-            for (int i = 0; i < result.Length; i++)
+             string binaryInteger = IntegerToBinary(integerPart);
+             string binaryFraction = FractionToBinary(fraction);
+
+             int exponent = binaryInteger.Length - binaryInteger.IndexOf(TrueBit) - 1;
+             exponent = exponent < 0 || exponent >= 63 ? 0 : exponent;
+
+             var result = new StringBuilder(MantissaLength);
+             result.Append(binaryInteger.Substring(binaryInteger.Length - exponent, exponent));
+             result.Append(binaryFraction.Substring(0, MantissaLength - exponent));
+
+             return result.ToString();*/
+
+            int exponent = GetExponent(number);
+            exponent += Bias;
+            exponent = exponent < 0 ? 0 : exponent;
+            exponent -= Bias;
+
+            double fraction;
+
+            if (exponent <= -Bias)
             {
-                char bit = '0';
-                if (fraction * 2 - 1 >= 0)
+                fraction = number / Math.Pow(2, DenormalizedBias);
+            }
+            else
+            {
+                fraction = number / Math.Pow(2, exponent) - 1;
+            }
+
+            return FractionToBinary(fraction, MantissaLength);  
+        }
+
+        private static string IntegerToBinary(long number)
+        {
+            char[] bits = new char[sizeof(long) * 8];
+
+            for (int i = 0; i < bits.Length; i++)
+            {
+                if ((number & 1) == 1)
                 {
-                    bit = '1';
-                    fraction = fraction * 2 - 1;
+                    bits[bits.Length - i - 1] = TrueBit;
                 }
                 else
                 {
-                    fraction *= 2;
+                    bits[bits.Length - i - 1] = FalseBit;
+                }
+
+                number >>= 1;
+            }
+
+            return new string(bits);
+        }
+
+        private static string FractionToBinary(double fraction, int eps)
+        {
+            char[] result = new char[eps];
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                var bit = FalseBit;
+                fraction *= 2;
+                if (fraction >= 1)
+                {
+                    bit = TrueBit;
+                    fraction -= 1;
                 }
                 result[i] = bit;
             }
@@ -170,26 +194,6 @@ namespace Algorithm
             return new string(result);
         }
 
-        private static void Not(char[] array)
-        {
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (array[i] == '0') array[i] = '1';
-                else array[i] = '0';
-            }
-        }
-
-        private static void Reverse(char[] array)
-        {
-            int limit = array.Length / 2;
-            int j = array.Length - 1;
-            for (int i = 0; i < limit; i++)
-            {
-                var temp = array[i];
-                array[i] = array[j];
-                array[j--] = temp;
-            }
-        }
         #endregion
     }
 }
