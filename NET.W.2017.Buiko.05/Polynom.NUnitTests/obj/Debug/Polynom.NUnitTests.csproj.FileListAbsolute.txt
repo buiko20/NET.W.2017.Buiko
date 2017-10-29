@@ -1,0 +1,9 @@
+D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom.NUnitTests\bin\Debug\Polynom.NUnitTests.dll
+D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom.NUnitTests\bin\Debug\Polynom.NUnitTests.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom.NUnitTests\bin\Debug\Polynom.dll
+D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom.NUnitTests\bin\Debug\Polynom.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom.NUnitTests\obj\Debug\Polynom.NUnitTests.csprojResolveAssemblyReference.cache
+D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom.NUnitTests\obj\Debug\Polynom.NUnitTests.dll
+D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom.NUnitTests\obj\Debug\Polynom.NUnitTests.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom.NUnitTests\bin\Debug\nunit.framework.dll
+D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom.NUnitTests\bin\Debug\nunit.framework.xml
