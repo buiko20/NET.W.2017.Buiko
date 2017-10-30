@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Algorithm.NUnitTests.comparator;
 using NUnit.Framework;
 
@@ -26,12 +21,7 @@ namespace Algorithm.NUnitTests
                 SortAlgotithm.Sort(array, new AscendingSumComparator());
             //    TestHelper.Track(array, $"Sorted array {j + 1}:");
 
-                for (int i = 0; i < array.Length - 1; i++)
-                {
-                    int sum1 = array[i].Sum();
-                    int sum2 = array[i + 1].Sum();
-                    if (sum1 > sum2) Assert.Fail();
-                }
+                Assert.IsTrue(TestHelper.IsXscendingOrder(array, (arr => arr.Sum()), (a, b) => a > b));
             }
         }
 
@@ -44,14 +34,9 @@ namespace Algorithm.NUnitTests
              //   TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
 
                 SortAlgotithm.Sort(array, new DescendingSumComparator());
-            //    TestHelper.Track(array, $"Sorted array {j + 1}:");
+                //    TestHelper.Track(array, $"Sorted array {j + 1}:");
 
-                for (int i = 0; i < array.Length - 1; i++)
-                {
-                    int sum1 = array[i].Sum();
-                    int sum2 = array[i + 1].Sum();
-                    if (sum1 < sum2) Assert.Fail();
-                }
+                Assert.IsTrue(TestHelper.IsXscendingOrder(array, (arr => arr.Sum()), (a, b) => a < b));
             }
         }
 
@@ -70,12 +55,7 @@ namespace Algorithm.NUnitTests
                 SortAlgotithm.Sort(array, new AscendingMaxElementComparator());
                 TestHelper.Track(array, $"Sorted array {j + 1}:");
 
-                for (int i = 0; i < array.Length - 1; i++)
-                {
-                    int maxElement1 = array[i].Max();
-                    int maxElement2 = array[i + 1].Max();
-                    if (maxElement1 > maxElement2) Assert.Fail();
-                }
+                Assert.IsTrue(TestHelper.IsXscendingOrder(array, (arr => arr.Max()), (a, b) => a > b));
             }
         }
 
@@ -88,14 +68,9 @@ namespace Algorithm.NUnitTests
              //   TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
 
                 SortAlgotithm.Sort(array, new DescendingMaxElementComparator());
-             //   TestHelper.Track(array, $"Sorted array {j + 1}:");
+                //   TestHelper.Track(array, $"Sorted array {j + 1}:");
 
-                for (int i = 0; i < array.Length - 1; i++)
-                {
-                    int maxElement1 = array[i].Max();
-                    int maxElement2 = array[i + 1].Max();
-                    if (maxElement1 < maxElement2) Assert.Fail();
-                }
+                Assert.IsTrue(TestHelper.IsXscendingOrder(array, (arr => arr.Max()), (a, b) => a < b));
             }
         }
 
@@ -112,14 +87,9 @@ namespace Algorithm.NUnitTests
               //  TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
 
                 SortAlgotithm.Sort(array, new AscendingMinElementComparator());
-             //   TestHelper.Track(array, $"Sorted array {j + 1}:");
+                //   TestHelper.Track(array, $"Sorted array {j + 1}:");
 
-                for (int i = 0; i < array.Length - 1; i++)
-                {
-                    int minElement1 = array[i].Min();
-                    int minElement2 = array[i + 1].Min();
-                    if (minElement1 > minElement2) Assert.Fail();
-                }
+                Assert.IsTrue(TestHelper.IsXscendingOrder(array, (arr => arr.Min()), (a, b) => a > b));
             }
         }
 
@@ -132,14 +102,9 @@ namespace Algorithm.NUnitTests
              //   TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
 
                 SortAlgotithm.Sort(array, new DescendingMinElementComparator());
-             //   TestHelper.Track(array, $"Sorted array {j + 1}:");
+                //   TestHelper.Track(array, $"Sorted array {j + 1}:");
 
-                for (int i = 0; i < array.Length - 1; i++)
-                {
-                    int minElement1 = array[i].Min();
-                    int minElement2 = array[i + 1].Min();
-                    if (minElement1 < minElement2) Assert.Fail();
-                }
+                Assert.IsTrue(TestHelper.IsXscendingOrder(array, (arr => arr.Min()), (a, b) => a < b));
             }
         }
 

@@ -26,16 +26,29 @@ namespace Algorithm.NUnitTests
             return array;
         }
 
-        public static void Track(int[][] array, string message)
+        public static void Track(int[][] jaggedArray, string message)
         {
             Console.WriteLine(message);
-            for (int i = 0; i < array.Length; i++)
+            foreach (var array in jaggedArray)
             {
-                for (int j = 0; j < array[i].Length; j++)
-                    Console.Write(array[i][j] + " ");
+                foreach (var element in array)
+                    Console.Write(element + " ");
                 Console.WriteLine();
             }
             Console.WriteLine("");
+        }
+
+        public static bool IsXscendingOrder(int[][] jaggedArray, Func<int[], int> operation, Func<int, int, bool> comparator)
+        {
+            int[] sumArray = new int[jaggedArray.Length];
+
+            for (int i = 0; i < jaggedArray.Length; i++)
+                sumArray[i] = operation(jaggedArray[i]);
+
+            for (int i = 0; i < sumArray.Length - 1; i++)
+                if (comparator(sumArray[i], sumArray[i + 1])) return false;
+
+            return true;
         }
 
         #endregion

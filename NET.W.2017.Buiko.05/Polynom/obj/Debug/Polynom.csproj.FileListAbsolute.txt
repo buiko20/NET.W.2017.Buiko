@@ -3,3 +3,4 @@ D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom\bin\Debug\Polynom.pdb
 D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom\obj\Debug\Polynom.dll
 D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom\obj\Debug\Polynom.pdb
 D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom\obj\Debug\Polynom.csprojResolveAssemblyReference.cache
+D:\epam\homework_git\NET.W.2017.Buiko.05\Polynom\bin\Debug\Polynom.dll.config
