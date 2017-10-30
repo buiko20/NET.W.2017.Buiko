@@ -397,6 +397,7 @@ namespace Algorithm
         {
             return (number % 2) == 0;
         }
+
         #endregion
     }
 }

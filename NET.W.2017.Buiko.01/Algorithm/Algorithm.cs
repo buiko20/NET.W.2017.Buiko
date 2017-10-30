@@ -8,6 +8,9 @@ namespace SortAlgorithm
 {
     public class Sort
     {
+        public static void QuickSort(int[] array) =>
+            QuickSort(array, 0, array?.Length ?? 0);
+
         public static void QuickSort(int[] array, int start, int end)
         {
             if (start > end)
@@ -46,7 +49,14 @@ namespace SortAlgorithm
             if (j > start) QuickSort(array, start, j);
         }
 
-        public static int[] MergeSort(int[] array)
+        public static void MergeSort(int[] array)
+        {
+            var sortedArray = PMergeSort(array);
+            for (int i = 0; i < array.Length; i++)
+                array[i] = sortedArray[i];
+        }
+
+        private static int[] PMergeSort(int[] array)
         {
             if (array == null)
                 throw new ArgumentNullException(nameof(array));
@@ -58,8 +68,8 @@ namespace SortAlgorithm
                 return array;
 
             int center = array.Length / 2;
-            int[] array1 = MergeSort(array.Take(center).ToArray());
-            int[] array2 = MergeSort(array.Skip(center).ToArray());
+            int[] array1 = PMergeSort(array.Take(center).ToArray());
+            int[] array2 = PMergeSort(array.Skip(center).ToArray());
 
             return Merge(array1, array2);
         }

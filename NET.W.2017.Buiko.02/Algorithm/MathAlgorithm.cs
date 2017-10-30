@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Algorithm
@@ -113,19 +114,16 @@ namespace Algorithm
             if (numbers.Length == 0)
                 return null;
 
-            int[] result = new int[0];
+            var result = new List<int>();
             string digitStr = digit.ToString();
             for (int i = 0; i < numbers.Length; i++)
             {
                 string number = numbers[i].ToString();
                 if (number.Contains(digitStr))
-                {
-                    Array.Resize(ref result, result.Length + 1);
-                    result[result.Length - 1] = numbers[i];
-                }
+                    result.Add(numbers[i]);
             }
 
-            return result;
+            return result.ToArray();
         }
 
         /// <summary>

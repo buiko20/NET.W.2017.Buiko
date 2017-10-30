@@ -68,20 +68,20 @@ namespace ConsoleUI
             Console.WriteLine("MergeSort tests:");
 
             array = new int[] { 5, 1, 9, 6, 7, 5, 8 };
-            array = Sort.MergeSort(array);
+            Sort.MergeSort(array);
             PrintArray(array);
 
             array = new int[] { 5, 5, 1, 1, 7, 3, 8 };
-            array = Sort.MergeSort(array);
+            Sort.MergeSort(array);
             PrintArray(array);
 
             array = new int[] { 0, 1, 2, 6, 7, 3, 8, 15, -1 };
-            array = Sort.MergeSort(array);
+            Sort.MergeSort(array);
             PrintArray(array);
 
             try
             {
-                array = Sort.MergeSort(null);
+                Sort.MergeSort(null);
                 PrintArray(array);
             }
             catch (Exception ex)
@@ -92,7 +92,7 @@ namespace ConsoleUI
             try
             {
                 array = new int[0];
-                array = Sort.MergeSort(array);
+                Sort.MergeSort(array);
                 PrintArray(array);
             }
             catch (Exception ex)
