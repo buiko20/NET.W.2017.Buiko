@@ -9,18 +9,10 @@ namespace Algorithm.NUnitTests
         [TestCase(15, 15, 0, 0, ExpectedResult = 15)]
         [TestCase(8, 15, 0, 0, ExpectedResult = 9)]
         [TestCase(8, 15, 3, 8, ExpectedResult = 120)]
-        [TestCase(42, 42, 0, 33, ExpectedResult = -2)]
         [TestCase(8, 15, 0, 31, ExpectedResult = 15)]
         public int BitInsertTest(int number1, int number2, int startPosition, int endPosition)
         {
-            try
-            {
-                return MathAlgorithm.BitInsert(number1, number2, startPosition, endPosition);
-            }
-            catch (ArgumentException)
-            {
-                return -2;
-            }
+            return MathAlgorithm.BitInsert(number1, number2, startPosition, endPosition);
         }
 
         [TestCase(12, ExpectedResult = 21)]
@@ -39,19 +31,19 @@ namespace Algorithm.NUnitTests
             }
         }
 
-        [TestCase(7, 77, 17, 32, ExpectedResult = new[] { 77, 17 })]
-        [TestCase(7, 8, 32, ExpectedResult = new int[0])]
-        [TestCase(7, ExpectedResult = null)]
-        public int[] FilterDigitTests(int digit, params int[] numbers)
+        [TestCase(77, 17, 32, ExpectedResult = new[] { 77, 17 })]
+        [TestCase(8, 32, ExpectedResult = new int[0])]
+        [TestCase(ExpectedResult = new int[0])]
+        public int[] FilterDigitTests(params int[] numbers)
         {
-            return MathAlgorithm.FilterDigit(digit, numbers);
+            return MathAlgorithm.FilterDigit(new Predicate(), numbers);
         }
 
         [TestCase(77, 77, 89)]
-        public void FilterDigitTests_ArgumentException(int digit, params int[] numbers)
+        public void FilterDigitTests_ArgumentException(params int[] numbers)
         {
-            Assert.Throws<ArgumentException>(() =>
-                MathAlgorithm.FilterDigit(digit, numbers));
+            Assert.Throws<ArgumentNullException>(() =>
+                MathAlgorithm.FilterDigit(null, numbers));
         }
 
         [TestCase(4, 2, 0.00001)]

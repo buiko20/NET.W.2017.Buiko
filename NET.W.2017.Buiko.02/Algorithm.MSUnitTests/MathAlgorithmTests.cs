@@ -140,31 +140,29 @@ namespace Algorithm.MSUnitTests
 
 
 
-        private static readonly int[] array1 = { 1, 2, 3, 4, 5, 6, 7, 68, 69, 70, 15, 17 };
-        private static readonly int[] expected1 = { 7, 70, 17 };
+        private static readonly int[] Array1 = { 1, 2, 3, 4, 5, 6, 7, 68, 69, 70, 15, 17 };
+        private static readonly int[] Expected1 = { 7, 70, 17 };
         [TestMethod]
         public void FilterDigit_digit7array1_expected1returned()
         {
             // Arrange.
-            int digit = 7;
 
             // Act.
-            int[] actual = MathAlgorithm.FilterDigit(digit, array1);
+            int[] actual = MathAlgorithm.FilterDigit(new Predicate(), Array1);
 
             // Assert.
-            Assert.IsTrue(actual.SequenceEqual(expected1));
+            Assert.IsTrue(actual.SequenceEqual(Expected1));
         }
 
         [TestMethod]
         public void FilterDigit_digit7from13or72_72returned()
         {
             // Arrange.
-            int digit = 7;
             int number1 = 13, number2 = 72;
             int expected = 72;
 
             // Act.
-            int[] actual = MathAlgorithm.FilterDigit(digit, number1, number2);
+            int[] actual = MathAlgorithm.FilterDigit(new Predicate(), number1, number2);
 
             // Assert.
             Assert.AreEqual(expected, actual[0]);
@@ -174,26 +172,24 @@ namespace Algorithm.MSUnitTests
         public void FilterDigit_digit7from13or31_emptyarrayreturned()
         {
             // Arrange.
-            int digit = 7;
             int number1 = 13, number2 = 31;
             int expectedArrayLength = 0;
 
             // Act.
-            int[] actual = MathAlgorithm.FilterDigit(digit, number1, number2);
+            int[] actual = MathAlgorithm.FilterDigit(new Predicate(), number1, number2);
 
             // Assert.
             Assert.AreEqual(expectedArrayLength, actual.Length);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void FilterDigit_digit7nullarray_exceptionreturned()
         {
             // Arrange.
-            int digit = 7;
 
             // Act.
-            MathAlgorithm.FilterDigit(digit, null);
+            MathAlgorithm.FilterDigit(new Predicate(), null);
 
             // Assert.
         }
@@ -202,24 +198,23 @@ namespace Algorithm.MSUnitTests
         public void FilterDigit_digit7emptyarray_exceptionreturned()
         {
             // Arrange.
-            int digit = 7;
+            int expected = 0;
 
             // Act.
-            int[] actual = MathAlgorithm.FilterDigit(digit);
+            int[] actual = MathAlgorithm.FilterDigit(new Predicate());
 
             // Assert.
-            Assert.IsNull(actual);
+            Assert.AreEqual(expected, actual.Length);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void FilterDigit_digit7array_exceptionreturned()
         {
             // Arrange.
-            int digit = 123;
 
             // Act.
-            MathAlgorithm.FilterDigit(digit, 123);
+            MathAlgorithm.FilterDigit(null, 123);
 
             // Assert.
         }

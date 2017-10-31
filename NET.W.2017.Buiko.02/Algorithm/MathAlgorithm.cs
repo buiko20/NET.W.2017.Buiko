@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Algorithm
 {
@@ -49,7 +48,7 @@ namespace Algorithm
             if (number < 0)
                 throw new ArgumentException($"{nameof(number)} must be greater than 0", nameof(number));
 
-            char[] numberCharArray = number.ToString().ToCharArray();
+            var numberCharArray = number.ToString().ToCharArray();
 
             if (IsDescendingOrder(numberCharArray)) return -1;
 
@@ -59,7 +58,7 @@ namespace Algorithm
                     for (int j = numberCharArray.Length - 1; j >= i; j--)
                         if (numberCharArray[j] > numberCharArray[i - 1])
                         {
-                            char temp = numberCharArray[j];
+                            var temp = numberCharArray[j];
                             numberCharArray[j] = numberCharArray[i - 1];
                             numberCharArray[i - 1] = temp;
                             break;
@@ -84,7 +83,7 @@ namespace Algorithm
         /// <exception cref="ArgumentException">Thrown if number is less than 0</exception>
         public static int FindNextBiggerNumber(int number, out TimeSpan operationTime)
         {
-            Stopwatch watch = new Stopwatch();
+            var watch = new Stopwatch();
             watch.Start();
 
             int result = FindNextBiggerNumber(number);
@@ -96,34 +95,24 @@ namespace Algorithm
         }
 
         /// <summary>
-        /// Searches for numbers containing a given digit.
+        /// Searches for numbers corresponding to the given criterion.
         /// </summary>
-        /// <param name="digit">target digit</param>
         /// <param name="numbers">source numbers</param>
+        /// <param name="predicate">predicate determining the choice of an element</param>
         /// <returns>Numbers containing a given digit or null if there are no such numbers.</returns>
-        /// <exception cref="ArgumentException">Thrown when digit &lt; 0 || digit &gt; 9</exception>
-        /// <exception cref="NullReferenceException">Thrown when numbers == null</exception>
-        public static int[] FilterDigit(int digit, params int[] numbers)
+        /// <exception cref="ArgumentNullException">Thrown when predicate ot numbers is null</exception>
+        public static int[] FilterDigit(IPredicate<int> predicate, params int[] numbers)
         {
-            if ((digit < 0) || (digit > 9))
-                throw new ArgumentException($"{nameof(digit)} must be from 0 to 9", nameof(digit));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
 
             if (numbers == null)
-                throw new ArgumentException(nameof(numbers));
+                throw new ArgumentNullException(nameof(numbers));
 
             if (numbers.Length == 0)
-                return null;
+                return new int[0];
 
-            var result = new List<int>();
-            string digitStr = digit.ToString();
-            for (int i = 0; i < numbers.Length; i++)
-            {
-                string number = numbers[i].ToString();
-                if (number.Contains(digitStr))
-                    result.Add(numbers[i]);
-            }
-
-            return result.ToArray();
+            return numbers.Where(predicate.Choose).ToArray();
         }
 
         /// <summary>
