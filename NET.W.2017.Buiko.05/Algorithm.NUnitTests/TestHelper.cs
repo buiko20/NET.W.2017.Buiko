@@ -21,7 +21,9 @@ namespace Algorithm.NUnitTests
             var array = new int[rowCount][];
 
             for (int i = 0; i < array.Length; i++)
+            {
                 array[i] = GetRandomArray(seed + Guid.NewGuid().GetHashCode());
+            }
 
             return array;
         }
@@ -32,10 +34,14 @@ namespace Algorithm.NUnitTests
             foreach (var array in jaggedArray)
             {
                 foreach (var element in array)
+                {
                     Console.Write(element + " ");
+                }
+
                 Console.WriteLine();
             }
-            Console.WriteLine("");
+
+            Console.WriteLine(string.Empty);
         }
 
         public static bool IsXscendingOrder(int[][] jaggedArray, Func<int[], int> operation, Func<int, int, bool> comparator)
@@ -43,10 +49,17 @@ namespace Algorithm.NUnitTests
             int[] sumArray = new int[jaggedArray.Length];
 
             for (int i = 0; i < jaggedArray.Length; i++)
+            {
                 sumArray[i] = operation(jaggedArray[i]);
+            }
 
             for (int i = 0; i < sumArray.Length - 1; i++)
-                if (comparator(sumArray[i], sumArray[i + 1])) return false;
+            {
+                if (comparator(sumArray[i], sumArray[i + 1]))
+                {
+                    return false;
+                }
+            }
 
             return true;
         }
@@ -70,7 +83,9 @@ namespace Algorithm.NUnitTests
         {
             var random = new Random(seed);
             for (int i = 0; i < array.Length; i++)
+            {
                 array[i] = random.Next(LeftBorder, RightBorder);
+            }
         }
 
         #endregion

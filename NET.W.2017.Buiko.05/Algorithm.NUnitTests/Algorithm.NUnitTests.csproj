@@ -44,12 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="comparator\AscendingMaxElementComparator.cs" />
-    <Compile Include="comparator\AscendingMinElementComparator.cs" />
-    <Compile Include="comparator\AscendingSumComparator.cs" />
-    <Compile Include="comparator\DescendingMaxElementComparator.cs" />
-    <Compile Include="comparator\DescendingMinElementComparator.cs" />
-    <Compile Include="comparator\DescendingSumComparator.cs" />
+    <Compile Include="Comparator\AscendingMaxElementComparator.cs" />
+    <Compile Include="Comparator\AscendingMinElementComparator.cs" />
+    <Compile Include="Comparator\AscendingSumComparator.cs" />
+    <Compile Include="Comparator\DescendingMaxElementComparator.cs" />
+    <Compile Include="Comparator\DescendingMinElementComparator.cs" />
+    <Compile Include="Comparator\DescendingSumComparator.cs" />
     <Compile Include="SortAlgorithmTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelper.cs" />

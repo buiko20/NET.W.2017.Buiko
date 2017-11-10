@@ -40,12 +40,18 @@ namespace Algorithm
             VerifyInput(jaggedArray, comparator);
 
             for (int i = 0; i < jaggedArray.Length - 1; i++)
+            {
                 for (int j = 0; j < jaggedArray.Length - 1; j++)
+                {
                     if (comparator(jaggedArray[j], jaggedArray[j + 1]) > 0)
+                    {
                         Swap(ref jaggedArray[j], ref jaggedArray[j + 1]);
+                    }
+                }
+            }
         }
 
-        public static void Swap<T>(ref T x, ref T y)
+        private static void Swap<T>(ref T x, ref T y)
         {
             T temp = x;
             x = y;
@@ -54,13 +60,23 @@ namespace Algorithm
 
         private static void VerifyInput(int[][] jaggedArray, Comparison<int[]> comparator)
         {
-            if (jaggedArray == null) throw new ArgumentNullException(nameof(jaggedArray));
+            if (jaggedArray == null)
+            {
+                throw new ArgumentNullException(nameof(jaggedArray));
+            }
 
-            if (comparator == null) throw new ArgumentNullException(nameof(comparator));
+            if (comparator == null)
+            {
+                throw new ArgumentNullException(nameof(comparator));
+            }
 
             for (int i = 0; i < jaggedArray.Length; i++)
+            {
                 if (jaggedArray[i] == null)
+                {
                     throw new ArgumentNullException(nameof(jaggedArray), $"{i}th nested array in {nameof(jaggedArray)} is null");
+                }
+            }
         }
 
         #endregion // !private methods.

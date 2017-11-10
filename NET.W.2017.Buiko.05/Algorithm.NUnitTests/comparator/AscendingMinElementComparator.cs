@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Algorithm.NUnitTests.comparator
+namespace Algorithm.NUnitTests.Comparator
 {
-    class AscendingMinElementComparator : IComparer<int[]>
+    internal class AscendingMinElementComparator : IComparer<int[]>
     {
         /// <summary>
         /// Sorts in ascending order of the min row items.
@@ -20,18 +17,38 @@ namespace Algorithm.NUnitTests.comparator
         /// </returns>
         public int Compare(int[] array1, int[] array2)
         {
-            if (array1 == null) return -1;
-            if (array2 == null) return 1;
+            if (array1 == null)
+            {
+                return -1;
+            }
 
-            if (array1.Length == 0) return -1;
-            if (array2.Length == 0) return 1;
+            if (array2 == null)
+            {
+                return 1;
+            }
+
+            if (array1.Length == 0)
+            {
+                return -1;
+            }
+
+            if (array2.Length == 0)
+            {
+                return 1;
+            }
 
             int maxElement1 = array1.Min();
             int maxElement2 = array2.Min();
 
-            if (maxElement1 == maxElement2) return 0;
+            if (maxElement1 == maxElement2)
+            {
+                return 0;
+            }
 
-            if (maxElement1 > maxElement2) return 1;
+            if (maxElement1 > maxElement2)
+            {
+                return 1;
+            }
 
             return -1;
         }

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{050573EE-1010-4ADB-8937-3FF458D85BD1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortAlgorithm", "Algorithm\SortAlgorithm.csproj", "{CA1AB55C-5C07-486C-B0B6-882D533F8159}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortAlgorithm.NUnitTests", "SortAlgorithm.NUnitTests\SortAlgorithm.NUnitTests.csproj", "{4819486E-B06C-4385-8ADF-416F0A884D48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{050573EE-1010-4ADB-8937-3FF458D85BD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{050573EE-1010-4ADB-8937-3FF458D85BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{050573EE-1010-4ADB-8937-3FF458D85BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{050573EE-1010-4ADB-8937-3FF458D85BD1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA1AB55C-5C07-486C-B0B6-882D533F8159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CA1AB55C-5C07-486C-B0B6-882D533F8159}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA1AB55C-5C07-486C-B0B6-882D533F8159}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA1AB55C-5C07-486C-B0B6-882D533F8159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4819486E-B06C-4385-8ADF-416F0A884D48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4819486E-B06C-4385-8ADF-416F0A884D48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4819486E-B06C-4385-8ADF-416F0A884D48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4819486E-B06C-4385-8ADF-416F0A884D48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

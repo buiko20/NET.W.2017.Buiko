@@ -1,16 +1,23 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Algorithm
 {
     public static class DoubleExtension
     {
+        #region private constants
+
+        private const char TrueBit = '1';
+        private const char FalseBit = '0';
+
+        private const int Bias = 1023;
+        private const int ExponentLength = 11;
+        private const int MantissaLength = 52;
+        private const int DenormalizedBias = -1022;
+
+        #endregion
+
         #region public methods
         /// <summary>
         /// Convert double into string which represents it in IEEE 754.
@@ -23,7 +30,9 @@ namespace Algorithm
             var result = new StringBuilder(sizeof(double) * 8);
 
             for (int i = bitArray.Length - 1; i >= 0; i--)
+            {
                 result.Append(bitArray[i] ? TrueBit : FalseBit);
+            }
 
             return result.ToString();
         }
@@ -51,27 +60,16 @@ namespace Algorithm
 
         #endregion
 
-        #region private constants
-
-        private const char TrueBit = '1';
-        private const char FalseBit = '0';
-
-        private const int Bias = 1023;
-        private const int ExponentLength = 11;
-        private const int MantissaLength = 52;
-        private const int DenormalizedBias = -1022;
-
-
-        #endregion
-
         #region private methods
 
         private static char GetSignBinary(double number)
         {
             bool isNegativeInfinity = double.IsNegativeInfinity(1.0 / number);
 
-            if ((number < 0.0) || (isNegativeInfinity))
+            if (number < 0.0 || isNegativeInfinity)
+            {
                 return TrueBit;
+            }
 
             return FalseBit;
         }
@@ -106,12 +104,12 @@ namespace Algorithm
         {
             int power = 0;
 
-            double fraction = number / Math.Pow(2, power) - 1;
+            double fraction = (number / Math.Pow(2, power)) - 1;
 
             while ((fraction < 0) || (fraction >= 1))
             {
                 power = fraction < 1 ? --power : ++power;
-                fraction = number / Math.Pow(2, power) - 1;
+                fraction = (number / Math.Pow(2, power)) - 1;
             }
 
             return power;
@@ -148,7 +146,7 @@ namespace Algorithm
             }
             else
             {
-                fraction = number / Math.Pow(2, exponent) - 1;
+                fraction = (number / Math.Pow(2, exponent)) - 1;
             }
 
             return FractionToBinary(fraction, MantissaLength);  
@@ -188,6 +186,7 @@ namespace Algorithm
                     bit = TrueBit;
                     fraction -= 1;
                 }
+
                 result[i] = bit;
             }
 

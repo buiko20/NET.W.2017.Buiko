@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Algorithm
 {
@@ -29,9 +25,9 @@ namespace Algorithm
         /// <summary>
         /// The Euclidean algorithm for finding the greatest common divisor.
         /// </summary>
-        /// <param name="number1">1st number</param>
-        /// <param name="number2">2nd number</param>
-        /// <param name="number3">3th number</param>
+        /// <param name="number1">first number</param>
+        /// <param name="number2">second number</param>
+        /// <param name="number3">third number</param>
         /// <returns>Greatest common divisor of 3 numbers</returns>
         public static int EuclideanAlgorithm(int number1, int number2, int number3)
         {
@@ -47,10 +43,10 @@ namespace Algorithm
         /// <summary>
         /// The Euclidean algorithm for finding the greatest common divisor.
         /// </summary>
-        /// <param name="number1">1st number</param>
-        /// <param name="number2">2nd number</param>
-        /// <param name="number3">3th number</param>
-        /// <param name="number4">4th number</param>
+        /// <param name="number1">first number</param>
+        /// <param name="number2">second number</param>
+        /// <param name="number3">third number</param>
+        /// <param name="number4">fourth number</param>
         /// <returns>Greatest common divisor of 4 numbers</returns>
         public static int EuclideanAlgorithm(int number1, int number2, int number3, int number4)
         {
@@ -73,10 +69,14 @@ namespace Algorithm
         public static int EuclideanAlgorithm(params int[] numbers)
         {
             if (numbers == null)
+            {
                 throw new ArgumentNullException(nameof(numbers));
+            }
 
             if (numbers.Length < 2)
+            {
                 throw new ArgumentException("Too few arguments", nameof(numbers));
+            }
 
             Abs(numbers);
 
@@ -107,9 +107,9 @@ namespace Algorithm
         /// The Euclidean algorithm for finding the greatest common divisor.
         /// </summary>
         /// <param name="operationTime">method execution time</param>
-        /// <param name="number1">1st number</param>
-        /// <param name="number2">2nd number</param>
-        /// <param name="number3">3th number</param>
+        /// <param name="number1">first number</param>
+        /// <param name="number2">second number</param>
+        /// <param name="number3">third number</param>
         /// <returns>Greatest common divisor of 3 numbers</returns>
         public static int EuclideanAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3)
         {
@@ -128,10 +128,10 @@ namespace Algorithm
         /// The Euclidean algorithm for finding the greatest common divisor.
         /// </summary>
         /// <param name="operationTime">method execution time</param>
-        /// <param name="number1">1st number</param>
-        /// <param name="number2">2nd number</param>
-        /// <param name="number3">3th number</param>
-        /// <param name="number4">4th number</param>
+        /// <param name="number1">first number</param>
+        /// <param name="number2">second number</param>
+        /// <param name="number3">third number</param>
+        /// <param name="number4">fourth number</param>
         /// <returns>Greatest common divisor of 4 numbers</returns>
         public static int EuclideanAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3, int number4)
         {
@@ -184,9 +184,9 @@ namespace Algorithm
         /// <summary>
         /// The Stein algorithm for finding the greatest common divisor.
         /// </summary>
-        /// <param name="number1">1st number</param>
-        /// <param name="number2">2nd number</param>
-        /// <param name="number3">3th number</param>
+        /// <param name="number1">first number</param>
+        /// <param name="number2">second number</param>
+        /// <param name="number3">third number</param>
         /// <returns>Greatest common divisor of 3 numbers</returns>
         public static int SteinAlgorithm(int number1, int number2, int number3)
         {
@@ -202,10 +202,10 @@ namespace Algorithm
         /// <summary>
         /// The Stein algorithm for finding the greatest common divisor.
         /// </summary>
-        /// <param name="number1">1st number</param>
-        /// <param name="number2">2nd number</param>
-        /// <param name="number3">3th number</param>
-        /// <param name="number4">4th number</param>
+        /// <param name="number1">first number</param>
+        /// <param name="number2">second number</param>
+        /// <param name="number3">third number</param>
+        /// <param name="number4">fourth number</param>
         /// <returns>Greatest common divisor of 4 numbers</returns>
         public static int SteinAlgorithm(int number1, int number2, int number3, int number4)
         {
@@ -228,10 +228,14 @@ namespace Algorithm
         public static int SteinAlgorithm(params int[] numbers)
         {
             if (numbers == null)
+            {
                 throw new ArgumentNullException(nameof(numbers));
+            }
 
             if (numbers.Length < 2)
+            {
                 throw new ArgumentException("Too few arguments", nameof(numbers));
+            }
 
             Abs(numbers);
 
@@ -262,9 +266,9 @@ namespace Algorithm
         /// The Stein algorithm for finding the greatest common divisor.
         /// </summary>
         /// <param name="operationTime">method execution time</param>
-        /// <param name="number1">1st number</param>
-        /// <param name="number2">2nd number</param>
-        /// <param name="number3">3th number</param>
+        /// <param name="number1">first number</param>
+        /// <param name="number2">second number</param>
+        /// <param name="number3">third number</param>
         /// <returns>Greatest common divisor of 3 numbers</returns>
         public static int SteinAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3)
         {
@@ -283,10 +287,10 @@ namespace Algorithm
         /// The Stein algorithm for finding the greatest common divisor.
         /// </summary>
         /// <param name="operationTime">method execution time</param>
-        /// <param name="number1">1st number</param>
-        /// <param name="number2">2nd number</param>
-        /// <param name="number3">3th number</param>
-        /// <param name="number4">4th number</param>
+        /// <param name="number1">first number</param>
+        /// <param name="number2">second number</param>
+        /// <param name="number3">third number</param>
+        /// <param name="number4">fourth number</param>
         /// <returns>Greatest common divisor of 4 numbers</returns>
         public static int SteinAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3, int number4)
         {
@@ -327,15 +331,25 @@ namespace Algorithm
         private static int GcdEuclidean(int number1, int number2)
         {
             if ((number1 == 0) && (number2 != 0))
+            {
                 return number2;
+            }
 
             if ((number2 == 0) && (number1 != 0))
+            {
                 return number1;
+            }
 
             while (number1 != number2)
             {
-                if (number1 > number2) number1 -= number2;
-                else number2 -= number1;
+                if (number1 > number2)
+                {
+                    number1 -= number2;
+                }
+                else
+                {
+                    number2 -= number1;
+                }
             }
 
             return number1;
@@ -346,7 +360,9 @@ namespace Algorithm
             int result = GcdEuclidean(numbers[0], numbers[1]);
 
             for (int i = 2; i < numbers.Length; i++)
+            {
                 result = GcdEuclidean(result, numbers[i]);
+            }
 
             return result;
         }
@@ -354,31 +370,57 @@ namespace Algorithm
         private static void Abs(params int[] numbers)
         {
             for (int i = 0; i < numbers.Length; i++)
+            {
                 numbers[i] = Math.Abs(numbers[i]);
+            }
         }
 
         private static int GcdStein(int number1, int number2)
         {
-            if ((number1 == 0) && (number2 != 0)) return number2;
-            if ((number1 != 0) && (number2 == 0)) return number1;
-            if (number1 == number2) return number1;
+            if ((number1 == 0) && (number2 != 0))
+            {
+                return number2;
+            }
 
-            if ((number1 == 1) || (number2 == 1)) return 1;
+            if ((number1 != 0) && (number2 == 0))
+            {
+                return number1;
+            }
 
-            if ((IsEven(number1)) && (IsEven(number2)))
+            if (number1 == number2)
+            {
+                return number1;
+            }
+
+            if ((number1 == 1) || (number2 == 1))
+            {
+                return 1;
+            }
+
+            if (IsEven(number1) && IsEven(number2))
+            {
                 return 2 * GcdStein(number1 / 2, number2 / 2);
+            }
 
-            if ((IsEven(number1)) && (!IsEven(number2)))
+            if (IsEven(number1) && !IsEven(number2))
+            {
                 return GcdStein(number1 / 2, number2);
+            }
 
-            if ((!IsEven(number1)) && (IsEven(number2)))
+            if (!IsEven(number1) && IsEven(number2))
+            {
                 return GcdStein(number1, number2 / 2);
+            }
 
             if ((!IsEven(number1)) && (!IsEven(number2)) && (number2 > number1))
+            {
                 return GcdStein(number1, (number2 - number1) / 2);
+            }
 
             if ((!IsEven(number1)) && (!IsEven(number2)) && (number2 < number1))
+            {
                 return GcdStein((number1 - number2) / 2, number2);
+            }
 
             return 0;
         }
@@ -388,7 +430,9 @@ namespace Algorithm
             int result = GcdStein(numbers[0], numbers[1]);
 
             for (int i = 2; i < numbers.Length; i++)
+            {
                 result = GcdStein(result, numbers[i]);
+            }
 
             return result;
         }

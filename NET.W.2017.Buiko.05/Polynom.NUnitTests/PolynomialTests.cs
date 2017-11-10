@@ -22,9 +22,13 @@ namespace Polynom.NUnitTests
         public void PolynomialConstructorExceptionTests(double[] coefficients, int[] degrees)
         {
             if ((coefficients == null) || (degrees == null))
+            {
                 Assert.Throws<ArgumentNullException>(() => new Polynomial(coefficients, degrees));
+            }
             else
+            {
                 Assert.Throws<ArgumentException>(() => new Polynomial(coefficients, degrees));
+            }
         }
 
         #endregion // !constructor tests.
@@ -39,8 +43,15 @@ namespace Polynom.NUnitTests
             for (int i = 0; i < polynomial.Length; i++)
             {
                 var temp = polynomial[i];
-                if (Math.Abs(temp.Item1 - coefficients[i]) > Polynomial.Accuracy) Assert.Fail();
-                if (temp.Item2 != degrees[i]) Assert.Fail();
+                if (Math.Abs(temp.Item1 - coefficients[i]) > Polynomial.Accuracy)
+                {
+                    Assert.Fail();
+                }
+
+                if (temp.Item2 != degrees[i])
+                {
+                    Assert.Fail();
+                }
             }
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -80,9 +91,9 @@ namespace Polynom.NUnitTests
             var polynomial1 = new Polynomial(coefficients1, degrees1);
             var polynomial2 = new Polynomial(coefficients2, degrees2);
 
-            bool result = (polynomial1.Equals(polynomial2)) && (polynomial1 == polynomial2);
+            bool result = polynomial1.Equals(polynomial2) && polynomial1 == polynomial2;
 
-            return  result;
+            return result;
         }
 
         [Test]
@@ -115,7 +126,10 @@ namespace Polynom.NUnitTests
             var result1 = Polynomial.Add(polynomial1, polynomial2).ToString();
             var result2 = (polynomial1 + polynomial2).ToString();
 
-            if (result1 != result2) Assert.Fail();
+            if (result1 != result2)
+            {
+                Assert.Fail();
+            }
 
             return result1;
         }
@@ -150,7 +164,10 @@ namespace Polynom.NUnitTests
             var result1 = Polynomial.Subtract(polynomial1, polynomial2).ToString();
             var result2 = (polynomial1 - polynomial2).ToString();
 
-            if (result1 != result2) Assert.Fail();
+            if (result1 != result2)
+            {
+                Assert.Fail();
+            }
 
             return result1;
         }
@@ -181,7 +198,10 @@ namespace Polynom.NUnitTests
             var result1 = Polynomial.Multiply(polynomial, x).ToString();
             var result2 = (polynomial * x).ToString();
 
-            if (result1 != result2) Assert.Fail();
+            if (result1 != result2)
+            {
+                Assert.Fail();
+            }
 
             return result1;
         }
@@ -193,8 +213,8 @@ namespace Polynom.NUnitTests
         [TestCase(new double[1] { 5d }, new int[1] { 5 }, new double[1] { -5d }, new int[1] { 5 }, ExpectedResult = "-25x^10")]
         [TestCase(new double[1] { 5d }, new int[1] { 5 }, new double[1] { -5d }, new int[1] { 7 }, ExpectedResult = "-25x^12")]
         [TestCase(new double[3] { 5d, 3.5d, -17.089d }, new int[3] { 5, 4, 2 }, new double[4] { 5d, 3.5d, 24.3d, -0.042d }, new int[4] { 5, 4, 2, 0 }, ExpectedResult = "25x^10+35x^9+12,25x^8+36,055x^7+25,2385x^6-0,21x^5-415,4097x^4+0,717738x^2")]
-        [TestCase(new double[2] { 5d, 3d }, new int[2] { 1, 0 }, new double[3] { 8d, -2d, 5d }, new int[3] { 2, 1, 0}, ExpectedResult = "40x^3+14x^2+19x^1+15x^0")]
-        [TestCase(new double[2] { 5d, 3d }, new int[2] { 1, 0 }, new double[3] { 8d, 2d, 5d }, new int[3] { 2, 1, 0}, ExpectedResult = "40x^3+34x^2+31x^1+15x^0")]
+        [TestCase(new double[2] { 5d, 3d }, new int[2] { 1, 0 }, new double[3] { 8d, -2d, 5d }, new int[3] { 2, 1, 0 }, ExpectedResult = "40x^3+14x^2+19x^1+15x^0")]
+        [TestCase(new double[2] { 5d, 3d }, new int[2] { 1, 0 }, new double[3] { 8d, 2d, 5d }, new int[3] { 2, 1, 0 }, ExpectedResult = "40x^3+34x^2+31x^1+15x^0")]
         public string PolynomialMultiplyTests2(double[] coefficients1, int[] degrees1, double[] coefficients2, int[] degrees2)
         {
             var polynomial1 = new Polynomial(coefficients1, degrees1);
@@ -203,7 +223,10 @@ namespace Polynom.NUnitTests
             var result1 = Polynomial.Multiply(polynomial1, polynomial2).ToString();
             var result2 = (polynomial1 * polynomial2).ToString();
 
-            if (result1 != result2) Assert.Fail();
+            if (result1 != result2)
+            {
+                Assert.Fail();
+            }
 
             return result1;
         }
@@ -221,7 +244,10 @@ namespace Polynom.NUnitTests
             var polynomial = new Polynomial(coefficients, degrees);
 
             var actual = polynomial.Compute(x);
-            if (Math.Abs(actual - result) > Polynomial.Accuracy) Assert.Fail();
+            if (Math.Abs(actual - result) > Polynomial.Accuracy)
+            {
+                Assert.Fail();
+            }
         }
 
         #endregion // !Compute tests.

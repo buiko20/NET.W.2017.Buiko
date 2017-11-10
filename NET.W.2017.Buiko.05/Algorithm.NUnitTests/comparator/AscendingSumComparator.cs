@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Algorithm.NUnitTests.comparator
+namespace Algorithm.NUnitTests.Comparator
 {
     internal class AscendingSumComparator : IComparer<int[]>
     {
+        /// <inheritdoc />
         /// <summary>
         /// Sort in ascending order of the sums of elements of the rows of the jagged array.
         /// </summary>
@@ -20,18 +18,38 @@ namespace Algorithm.NUnitTests.comparator
         /// </returns>
         public int Compare(int[] array1, int[] array2)
         {
-            if (array1 == null) return -1;
-            if (array2 == null) return 1;
+            if (array1 == null)
+            {
+                return -1;
+            }
 
-            if (array1.Length == 0) return -1;
-            if (array2.Length == 0) return 1;
+            if (array2 == null)
+            {
+                return 1;
+            }
+
+            if (array1.Length == 0)
+            {
+                return -1;
+            }
+
+            if (array2.Length == 0)
+            {
+                return 1;
+            }
 
             int sum1 = array1.Sum();
             int sum2 = array2.Sum();
 
-            if (sum1 == sum2) return 0;
+            if (sum1 == sum2)
+            {
+                return 0;
+            }
 
-            if (sum1 > sum2) return 1;
+            if (sum1 > sum2)
+            {
+                return 1;
+            }
 
             return -1;
         }

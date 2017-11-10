@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Algorithm.NUnitTests
@@ -52,9 +48,9 @@ namespace Algorithm.NUnitTests
         }
 
         [TestCase(1428, 420, 84, 42, 420, 1428, ExpectedResult = 42)]
-        [TestCase(0, 0, 0, 0, 0, 0 , 0, 0 , 0 , 0, ExpectedResult = 0)]
+        [TestCase(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ExpectedResult = 0)]
         [TestCase(0, 5, -5, 10, 25, -50, 100, 510, ExpectedResult = 5)]
-        [TestCase(5, 10, 15, 20, -1000, 55, 40, - 10, ExpectedResult = 5)]
+        [TestCase(5, 10, 15, 20, -1000, 55, 40, -10, ExpectedResult = 5)]
         [TestCase(-5, 10, -20, -40, 20, 40, 5, 15, ExpectedResult = 5)]
         [TestCase(-5, -10, 100, 15, -45, 60, 80, ExpectedResult = 5)]
         [TestCase(1, 17, 20, 31, 13, 21, 15, 61, 77, 4, ExpectedResult = 1)]
@@ -65,7 +61,6 @@ namespace Algorithm.NUnitTests
         }
 
         [TestCase(1)]
-        [TestCase()]
         public void EuclideanAlgorithmTestsArgumentException(params int[] numbers)
         {
             Assert.Throws<ArgumentException>(() => GcdAlrogithm.EuclideanAlgorithm(numbers));
@@ -128,7 +123,6 @@ namespace Algorithm.NUnitTests
         }
 
         [TestCase(1)]
-        [TestCase()]
         public void SteinAlgorithmTestsArgumentException(params int[] numbers)
         {
             Assert.Throws<ArgumentException>(() => GcdAlrogithm.SteinAlgorithm(numbers));

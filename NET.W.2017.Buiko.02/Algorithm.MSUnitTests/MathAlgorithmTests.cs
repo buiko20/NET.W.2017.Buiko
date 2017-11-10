@@ -7,6 +7,9 @@ namespace Algorithm.MSUnitTests
     [TestClass]
     public class MathAlgorithmTests
     {
+        private static readonly int[] Array1 = { 1, 2, 3, 4, 5, 6, 7, 68, 69, 70, 15, 17 };
+        private static readonly int[] Expected1 = { 7, 70, 17 };
+
         [TestMethod]
         public void BitInsert_15insert15from0to0_15returned()
         {
@@ -80,9 +83,6 @@ namespace Algorithm.MSUnitTests
             // Assert.
         }
 
-
-
-
         [TestMethod]
         public void FindNextBiggerNumber_12_21returned()
         {
@@ -138,10 +138,6 @@ namespace Algorithm.MSUnitTests
             // Assert.
         }
 
-
-
-        private static readonly int[] Array1 = { 1, 2, 3, 4, 5, 6, 7, 68, 69, 70, 15, 17 };
-        private static readonly int[] Expected1 = { 7, 70, 17 };
         [TestMethod]
         public void FilterDigit_digit7array1_expected1returned()
         {
@@ -218,8 +214,6 @@ namespace Algorithm.MSUnitTests
 
             // Assert.
         }
-
-
 
         [TestMethod]
         public void FindNthRoot_number1root5eps00001_1returned()

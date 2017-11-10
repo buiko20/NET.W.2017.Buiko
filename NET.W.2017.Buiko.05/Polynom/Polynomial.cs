@@ -9,41 +9,13 @@ namespace Polynom
     {
         #region private fields
 
+        private static double _accuracy;
         private double[] _coefficients;
         private int[] _degrees;
-        private static double _accuracy;
 
         #endregion // !private fields.
 
         #region public
-
-        #region properties
-
-        /// <summary>
-        /// The accuracy of comparing the values of a polynomial.
-        /// </summary>
-        public static double Accuracy
-        {
-            get { return _accuracy; }
-            set
-            {
-                if ((value - 0.1 > 0.0d) || (value <= 0.0d))
-                    throw new ArgumentException($"{nameof(value)} must be from 0 to 0.0..1", nameof(value));
-                _accuracy = value;
-            }
-        }
-
-        /// <summary>
-        /// Number of elements in a polynomial.
-        /// </summary>
-        public int Length => _degrees.Length;
-
-        /// <summary>
-        /// The maximum degree of a variable in a polynomial.
-        /// </summary>
-        public int Degree => _degrees[0];
-
-        #endregion // !properties.
 
         #region constructors
 
@@ -67,7 +39,9 @@ namespace Polynom
         public Polynomial(Polynomial polynomial)
         {
             if (ReferenceEquals(polynomial, null))
+            {
                 throw new ArgumentNullException(nameof(polynomial));
+            }
 
             var data = polynomial.GetElements();
 
@@ -85,10 +59,15 @@ namespace Polynom
         /// <exception cref="ArgumentNullException">Thrown when polynomial is null</exception>
         public Polynomial(IEnumerable<Tuple<double, int>> polynomial)
         {
-            if (polynomial == null) throw new ArgumentNullException(nameof(polynomial));
+            if (polynomial == null)
+            {
+                throw new ArgumentNullException(nameof(polynomial));
+            }
 
             if (!polynomial.Any())
+            {
                 throw new ArgumentException("An enumeration must have at least one pair", nameof(polynomial));
+            }
 
             ConstructInstance(GetCoefficients(polynomial), GetDegrees(polynomial));
         }
@@ -101,11 +80,15 @@ namespace Polynom
         public Polynomial(double[] coefficients)
         {
             if (coefficients == null)
+            {
                 throw new ArgumentNullException(nameof(coefficients));
+            }
 
             int[] degrees = new int[coefficients.Length];
             for (int i = degrees.Length - 1; i >= 0; i++)
+            {
                 degrees[i] = i;
+            }
 
             ConstructInstance(coefficients, degrees);
         }
@@ -128,51 +111,85 @@ namespace Polynom
 
         #endregion // !constructors.
 
-        #region object override methods
+        #region properties
 
         /// <summary>
-        /// Converts a polynomial to a string representation.
+        /// The accuracy of comparing the values of a polynomial.
         /// </summary>
-        /// <returns>string representation of a polynomial</returns>
-        public override string ToString()
+        public static double Accuracy
         {
-            var result = new StringBuilder();
-
-            for (int i = 0; i < _coefficients.Length; i++)
+            get
             {
-                string sign = _coefficients[i] < 0 ? "" : "+";
-                string element = $"{_coefficients[i]}x^{_degrees[i]}";
-
-                result.Append(sign);
-                result.Append(element);
+                return _accuracy;
             }
-            if (result[0] == '+') result.Remove(0, 1);
 
-            return result.ToString();
+            set
+            {
+                if ((value - 0.1 > 0.0d) || (value <= 0.0d))
+                {
+                    throw new ArgumentException($"{nameof(value)} must be from 0 to 0.0..1", nameof(value));
+                }
+
+                _accuracy = value;
+            }
         }
 
         /// <summary>
-        /// Compares an object to a polynomial.
+        /// Number of elements in a polynomial.
         /// </summary>
-        /// <param name="obj">object to compare</param>
-        /// <returns>true if equls, false otherwise</returns>
-        public override bool Equals(object obj)
+        public int Length => _degrees.Length;
+
+        /// <summary>
+        /// The maximum degree of a variable in a polynomial.
+        /// </summary>
+        public int Degree => _degrees[0];
+
+        #endregion // !properties.
+
+        /// <summary>
+        /// Indexer by polynomial.
+        /// </summary>
+        /// <param name="index">element number in a polynomial</param>
+        /// <returns>A pair representing the coefficient and degree of an element.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">if ((index &lt; 0) || (index &gt; Length)) </exception>
+        public Tuple<double, int> this[int index]
         {
-            if (ReferenceEquals(this, obj)) return true;
-            if (ReferenceEquals(obj, null)) return false;
+            get
+            {
+                if ((index < 0) || (index > Length))
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
 
-            if (obj.GetType() == GetType())
-                return Equals((Polynomial)obj);
-            return false;
+                return new Tuple<double, int>(_coefficients[index], _degrees[index]);
+            }
         }
 
-        /// <summary>
-        /// Generates a hash code for a polynomial.
-        /// </summary>
-        /// <returns>hash code of a polynomial</returns>
-        public override int GetHashCode() => ToString().GetHashCode();
+        public static int[] GetDegrees(IEnumerable<Tuple<double, int>> data)
+        {
+            int[] result = new int[data.Count()];
 
-        #endregion // !object override methods.
+            int i = 0;
+            foreach (var tuple in data)
+            {
+                result[i++] = tuple.Item2;
+            }
+
+            return result;
+        }
+
+        public static double[] GetCoefficients(IEnumerable<Tuple<double, int>> data)
+        {
+            double[] result = new double[data.Count()];
+
+            int i = 0;
+            foreach (var tuple in data)
+            {
+                result[i++] = tuple.Item1;
+            }
+
+            return result;
+        }
 
         #region add methods and operator +
 
@@ -185,10 +202,14 @@ namespace Polynom
         public static Polynomial Add(Polynomial polynomial1, Polynomial polynomial2)
         {
             if (ReferenceEquals(polynomial1, null))
+            {
                 throw new ArgumentNullException(nameof(polynomial1));
+            }
 
             if (ReferenceEquals(polynomial2, null))
+            {
                 throw new ArgumentNullException(nameof(polynomial2));
+            }
 
             return Operate(polynomial1, polynomial2, (a, b) => a + b, a => a);
         }
@@ -199,8 +220,10 @@ namespace Polynom
         /// <param name="polynomial1">addendum 1</param>
         /// <param name="polynomial2">addendum 2</param>
         /// <returns>Polynomial result of addition.</returns>
-        public static Polynomial Add(Polynomial polynomial1, Tuple<double, int> polynomial2) =>
-            Add(polynomial1, new Polynomial(new[] {polynomial2}));
+        public static Polynomial Add(Polynomial polynomial1, Tuple<double, int> polynomial2)
+        {
+            return Add(polynomial1, new Polynomial(new[] { polynomial2 }));
+        }
 
         /// <summary>
         /// Adds two polynomials.
@@ -242,10 +265,14 @@ namespace Polynom
         public static Polynomial Subtract(Polynomial polynomial1, Polynomial polynomial2)
         {
             if (ReferenceEquals(polynomial1, null))
+            {
                 throw new ArgumentNullException(nameof(polynomial1));
+            }
 
             if (ReferenceEquals(polynomial2, null))
+            {
                 throw new ArgumentNullException(nameof(polynomial2));
+            }
 
             return Operate(polynomial1, polynomial2, (a, b) => a - b, a => -a);
         }
@@ -256,8 +283,10 @@ namespace Polynom
         /// <param name="polynomial1">addendum 1</param>
         /// <param name="polynomial2">addendum 2</param>
         /// <returns>Polynomial result of subtraction.</returns>
-        public static Polynomial Subtract(Polynomial polynomial1, Tuple<double, int> polynomial2) =>
-            Subtract(polynomial1, new Polynomial(new[] { polynomial2 }));
+        public static Polynomial Subtract(Polynomial polynomial1, Tuple<double, int> polynomial2)
+        {
+            return Subtract(polynomial1, new Polynomial(new[] { polynomial2 }));
+        }
 
         /// <summary>
         /// Subtract two polynomials.
@@ -265,8 +294,10 @@ namespace Polynom
         /// <param name="lhs">addendum 1</param>
         /// <param name="rhs">addendum 2</param>
         /// <returns>Polynomial result of subtraction.</returns>
-        public static Polynomial operator -(Polynomial lhs, Polynomial rhs) =>
-            OperatorX(lhs, rhs, false);
+        public static Polynomial operator -(Polynomial lhs, Polynomial rhs)
+        {
+            return OperatorX(lhs, rhs, false);
+        }         
 
         /// <summary>
         /// Unary minus.
@@ -291,9 +322,11 @@ namespace Polynom
         /// <param name="lhs">addendum 1</param>
         /// <param name="rhs">addendum 2</param>
         /// <returns>Polynomial result of subtraction.</returns>
-        public static Polynomial operator -(Tuple<double, int> lhs, Polynomial rhs) =>
-            OperatorX(new Polynomial(new[] { lhs }), rhs, false);
-
+        public static Polynomial operator -(Tuple<double, int> lhs, Polynomial rhs)
+        {
+            return OperatorX(new Polynomial(new[] { lhs }), rhs, false);
+        }
+           
         #endregion // !subtract methods and operator -.
 
         #region multiply methods and operator *
@@ -307,14 +340,18 @@ namespace Polynom
         public static Polynomial Multiply(Polynomial lhs, double rhs)
         {
             if (ReferenceEquals(lhs, null))
+            {
                 throw new ArgumentNullException(nameof(lhs));
+            }
 
             var polynomial = lhs.GetElements().ToArray();
             var degrees = GetDegrees(polynomial);
             var coefficients = GetCoefficients(polynomial);
 
             for (int i = 0; i < coefficients.Length; i++)
+            {
                 coefficients[i] *= rhs;
+            }
 
             return new Polynomial(coefficients, degrees);
         }
@@ -327,10 +364,14 @@ namespace Polynom
         public static Polynomial Multiply(Polynomial lhs, Polynomial rhs)
         {
             if (ReferenceEquals(lhs, null))
+            {
                 throw new ArgumentNullException(nameof(lhs));
+            }
 
             if (ReferenceEquals(rhs, null))
+            {
                 throw new ArgumentNullException(nameof(rhs));
+            }
 
             var polynomial1 = lhs.GetElements().ToArray();
             var polynomial2 = rhs.GetElements().ToArray();
@@ -360,9 +401,15 @@ namespace Polynom
         /// <returns>Polynomial result of multiplication.</returns>
         public static Polynomial operator *(Polynomial lhs, Polynomial rhs)
         {
-            if (ReferenceEquals(lhs, null)) throw new ArgumentNullException(nameof(lhs));
+            if (ReferenceEquals(lhs, null))
+            {
+                throw new ArgumentNullException(nameof(lhs));
+            }
 
-            if (ReferenceEquals(rhs, null)) throw new ArgumentNullException(nameof(rhs));
+            if (ReferenceEquals(rhs, null))
+            {
+                throw new ArgumentNullException(nameof(rhs));
+            }
 
             return Multiply(lhs, rhs);
         }
@@ -375,7 +422,10 @@ namespace Polynom
         /// <returns>Polynomial result of multiplication.</returns>
         public static Polynomial operator *(Polynomial lhs, double rhs)
         {
-            if (ReferenceEquals(lhs, null)) throw new ArgumentNullException(nameof(lhs));
+            if (ReferenceEquals(lhs, null))
+            {
+                throw new ArgumentNullException(nameof(lhs));
+            }
 
             return Multiply(lhs, rhs);
         }
@@ -397,9 +447,15 @@ namespace Polynom
         /// <returns>Polynomial result of multiplication.</returns>
         public static Polynomial operator *(Polynomial lhs, Tuple<double, int> rhs)
         {
-            if (ReferenceEquals(lhs, null)) throw new ArgumentNullException(nameof(lhs));
+            if (ReferenceEquals(lhs, null))
+            {
+                throw new ArgumentNullException(nameof(lhs));
+            }
 
-            if (ReferenceEquals(rhs, null)) throw new ArgumentNullException(nameof(rhs));
+            if (ReferenceEquals(rhs, null))
+            {
+                throw new ArgumentNullException(nameof(rhs));
+            }
 
             return lhs * new Polynomial(new[] { rhs.Item1 }, new[] { rhs.Item2 });
         }
@@ -425,15 +481,32 @@ namespace Polynom
         /// <returns>True if equivalents, false otherwise</returns>
         public static bool operator ==(Polynomial lhs, Polynomial rhs)
         {
-            if (ReferenceEquals(lhs, rhs)) return true;
-            if (ReferenceEquals(rhs, null)) return false;
+            if (ReferenceEquals(lhs, rhs))
+            {
+                return true;
+            }
 
-            if (lhs.Length != rhs.Length) return false;
+            if (ReferenceEquals(rhs, null))
+            {
+                return false;
+            }
+
+            if (lhs.Length != rhs.Length)
+            {
+                return false;
+            }
 
             for (int i = 0; i < lhs.Length; i++)
             {
-                if (Math.Abs(lhs[i].Item1 - rhs[i].Item1) > Accuracy) return false;
-                if (lhs[i].Item2 != rhs[i].Item2) return false;
+                if (Math.Abs(lhs[i].Item1 - rhs[i].Item1) > Accuracy)
+                {
+                    return false;
+                }
+
+                if (lhs[i].Item2 != rhs[i].Item2)
+                {
+                    return false;
+                }
             }
 
             return true;
@@ -447,9 +520,15 @@ namespace Polynom
         /// <returns>True if equivalents, false otherwise</returns>
         public static bool operator ==(Tuple<double, int> lhs, Polynomial rhs)
         {
-            if (lhs == null) throw new ArgumentNullException(nameof(lhs));
+            if (lhs == null)
+            {
+                throw new ArgumentNullException(nameof(lhs));
+            }
 
-            if (ReferenceEquals(rhs, null)) throw new ArgumentNullException(nameof(rhs));
+            if (ReferenceEquals(rhs, null))
+            {
+                throw new ArgumentNullException(nameof(rhs));
+            }
 
             return new Polynomial(new[] { lhs.Item1 }, new[] { lhs.Item2 }) == rhs;
         }
@@ -492,23 +571,62 @@ namespace Polynom
 
         #endregion // !op_Equality and op_Inequality.
 
-        #region other
+        #region object override methods
 
         /// <summary>
-        /// Indexer by polynomial.
+        /// Converts a polynomial to a string representation.
         /// </summary>
-        /// <param name="index">element number in a polynomial</param>
-        /// <returns>A pair representing the coefficient and degree of an element.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">if ((index &lt; 0) || (index &gt; Length)) </exception>
-        public Tuple<double, int> this[int index]
+        /// <returns>string representation of a polynomial</returns>
+        public override string ToString()
         {
-            get
+            var result = new StringBuilder();
+
+            for (int i = 0; i < _coefficients.Length; i++)
             {
-                if ((index < 0) || (index > Length))
-                    throw new ArgumentOutOfRangeException(nameof(index));
-                return new Tuple<double, int>(_coefficients[index], _degrees[index]);
+                var sign = _coefficients[i] < 0 ? string.Empty : "+";
+                var element = $"{_coefficients[i]}x^{_degrees[i]}";
+
+                result.Append(sign);
+                result.Append(element);
             }
+
+            if (result[0] == '+')
+            {
+                result.Remove(0, 1);
+            }
+
+            return result.ToString();
         }
+
+        /// <summary>
+        /// Compares an object to a polynomial.
+        /// </summary>
+        /// <param name="obj">object to compare</param>
+        /// <returns>true if equals, false otherwise</returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(obj, null))
+            {
+                return false;
+            }
+
+            return obj.GetType() == this.GetType() && this.Equals((Polynomial)obj);
+        }
+
+        /// <summary>
+        /// Generates a hash code for a polynomial.
+        /// </summary>
+        /// <returns>hash code of a polynomial</returns>
+        public override int GetHashCode() => ToString().GetHashCode();
+
+        #endregion // !object override methods.
+
+        #region other
 
         /// <summary>
         /// Returns the set of pairs of a polynomial.
@@ -559,91 +677,229 @@ namespace Polynom
         /// <returns>True if equivalents, false otherwise</returns>
         public bool Equals(Polynomial other) => this == other;
 
-        public static int[] GetDegrees(IEnumerable<Tuple<double, int>> data)
-        {
-            int[] result = new int[data.Count()];
-
-            int i = 0;
-            foreach (var tuple in data)
-                result[i++] = tuple.Item2;
-
-            return result;
-        }
-
-        public static double[] GetCoefficients(IEnumerable<Tuple<double, int>> data)
-        {
-            double[] result = new double[data.Count()];
-
-            int i = 0;
-            foreach (var tuple in data)
-                result[i++] = tuple.Item1;
-
-            return result;
-        }
-
         #endregion // !other.
 
         #endregion // !public.
-
-
 
         #region private
 
         #region verify input methods
 
-        private void VerifyInput(double[] coefficients, int[] degrees)
+        private static void VerifyInput(double[] coefficients, int[] degrees)
         {
             VerifyCoefficients(coefficients);
 
             VerifyDegrees(degrees);
 
             if (coefficients.Length != degrees.Length)
+            {
                 throw new ArgumentException("The number of coefficients does not correspond to the number of degrees");
+            }
         }
 
-        private void VerifyCoefficients(double[] coefficients)
+        private static void VerifyCoefficients(double[] coefficients)
         {
             if (coefficients == null)
+            {
                 throw new ArgumentNullException(nameof(coefficients));
+            }
 
             if (coefficients.Length == 0)
+            {
                 throw new ArgumentException($"{nameof(coefficients)} length must be more than 0", nameof(coefficients));
+            }
         }
 
-        private void VerifyDegrees(int[] degrees)
+        private static void VerifyDegrees(int[] degrees)
         {
             if (degrees == null)
+            {
                 throw new ArgumentNullException(nameof(degrees));
+            }
 
             if (degrees.Length == 0)
+            {
                 throw new ArgumentException($"{nameof(degrees)} length must be more than 0", nameof(degrees));
+            }
 
             if (degrees.Any(degree => degree < 0))
+            {
                 throw new ArgumentException("degrees should be non-negative", nameof(degrees));
+            }
 
             if (HasDuplicateElements(degrees))
+            {
                 throw new ArgumentException($"{nameof(degrees)} must have no duplicate elements", nameof(degrees));
+            }
 
             if (!IsSortedInDescendingOrder(degrees))
+            {
                 throw new ArgumentException("Degrees should be sorted in descending order", nameof(degrees));
+            }
         }
 
         private static bool HasDuplicateElements(int[] array)
         {
             for (int i = 0; i < array.Length; i++)
+            {
                 for (int j = i + 1; j < array.Length; j++)
-                    if (array[i] == array[j]) return true;
+                {
+                    if (array[i] == array[j])
+                    {
+                        return true;
+                    }
+                }
+            }
+
             return false;
         }
 
         private static bool IsSortedInDescendingOrder(int[] array)
         {
             for (int i = 0; i < array.Length - 1; i++)
-                if (array[i] < array[i + 1]) return false;
+            {
+                if (array[i] < array[i + 1])
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
 
         #endregion // !verify input methods.
+
+        #region add, subtract and multiply helpers
+
+        private static Polynomial Operate(Polynomial first, Polynomial second, Func<double, double, double> operation, Func<double, double> inversion)
+        {
+            var polynomial1 = first.GetElements().ToArray();
+            var polynomial2 = second.GetElements().ToArray();
+
+            var degrees1 = GetDegrees(polynomial1);
+            var degrees2 = GetDegrees(polynomial2);
+
+            var resultPolynomial = new List<Tuple<double, int>>(degrees1.Length);
+
+            OperateIdenticalDegree(resultPolynomial, degrees1, degrees2, polynomial1, polynomial2, operation);
+
+            AddUniqueDegrees(degrees1, resultPolynomial, -2, polynomial1, null);
+            AddUniqueDegrees(degrees2, resultPolynomial, -1, polynomial2, inversion);
+
+            DescendingSortOrderByDegree(resultPolynomial);
+
+            return new Polynomial(resultPolynomial);
+        }
+
+        private static void OperateIdenticalDegree(IList<Tuple<double, int>> resultPolynomial, int[] degrees1, int[] degrees2, Tuple<double, int>[] polynomial1, Tuple<double, int>[] polynomial2, Func<double, double, double> operation)
+        {
+            for (int i = 0; i < degrees1.Length; i++)
+            {
+                for (int j = 0; j < degrees2.Length; j++)
+                {
+                    if (degrees1[i] == degrees2[j])
+                    {
+                        degrees2[j] = -1;
+                        double coefficient = operation(polynomial1[i].Item1, polynomial2[j].Item1);
+                        resultPolynomial.Add(new Tuple<double, int>(coefficient, degrees1[i]));
+                        degrees1[i] = -2;
+                        break;
+                    }
+                }
+            }
+        }
+
+        private static void AddUniqueDegrees(int[] degrees, IList<Tuple<double, int>> resultPolynomial, int sign, Tuple<double, int>[] source, Func<double, double> operation)
+        {
+            for (int i = 0; i < degrees.Length; i++)
+            {
+                if (degrees[i] != sign)
+                {
+                    resultPolynomial.Add(operation != null
+                        ? new Tuple<double, int>(operation(source[i].Item1), degrees[i])
+                        : new Tuple<double, int>(source[i].Item1, degrees[i]));
+                }
+            }
+        }
+
+        private static void DescendingSortOrderByDegree(IList<Tuple<double, int>> polynomial)
+        {
+            for (int i = 0; i < polynomial.Count - 1; i++)
+            {
+                for (int j = 0; j < polynomial.Count - 1; j++)
+                {
+                    if (polynomial[j].Item2 < polynomial[j + 1].Item2)
+                    {
+                        var temp = polynomial[j];
+                        polynomial[j] = polynomial[j + 1];
+                        polynomial[j + 1] = temp;
+                    }
+                }
+            }
+        }
+
+        private static Polynomial OperatorX(Polynomial lhs, Polynomial rhs, bool isAddition)
+        {
+            if (ReferenceEquals(lhs, null))
+            {
+                throw new ArgumentNullException(nameof(lhs));
+            }
+
+            if (ReferenceEquals(rhs, null))
+            {
+                throw new ArgumentNullException(nameof(rhs));
+            }
+
+            return isAddition ? Add(lhs, rhs) : Subtract(lhs, rhs);
+        }
+
+        private static Polynomial OperatorX(Polynomial lhs, Tuple<double, int> rhs, bool isAddition)
+        {
+            if (ReferenceEquals(lhs, null))
+            {
+                throw new ArgumentNullException(nameof(lhs));
+            }
+
+            if (ReferenceEquals(rhs, null))
+            {
+                throw new ArgumentNullException(nameof(rhs));
+            }
+
+            return isAddition ? Add(lhs, rhs) : Subtract(lhs, rhs);
+        }
+
+        private static void MultiplyOperation(IList<Tuple<double, int>> resultPolynomial, double[] coefficients1, int[] degrees1, double[] coefficients2, int[] degrees2)
+        {
+            for (int i = 0; i < coefficients1.Length; i++)
+            {
+                for (int j = 0; j < coefficients2.Length; j++)
+                {
+                    double coefficient = coefficients1[i] * coefficients2[j];
+                    int degree = degrees1[i] + degrees2[j];
+                    resultPolynomial.Add(new Tuple<double, int>(coefficient, degree));
+                }
+            }
+        }
+
+        private static void SumDuplicateDegree(IList<Tuple<double, int>> resultPolynomial)
+        {
+            for (int i = 0; i < resultPolynomial.Count; i++)
+            {
+                for (int j = i + 1; j < resultPolynomial.Count; j++)
+                {
+                    if (resultPolynomial[i].Item2 == resultPolynomial[j].Item2)
+                    {
+                        double coefficient = resultPolynomial[i].Item1 + resultPolynomial[j].Item1;
+                        int degree = resultPolynomial[i].Item2;
+                        resultPolynomial.RemoveAt(j);
+                        resultPolynomial.RemoveAt(i);
+                        resultPolynomial.Insert(i, new Tuple<double, int>(coefficient, degree));
+                    }
+                }
+            }
+        }
+
+        #endregion // !add, subtract and multiply helpers.
 
         #region other
 
@@ -664,113 +920,6 @@ namespace Polynom
         }
 
         #endregion // !other.
-
-        #region add, subtract and multiply helpers
-
-        private static Polynomial Operate(Polynomial first, Polynomial second, Func<double, double, double> operation,
-            Func<double, double> inversion)
-        {
-            var polynomial1 = first.GetElements().ToArray();
-            var polynomial2 = second.GetElements().ToArray();
-
-            var degrees1 = GetDegrees(polynomial1);
-            var degrees2 = GetDegrees(polynomial2);
-
-            var resultPolynomial = new List<Tuple<double, int>>(degrees1.Length);
-
-            OperateIdenticalDegree(resultPolynomial, degrees1, degrees2, polynomial1, polynomial2, operation);
-
-            AddUniqueDegrees(degrees1, resultPolynomial, -2, polynomial1, null);
-            AddUniqueDegrees(degrees2, resultPolynomial, -1, polynomial2, inversion);
-
-            DescendingSortOrderByDegree(resultPolynomial);
-
-            return new Polynomial(resultPolynomial);
-        }
-
-        private static void OperateIdenticalDegree(IList<Tuple<double, int>> resultPolynomial, int[] degrees1,
-            int[] degrees2, Tuple<double, int>[] polynomial1, Tuple<double, int>[] polynomial2,
-            Func<double, double, double> operation)
-        {
-            for (int i = 0; i < degrees1.Length; i++)
-                for (int j = 0; j < degrees2.Length; j++)
-                    if (degrees1[i] == degrees2[j])
-                    {
-                        degrees2[j] = -1;
-                        double coefficient = operation(polynomial1[i].Item1, polynomial2[j].Item1);
-                        resultPolynomial.Add(new Tuple<double, int>(coefficient, degrees1[i]));
-                        degrees1[i] = -2;
-                        break;
-                    }
-        }
-
-        private static void AddUniqueDegrees(int[] degrees, IList<Tuple<double, int>> resultPolynomial,
-            int sign, Tuple<double, int>[] source, Func<double, double> operation)
-        {
-            for (int i = 0; i < degrees.Length; i++)
-                if (degrees[i] != sign)
-                    resultPolynomial.Add(operation != null
-                        ? new Tuple<double, int>(operation(source[i].Item1), degrees[i])
-                        : new Tuple<double, int>(source[i].Item1, degrees[i]));
-        }
-
-        private static void DescendingSortOrderByDegree(IList<Tuple<double, int>> polynomial)
-        {
-            for (int i = 0; i < polynomial.Count - 1; i++)
-                for (int j = 0; j < polynomial.Count - 1; j++)
-                    if (polynomial[j].Item2 < polynomial[j + 1].Item2)
-                    {
-                        var temp = polynomial[j];
-                        polynomial[j] = polynomial[j + 1];
-                        polynomial[j + 1] = temp;
-                    }
-        }
-
-        private static Polynomial OperatorX(Polynomial lhs, Polynomial rhs, bool isAddition)
-        {
-            if (ReferenceEquals(lhs, null)) throw new ArgumentNullException(nameof(lhs));
-
-            if (ReferenceEquals(rhs, null)) throw new ArgumentNullException(nameof(rhs));
-
-            return isAddition ? Add(lhs, rhs) : Subtract(lhs, rhs);
-        }
-
-        private static Polynomial OperatorX(Polynomial lhs, Tuple<double, int> rhs, bool isAddition)
-        {
-            if (ReferenceEquals(lhs, null)) throw new ArgumentNullException(nameof(lhs));
-
-            if (ReferenceEquals(rhs, null)) throw new ArgumentNullException(nameof(rhs));
-
-            return isAddition ? Add(lhs, rhs) : Subtract(lhs, rhs);
-        }
-
-        private static void MultiplyOperation(IList<Tuple<double, int>> resultPolynomial, double[] coefficients1,
-            int[] degrees1, double[] coefficients2, int[] degrees2)
-        {
-            for (int i = 0; i < coefficients1.Length; i++)
-                for (int j = 0; j < coefficients2.Length; j++)
-                {
-                    double coefficient = coefficients1[i] * coefficients2[j];
-                    int degree = degrees1[i] + degrees2[j];
-                    resultPolynomial.Add(new Tuple<double, int>(coefficient, degree));
-                }
-        }
-
-        private static void SumDuplicateDegree(IList<Tuple<double, int>> resultPolynomial)
-        {
-            for (int i = 0; i < resultPolynomial.Count; i++)
-                for (int j = i + 1; j < resultPolynomial.Count; j++)
-                    if (resultPolynomial[i].Item2 == resultPolynomial[j].Item2)
-                    {
-                        double coefficient = resultPolynomial[i].Item1 + resultPolynomial[j].Item1;
-                        int degree = resultPolynomial[i].Item2;
-                        resultPolynomial.RemoveAt(j);
-                        resultPolynomial.RemoveAt(i);
-                        resultPolynomial.Insert(i, new Tuple<double, int>(coefficient, degree));
-                    }
-        }
-
-        #endregion // !add, subtract and multiply helpers.
 
         #endregion // !private.
     }
