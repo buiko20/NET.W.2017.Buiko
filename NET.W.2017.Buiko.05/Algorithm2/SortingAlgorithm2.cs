@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Algorithm
+namespace Algorithm2
 {
-    public class SortAlgotithm
+    public class SortingAlgorithm2
     {
+        // The implementation of the sorting method is closed on the interface.
         #region public methods
 
         /// <summary>
@@ -13,14 +14,6 @@ namespace Algorithm
         /// <param name="jaggedArray">source jagged array</param>
         /// <param name="comparator">sorting criterion</param>
         public static void Sort(int[][] jaggedArray, IComparer<int[]> comparator) =>
-            BubbleSort(jaggedArray, comparator.Compare);
-
-        /// <summary>
-        /// Sorts the jagged array using the passed comparator.
-        /// </summary>
-        /// <param name="jaggedArray">source jagged array</param>
-        /// <param name="comparator">sorting criterion</param>
-        public static void Sort(int[][] jaggedArray, Comparison<int[]> comparator) =>
             BubbleSort(jaggedArray, comparator);
 
         /// <summary>
@@ -28,14 +21,22 @@ namespace Algorithm
         /// </summary>
         /// <param name="jaggedArray">source jagged array</param>
         /// <param name="comparator">sorting criterion</param>
-        public static void Sort(int[][] jaggedArray, Func<int[], int[], int> comparator) =>
-            BubbleSort(jaggedArray, new Comparison<int[]>(comparator));
+        public static void Sort(int[][] jaggedArray, Comparison<int[]> comparator) =>
+            BubbleSort(jaggedArray, new InterfaceAdapter(comparator));
+
+        /// <summary>
+        /// Sorts the jagged array using the passed comparator.
+        /// </summary>
+        /// <param name="jaggedArray">source jagged array</param>
+        /// <param name="comparator">sorting criterion</param>
+       // public static void Sort(int[][] jaggedArray, Func<int[], int[], int> comparator) =>
+       //     BubbleSort(jaggedArray, new InterfaceAdapter(new Comparison<int[]>(comparator)));
 
         #endregion // !public methods.
 
         #region private methods
 
-        private static void BubbleSort(int[][] jaggedArray, Comparison<int[]> comparator)
+        private static void BubbleSort(int[][] jaggedArray, IComparer<int[]> comparator)
         {
             VerifyInput(jaggedArray, comparator);
 
@@ -43,7 +44,7 @@ namespace Algorithm
             {
                 for (int j = 0; j < jaggedArray.Length - 1; j++)
                 {
-                    if (comparator(jaggedArray[j], jaggedArray[j + 1]) > 0)
+                    if (comparator.Compare(jaggedArray[j], jaggedArray[j + 1]) > 0)
                     {
                         Swap(ref jaggedArray[j], ref jaggedArray[j + 1]);
                     }
@@ -58,7 +59,7 @@ namespace Algorithm
             y = temp;
         }
 
-        private static void VerifyInput(int[][] jaggedArray, Comparison<int[]> comparator)
+        private static void VerifyInput(int[][] jaggedArray, IComparer<int[]> comparator)
         {
             if (jaggedArray == null)
             {

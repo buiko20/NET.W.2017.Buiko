@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Algorithm.NUnitTests
 {
     [TestFixture]
-    public class SortAlgorithmTests
+    public class SortingAlgorithmTests
     {
         #region Sum sort tests
 
@@ -18,7 +18,7 @@ namespace Algorithm.NUnitTests
                 var array = TestHelper.GenerateJaggedArray(Guid.NewGuid().GetHashCode());
               //// TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
 
-                SortAlgotithm.Sort(array, new AscendingSumComparator());
+                SortingAlgorithm.Sort(array, new AscendingSumComparator());
              //// TestHelper.Track(array, $"Sorted array {j + 1}:");
 
                 Assert.IsTrue(TestHelper.IsXscendingOrder(array, arr => arr.Sum(), (a, b) => a > b));
@@ -33,7 +33,7 @@ namespace Algorithm.NUnitTests
                 var array = TestHelper.GenerateJaggedArray(Guid.NewGuid().GetHashCode());
                 //// TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
 
-                SortAlgotithm.Sort(array, new DescendingSumComparator());
+                SortingAlgorithm.Sort(array, new DescendingSumComparator());
                 //// TestHelper.Track(array, $"Sorted array {j + 1}:");
 
                 Assert.IsTrue(TestHelper.IsXscendingOrder(array, arr => arr.Sum(), (a, b) => a < b));
@@ -52,7 +52,7 @@ namespace Algorithm.NUnitTests
                 var array = TestHelper.GenerateJaggedArray(Guid.NewGuid().GetHashCode());
                 TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
 
-                SortAlgotithm.Sort(array, new AscendingMaxElementComparator());
+                SortingAlgorithm.Sort(array, new AscendingMaxElementComparator());
                 TestHelper.Track(array, $"Sorted array {j + 1}:");
 
                 Assert.IsTrue(TestHelper.IsXscendingOrder(array, arr => arr.Max(), (a, b) => a > b));
@@ -67,7 +67,7 @@ namespace Algorithm.NUnitTests
                 var array = TestHelper.GenerateJaggedArray(Guid.NewGuid().GetHashCode());
                 //// TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
 
-                SortAlgotithm.Sort(array, new DescendingMaxElementComparator());
+                SortingAlgorithm.Sort(array, new DescendingMaxElementComparator());
                 //// TestHelper.Track(array, $"Sorted array {j + 1}:");
 
                 Assert.IsTrue(TestHelper.IsXscendingOrder(array, arr => arr.Max(), (a, b) => a < b));
@@ -86,7 +86,7 @@ namespace Algorithm.NUnitTests
                 var array = TestHelper.GenerateJaggedArray(Guid.NewGuid().GetHashCode());
                 //// TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
 
-                SortAlgotithm.Sort(array, new AscendingMinElementComparator());
+                SortingAlgorithm.Sort(array, new AscendingMinElementComparator());
                 //// TestHelper.Track(array, $"Sorted array {j + 1}:");
 
                 Assert.IsTrue(TestHelper.IsXscendingOrder(array, arr => arr.Min(), (a, b) => a > b));
@@ -101,7 +101,7 @@ namespace Algorithm.NUnitTests
                 var array = TestHelper.GenerateJaggedArray(Guid.NewGuid().GetHashCode());
                 //// TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
 
-                SortAlgotithm.Sort(array, new DescendingMinElementComparator());
+                SortingAlgorithm.Sort(array, new DescendingMinElementComparator());
                 //// TestHelper.Track(array, $"Sorted array {j + 1}:");
 
                 Assert.IsTrue(TestHelper.IsXscendingOrder(array, arr => arr.Min(), (a, b) => a < b));

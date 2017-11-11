@@ -1,0 +1,5 @@
+D:\epam\homework_git\NET.W.2017.Buiko.05\Algorithm2\bin\Debug\Algorithm2.dll
+D:\epam\homework_git\NET.W.2017.Buiko.05\Algorithm2\bin\Debug\Algorithm2.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.05\Algorithm2\obj\Debug\Algorithm2.csprojResolveAssemblyReference.cache
+D:\epam\homework_git\NET.W.2017.Buiko.05\Algorithm2\obj\Debug\Algorithm2.dll
+D:\epam\homework_git\NET.W.2017.Buiko.05\Algorithm2\obj\Debug\Algorithm2.pdb

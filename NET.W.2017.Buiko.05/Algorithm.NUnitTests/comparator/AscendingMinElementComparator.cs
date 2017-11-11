@@ -5,6 +5,7 @@ namespace Algorithm.NUnitTests.Comparator
 {
     internal class AscendingMinElementComparator : IComparer<int[]>
     {
+        /// <inheritdoc />
         /// <summary>
         /// Sorts in ascending order of the min row items.
         /// </summary>

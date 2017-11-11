@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polynom", "Polynom\Polynom.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polynom.NUnitTests", "Polynom.NUnitTests\Polynom.NUnitTests.csproj", "{27ABC408-B2C7-4C16-BB67-4BA84366EE83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algorithm2", "Algorithm2\Algorithm2.csproj", "{354EBD4B-42B6-4557-8F6B-DB7D0AFA4466}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{27ABC408-B2C7-4C16-BB67-4BA84366EE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27ABC408-B2C7-4C16-BB67-4BA84366EE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27ABC408-B2C7-4C16-BB67-4BA84366EE83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{354EBD4B-42B6-4557-8F6B-DB7D0AFA4466}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{354EBD4B-42B6-4557-8F6B-DB7D0AFA4466}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{354EBD4B-42B6-4557-8F6B-DB7D0AFA4466}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{354EBD4B-42B6-4557-8F6B-DB7D0AFA4466}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

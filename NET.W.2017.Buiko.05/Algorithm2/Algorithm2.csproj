@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D94ACB26-A534-4B0B-9B8B-64EE87B6DCDD}</ProjectGuid>
+    <ProjectGuid>{354EBD4B-42B6-4557-8F6B-DB7D0AFA4466}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Algorithm.NUnitTests</RootNamespace>
-    <AssemblyName>Algorithm.NUnitTests</AssemblyName>
+    <RootNamespace>Algorithm2</RootNamespace>
+    <AssemblyName>Algorithm2</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.8.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.8.1\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,29 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comparator\AscendingMaxElementComparator.cs" />
-    <Compile Include="Comparator\AscendingMinElementComparator.cs" />
-    <Compile Include="Comparator\AscendingSumComparator.cs" />
-    <Compile Include="Comparator\DescendingMaxElementComparator.cs" />
-    <Compile Include="Comparator\DescendingMinElementComparator.cs" />
-    <Compile Include="Comparator\DescendingSumComparator.cs" />
-    <Compile Include="SortingAlgorithm2Tests.cs" />
-    <Compile Include="SortingAlgorithmTests.cs" />
+    <Compile Include="InterfaceAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Algorithm2\Algorithm2.csproj">
-      <Project>{354ebd4b-42b6-4557-8f6b-db7d0afa4466}</Project>
-      <Name>Algorithm2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Algorithm\Algorithm.csproj">
-      <Project>{12214b07-6164-4a96-a189-042887df999f}</Project>
-      <Name>Algorithm</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="SortingAlgorithm2.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

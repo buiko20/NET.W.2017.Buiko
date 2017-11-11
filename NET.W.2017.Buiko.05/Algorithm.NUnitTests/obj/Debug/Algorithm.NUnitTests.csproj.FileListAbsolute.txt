@@ -7,3 +7,5 @@ D:\epam\homework_git\NET.W.2017.Buiko.05\Algorithm.NUnitTests\bin\Debug\Algorith
 D:\epam\homework_git\NET.W.2017.Buiko.05\Algorithm.NUnitTests\bin\Debug\nunit.framework.xml
 D:\epam\homework_git\NET.W.2017.Buiko.05\Algorithm.NUnitTests\obj\Debug\Algorithm.NUnitTests.dll
 D:\epam\homework_git\NET.W.2017.Buiko.05\Algorithm.NUnitTests\obj\Debug\Algorithm.NUnitTests.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.05\Algorithm.NUnitTests\bin\Debug\Algorithm2.dll
+D:\epam\homework_git\NET.W.2017.Buiko.05\Algorithm.NUnitTests\bin\Debug\Algorithm2.pdb
