@@ -1,0 +1,9 @@
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\obj\Debug\Logic.NUnitTests.csprojResolveAssemblyReference.cache
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\bin\Debug\Logic.NUnitTests.dll
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\bin\Debug\Logic.NUnitTests.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\bin\Debug\Logic.dll
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\bin\Debug\nunit.framework.dll
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\bin\Debug\Logic.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\bin\Debug\nunit.framework.xml
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\obj\Debug\Logic.NUnitTests.dll
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\obj\Debug\Logic.NUnitTests.pdb

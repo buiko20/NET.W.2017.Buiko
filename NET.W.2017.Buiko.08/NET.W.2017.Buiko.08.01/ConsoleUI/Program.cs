@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Logic.Domain;
 using Logic.Service;
@@ -32,17 +33,17 @@ namespace ConsoleUI
             {
                 Console.Error.WriteLine(e.Message);
             }
-
+            
             Console.ReadLine();
         }
 
         private static void FileInitTests(IBookService bookService)
         {
-            var book1 = new Book("978-3-16-148410-0", "author1", "name1", "publishing house1", "09.11.2017 22:40:51", 1, 1);
-            var book2 = new Book("978-3-16-148411-1", "author2", "name2", "publishing house2", "09.11.2017 22:40:52", 2, 2);
-            var book3 = new Book("978-3-16-148412-2", "author3", "name3", "publishing house3", "09.11.2017 22:40:53", 3, 3);
-            var book4 = new Book("978-3-16-148413-3", "author4", "name4", "publishing house4", "09.11.2017 22:40:54", 4, 4);
-            var book5 = new Book("978-3-16-148414-4", "author5", "name5", "publishing house5", "09.11.2017 22:40:55", 5, 5);
+            var book1 = new Book("978-3-16-148411-1", "author1", "name1", "publishing house1", "2017", 1, 1m);
+            var book2 = new Book("978-3-16-148411-1", "author2", "name2", "publishing house2", "2017", 2, 2m);
+            var book3 = new Book("978-3-16-148412-2", "author3", "name3", "publishing house3", "2017", 3, 3m);
+            var book4 = new Book("978-3-16-148413-3", "author4", "name4", "publishing house4", "2017", 4, 4m);
+            var book5 = new Book("978-3-16-148414-4", "author5", "name5", "publishing house5", "2017", 5, 5m);
 
             bookService.AddBook(book4, book5, book1, book2, book3);
 

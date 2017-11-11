@@ -190,7 +190,6 @@ namespace Logic.AccountRepository.Implementation
             using (var binaryWriter = new BinaryWriter(File.Open(_dataFilePath, FileMode.Append, FileAccess.Write, FileShare.None), Encoding.UTF8, false))
             {
                 WriteAccountToFile(binaryWriter, account);
-                binaryWriter.Flush();
             }
         }
 
@@ -202,8 +201,6 @@ namespace Logic.AccountRepository.Implementation
                 {
                     WriteAccountToFile(binaryWriter, account);
                 }
-
-                binaryWriter.Flush();
             }
         }
 

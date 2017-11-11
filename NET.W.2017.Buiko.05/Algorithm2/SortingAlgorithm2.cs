@@ -29,8 +29,8 @@ namespace Algorithm2
         /// </summary>
         /// <param name="jaggedArray">source jagged array</param>
         /// <param name="comparator">sorting criterion</param>
-       // public static void Sort(int[][] jaggedArray, Func<int[], int[], int> comparator) =>
-       //     BubbleSort(jaggedArray, new InterfaceAdapter(new Comparison<int[]>(comparator)));
+        //// public static void Sort(int[][] jaggedArray, Func<int[], int[], int> comparator) =>
+        ////     BubbleSort(jaggedArray, new InterfaceAdapter(new Comparison<int[]>(comparator)));
 
         #endregion // !public methods.
 

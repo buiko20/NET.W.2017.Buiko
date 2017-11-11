@@ -78,7 +78,7 @@ namespace Logic.Storage.Implementation
             var publishingHouse = binaryReader.ReadString();
             var publicationYear = binaryReader.ReadString();
             var pageNumber = binaryReader.ReadInt32();
-            var price = binaryReader.ReadInt32();
+            var price = binaryReader.ReadDecimal();
 
             return new Book(isbn, author, name, publishingHouse, publicationYear, pageNumber, price);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Logic.Domain
@@ -6,7 +7,7 @@ namespace Logic.Domain
     /// <summary>
     /// Class representing the book.
     /// </summary>
-    public class Book : IComparable, IComparable<Book>, IEquatable<Book>
+    public class Book : IComparable, IComparable<Book>, IEquatable<Book>, IFormattable
     {
         #region private fields
 
@@ -16,7 +17,7 @@ namespace Logic.Domain
         private string _publishingHouse;
         private string _publicationYear;
         private int _pageNumber;
-        private int _price;
+        private decimal _price;
 
         #endregion // !private fields.
 
@@ -34,7 +35,7 @@ namespace Logic.Domain
         /// <param name="publicationYear">year of book publishing</param>
         /// <param name="pageNumber">number of pages in the book</param>
         /// <param name="price">book price</param>
-        public Book(string isbn, string author, string name, string publishingHouse, string publicationYear, int pageNumber, int price)
+        public Book(string isbn, string author, string name, string publishingHouse, string publicationYear, int pageNumber, decimal price)
         {
             Isbn = isbn;
             Author = author;
@@ -69,10 +70,13 @@ namespace Logic.Domain
                     throw new ArgumentException(nameof(Isbn));
                 }
 
-                var regEx = new Regex("(ISBN[-]*(1[03])*[ ]*(: ){0,1})*(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})");
-                if (!regEx.IsMatch(value))
+                const string isbn13Pattern = "^(?:ISBN(?:-13)?:? )?(?=[0-9]{13}$|" +
+                                             "(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)97[89]" +
+                                             "[- ]?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9]$";
+                var regularExpression = new Regex(isbn13Pattern);
+                if (!regularExpression.IsMatch(value))
                 {
-                    throw new ArgumentException("Invalid isbn format", nameof(value));
+                    throw new ArgumentException("Invalid isbn format", nameof(Isbn));
                 }
 
                 _isbn = value;
@@ -174,11 +178,11 @@ namespace Logic.Domain
                 try
                 {
                     // Should I check the date range?
-                    var date = DateTime.Parse(value);
+                    var date = int.Parse(value);
                 }
                 catch (FormatException)
                 {
-                    throw new ArgumentException("Invalid data", nameof(value));
+                    throw new ArgumentException("Invalid data", nameof(PublicationYear));
                 }
 
                 _publicationYear = value;
@@ -215,7 +219,7 @@ namespace Logic.Domain
         /// <exception cref="ArgumentException">
         /// Thrown when <paramref name="value"/> is less than or equal to 0.
         /// </exception>
-        public int Price
+        public decimal Price
         {
             get
             {
@@ -242,7 +246,7 @@ namespace Logic.Domain
         /// </summary>
         /// <returns>String representation of a book.</returns>
         public override string ToString() =>
-            $"{Isbn} {Author} {Name} {PublishingHouse} {PublicationYear} {PageNumber} {Price}";
+            this.ToString("G", null);
 
         /// <summary>
         /// Verifies the equivalence of the current book and the <paramref name="obj"/>.
@@ -319,6 +323,56 @@ namespace Logic.Domain
         }
 
         #endregion // !interfaces implementation.
+
+        #region format
+
+        /// <summary>
+        /// Returns a string representation of a book according to the <paramref name="format"/>.
+        /// </summary>
+        /// <param name="format">string representation format</param>
+        /// <returns>Book string representation.</returns>
+        /// <exception cref="FormatException">Thrown when <paramref name="format"/> is not supported.</exception>
+        public string ToString(string format) =>
+            this.ToString(format, null);
+
+        /// <inheritdoc />
+        /// <exception cref="FormatException">Thrown when <paramref name="format"/> is not supported.</exception>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            if (string.IsNullOrWhiteSpace(format))
+            {
+                format = "G";
+            }
+
+            if (ReferenceEquals(formatProvider, null))
+            {
+                formatProvider = CultureInfo.CurrentCulture;
+            }
+
+            switch (format.Trim().ToUpperInvariant())
+            {
+                case "G":
+                    return $"ISBN 13: {Isbn} {Author} {Name} {PublishingHouse} " +
+                           $"{PublicationYear.ToString(formatProvider)} " +
+                           $"{PageNumber.ToString(formatProvider)} " +
+                           $"{string.Format(formatProvider, "{0:C0}", Price)}";
+                case "AN":
+                    return $"{Author} {Name}";
+                case "ANH":
+                    return $"{Author} {Name} {PublishingHouse}";
+                case "IANHYP":
+                    return $"ISBN 13: {Isbn} {Author} {Name} {PublishingHouse} " +
+                           $"{PublicationYear.ToString(formatProvider)} " +
+                           $"{PageNumber.ToString(formatProvider)}";
+                case "ANHY":
+                    return $"{Author} {Name} {PublishingHouse} " +
+                           $"{PublicationYear.ToString(formatProvider)}";
+                default:
+                    throw new FormatException($"The {format} format string is not supported.");
+            }
+        }
+
+        #endregion // !format.
 
         #endregion // !public.
     }
