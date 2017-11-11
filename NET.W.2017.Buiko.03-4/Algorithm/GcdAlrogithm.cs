@@ -5,22 +5,20 @@ namespace Algorithm
 {
     public static class GcdAlrogithm
     {
-        #region public methods
+        #region public
 
-        #region public methods EuclideanAlgorithm
+        #region EuclideanAlgorithm
+
+        #region сalculation of the algorithm
+
         /// <summary>
         /// The Euclidean algorithm for finding the greatest common divisor.
         /// </summary>
         /// <param name="number1">first number</param>
         /// <param name="number2">second number</param>
         /// <returns>Greatest common divisor of 2 numbers</returns>
-        public static int EuclideanAlgorithm(int number1, int number2)
-        {
-            number1 = Math.Abs(number1);
-            number2 = Math.Abs(number2);
-
-            return GcdEuclidean(number1, number2);
-        }
+        public static int EuclideanAlgorithm(int number1, int number2) =>
+            GcdEuclidean(Math.Abs(number1), Math.Abs(number2));
 
         /// <summary>
         /// The Euclidean algorithm for finding the greatest common divisor.
@@ -31,13 +29,9 @@ namespace Algorithm
         /// <returns>Greatest common divisor of 3 numbers</returns>
         public static int EuclideanAlgorithm(int number1, int number2, int number3)
         {
-            number1 = Math.Abs(number1);
-            number2 = Math.Abs(number2);
-            number3 = Math.Abs(number3);
+            int gcd = GcdEuclidean(Math.Abs(number1), Math.Abs(number2));
 
-            int gcd = GcdEuclidean(number1, number2);
-
-            return GcdEuclidean(gcd, number3);
+            return GcdEuclidean(gcd, Math.Abs(number3));
         }
 
         /// <summary>
@@ -50,15 +44,10 @@ namespace Algorithm
         /// <returns>Greatest common divisor of 4 numbers</returns>
         public static int EuclideanAlgorithm(int number1, int number2, int number3, int number4)
         {
-            number1 = Math.Abs(number1);
-            number2 = Math.Abs(number2);
-            number3 = Math.Abs(number3);
-            number4 = Math.Abs(number4);
+            int gcd = GcdEuclidean(Math.Abs(number1), Math.Abs(number2));
+            gcd = GcdEuclidean(gcd, Math.Abs(number3));
 
-            int gcd = GcdEuclidean(number1, number2);
-            gcd = GcdEuclidean(gcd, number3);
-
-            return GcdEuclidean(gcd, number4);
+            return GcdEuclidean(gcd, Math.Abs(number4));
         }
 
         /// <summary>
@@ -68,7 +57,7 @@ namespace Algorithm
         /// <returns>Greatest common divisor of all numbers</returns>
         public static int EuclideanAlgorithm(params int[] numbers)
         {
-            if (numbers == null)
+            if (ReferenceEquals(numbers, null))
             {
                 throw new ArgumentNullException(nameof(numbers));
             }
@@ -83,6 +72,10 @@ namespace Algorithm
             return GcdEuclidean(numbers);
         }
 
+        #endregion // !сalculation of the algorithm.
+
+        #region calculating the execution time of the algorithm
+
         /// <summary>
         /// The Euclidean algorithm for finding the greatest common divisor.
         /// </summary>
@@ -90,18 +83,8 @@ namespace Algorithm
         /// <param name="number1">first number</param>
         /// <param name="number2">second number</param>
         /// <returns>Greatest common divisor of 2 numbers</returns>
-        public static int EuclideanAlgorithm(out TimeSpan operationTime, int number1, int number2)
-        {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
-            int result = EuclideanAlgorithm(number1, number2);
-
-            watch.Stop();
-            operationTime = watch.Elapsed;
-
-            return result;
-        }
+        public static int EuclideanAlgorithm(out TimeSpan operationTime, int number1, int number2) =>
+            Compute(() => EuclideanAlgorithm(number1, number2), out operationTime);
 
         /// <summary>
         /// The Euclidean algorithm for finding the greatest common divisor.
@@ -111,18 +94,8 @@ namespace Algorithm
         /// <param name="number2">second number</param>
         /// <param name="number3">third number</param>
         /// <returns>Greatest common divisor of 3 numbers</returns>
-        public static int EuclideanAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3)
-        {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
-            int result = EuclideanAlgorithm(number1, number2, number3);
-
-            watch.Stop();
-            operationTime = watch.Elapsed;
-
-            return result;
-        }
+        public static int EuclideanAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3) =>
+            Compute(() => EuclideanAlgorithm(number1, number2, number3), out operationTime);
 
         /// <summary>
         /// The Euclidean algorithm for finding the greatest common divisor.
@@ -133,18 +106,8 @@ namespace Algorithm
         /// <param name="number3">third number</param>
         /// <param name="number4">fourth number</param>
         /// <returns>Greatest common divisor of 4 numbers</returns>
-        public static int EuclideanAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3, int number4)
-        {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
-            int result = EuclideanAlgorithm(number1, number2, number3, number4);
-
-            watch.Stop();
-            operationTime = watch.Elapsed;
-
-            return result;
-        }
+        public static int EuclideanAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3, int number4) =>
+            Compute(() => EuclideanAlgorithm(number1, number2, number3, number4), out operationTime);
 
         /// <summary>
         /// The Euclidean algorithm for finding the greatest common divisor.
@@ -152,34 +115,25 @@ namespace Algorithm
         /// <param name="operationTime">method execution time</param>
         /// <param name="numbers">array of numbers</param>
         /// <returns>Greatest common divisor of all numbers</returns>
-        public static int EuclideanAlgorithm(out TimeSpan operationTime, params int[] numbers)
-        {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
+        public static int EuclideanAlgorithm(out TimeSpan operationTime, params int[] numbers) =>
+            Compute(() => EuclideanAlgorithm(numbers), out operationTime);
 
-            int result = EuclideanAlgorithm(numbers);
+        #endregion // !calculating the execution time of the algorithm.
 
-            watch.Stop();
-            operationTime = watch.Elapsed;
+        #endregion // !EuclideanAlgorithm.
 
-            return result;
-        }
-        #endregion
+        #region SteinAlgorithm
 
-        #region public methods SteinAlgorithm
+        #region сalculation of the algorithm
+
         /// <summary>
         /// The Stein algorithm for finding the greatest common divisor.
         /// </summary>
         /// <param name="number1">first number</param>
         /// <param name="number2">second number</param>
         /// <returns>Greatest common divisor of 2 numbers</returns>
-        public static int SteinAlgorithm(int number1, int number2)
-        {
-            number1 = Math.Abs(number1);
-            number2 = Math.Abs(number2);
-
-            return GcdStein(number1, number2);
-        }
+        public static int SteinAlgorithm(int number1, int number2) =>
+            GcdStein(Math.Abs(number1), Math.Abs(number2));
 
         /// <summary>
         /// The Stein algorithm for finding the greatest common divisor.
@@ -190,13 +144,9 @@ namespace Algorithm
         /// <returns>Greatest common divisor of 3 numbers</returns>
         public static int SteinAlgorithm(int number1, int number2, int number3)
         {
-            number1 = Math.Abs(number1);
-            number2 = Math.Abs(number2);
-            number3 = Math.Abs(number3);
+            int gcd = GcdStein(Math.Abs(number1), Math.Abs(number2));
 
-            int gcd = GcdStein(number1, number2);
-
-            return GcdStein(gcd, number3);
+            return GcdStein(gcd, Math.Abs(number3));
         }
 
         /// <summary>
@@ -209,15 +159,10 @@ namespace Algorithm
         /// <returns>Greatest common divisor of 4 numbers</returns>
         public static int SteinAlgorithm(int number1, int number2, int number3, int number4)
         {
-            number1 = Math.Abs(number1);
-            number2 = Math.Abs(number2);
-            number3 = Math.Abs(number3);
-            number4 = Math.Abs(number4);
+            int gcd = GcdStein(Math.Abs(number1), Math.Abs(number2));
+            gcd = GcdStein(gcd, Math.Abs(number3));
 
-            int gcd = GcdStein(number1, number2);
-            gcd = GcdStein(gcd, number3);
-
-            return GcdStein(gcd, number4);
+            return GcdStein(gcd, Math.Abs(number4));
         }
 
         /// <summary>
@@ -242,6 +187,10 @@ namespace Algorithm
             return GcdStein(numbers);
         }
 
+        #endregion // !сalculation of the algorithm.
+
+        #region calculating the execution time of the algorithm
+
         /// <summary>
         /// The Stein algorithm for finding the greatest common divisor.
         /// </summary>
@@ -249,18 +198,8 @@ namespace Algorithm
         /// <param name="number1">first number</param>
         /// <param name="number2">second number</param>
         /// <returns>Greatest common divisor of 2 numbers</returns>
-        public static int SteinAlgorithm(out TimeSpan operationTime, int number1, int number2)
-        {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
-            int result = SteinAlgorithm(number1, number2);
-
-            watch.Stop();
-            operationTime = watch.Elapsed;
-
-            return result;
-        }
+        public static int SteinAlgorithm(out TimeSpan operationTime, int number1, int number2) =>
+            Compute(() => SteinAlgorithm(number1, number2), out operationTime);
 
         /// <summary>
         /// The Stein algorithm for finding the greatest common divisor.
@@ -270,18 +209,8 @@ namespace Algorithm
         /// <param name="number2">second number</param>
         /// <param name="number3">third number</param>
         /// <returns>Greatest common divisor of 3 numbers</returns>
-        public static int SteinAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3)
-        {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
-            int result = SteinAlgorithm(number1, number2, number3);
-
-            watch.Stop();
-            operationTime = watch.Elapsed;
-
-            return result;
-        }
+        public static int SteinAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3) =>
+            Compute(() => SteinAlgorithm(number1, number2, number3), out operationTime);
 
         /// <summary>
         /// The Stein algorithm for finding the greatest common divisor.
@@ -292,18 +221,8 @@ namespace Algorithm
         /// <param name="number3">third number</param>
         /// <param name="number4">fourth number</param>
         /// <returns>Greatest common divisor of 4 numbers</returns>
-        public static int SteinAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3, int number4)
-        {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
-            int result = SteinAlgorithm(number1, number2, number3, number4);
-
-            watch.Stop();
-            operationTime = watch.Elapsed;
-
-            return result;
-        }
+        public static int SteinAlgorithm(out TimeSpan operationTime, int number1, int number2, int number3, int number4) =>
+            Compute(() => SteinAlgorithm(number1, number2, number3, number4), out operationTime);
 
         /// <summary>
         /// The Stein algorithm for finding the greatest common divisor.
@@ -311,23 +230,17 @@ namespace Algorithm
         /// <param name="operationTime">method execution time</param>
         /// <param name="numbers">array of numbers</param>
         /// <returns>Greatest common divisor of all numbers</returns>
-        public static int SteinAlgorithm(out TimeSpan operationTime, params int[] numbers)
-        {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
+        public static int SteinAlgorithm(out TimeSpan operationTime, params int[] numbers) =>
+            Compute(() => SteinAlgorithm(numbers), out operationTime);
 
-            int result = SteinAlgorithm(numbers);
+        #endregion // !calculating the execution time of the algorithm.
 
-            watch.Stop();
-            operationTime = watch.Elapsed;
+        #endregion // !SteinAlgorithm.
 
-            return result;
-        }
-        #endregion
+        #endregion // !public.
 
-        #endregion
+        #region private
 
-        #region private methods
         private static int GcdEuclidean(int number1, int number2)
         {
             if ((number1 == 0) && (number2 != 0))
@@ -437,11 +350,22 @@ namespace Algorithm
             return result;
         }
 
-        private static bool IsEven(int number)
+        private static bool IsEven(int number) =>
+            (number % 2) == 0;
+
+        private static int Compute(Func<int> operation, out TimeSpan operationTime)
         {
-            return (number % 2) == 0;
+            var watch = new Stopwatch();
+            watch.Start();
+
+            int result = operation();
+
+            watch.Stop();
+            operationTime = watch.Elapsed;
+            
+            return result;
         }
 
-        #endregion
+        #endregion // !private.
     }
 }

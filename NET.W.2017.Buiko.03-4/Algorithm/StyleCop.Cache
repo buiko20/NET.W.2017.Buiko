@@ -23,11 +23,11 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <sourcecode name="GcdAlrogithm.cs" parser="StyleCop.CSharp.CsParser">
+  <sourcecode name="DoubleExtension.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2017.11.09 14:47:57.487</styleCop>
       <settingsFile>2017.11.09 14:47:57.469</settingsFile>
-      <sourceFile>2017.11.09 15:29:41.952</sourceFile>
+      <sourceFile>2017.11.09 15:30:08.729</sourceFile>
       <parser>2017.11.09 14:47:57.487</parser>
       <StyleCop.CSharp.DocumentationRules>2017.11.09 14:47:57.487</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>-2073312677</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -49,11 +49,11 @@
   <project key="980583480">
     <configuration>DEBUG;TRACE</configuration>
   </project>
-  <sourcecode name="DoubleExtension.cs" parser="StyleCop.CSharp.CsParser">
+  <sourcecode name="GcdAlrogithm.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2017.11.09 14:47:57.487</styleCop>
       <settingsFile>2017.11.09 14:47:57.469</settingsFile>
-      <sourceFile>2017.11.09 15:30:08.729</sourceFile>
+      <sourceFile>2017.11.11 15:12:25.605</sourceFile>
       <parser>2017.11.09 14:47:57.487</parser>
       <StyleCop.CSharp.DocumentationRules>2017.11.09 14:47:57.487</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>-2073312677</StyleCop.CSharp.DocumentationRules.FilesHashCode>
