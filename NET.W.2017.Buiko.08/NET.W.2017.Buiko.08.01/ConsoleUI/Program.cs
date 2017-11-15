@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
+using Logger;
 using Logic.Domain;
 using Logic.Service;
 using Logic.Storage;
@@ -12,6 +12,7 @@ namespace ConsoleUI
     {
         private static void Main()
         {
+            var logger = LoggerFactory.GetNLogger("ConsoleUI.Program");
             try
             {
                 // Seam.
@@ -31,7 +32,7 @@ namespace ConsoleUI
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine(e.Message);
+                logger.Error(e, e.Message);
             }
             
             Console.ReadLine();
@@ -45,6 +46,7 @@ namespace ConsoleUI
             var book4 = new Book("978-3-16-148413-3", "author4", "name4", "publishing house4", "2017", 4, 4m);
             var book5 = new Book("978-3-16-148414-4", "author5", "name5", "publishing house5", "2017", 5, 5m);
 
+            //// bookService.RemoveBook((Book)null);
             bookService.AddBook(book4, book5, book1, book2, book3);
 
             bookService.Sort();

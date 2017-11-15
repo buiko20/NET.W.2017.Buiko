@@ -26,6 +26,7 @@ namespace Logic.NUnitTests
         public string BookToStringTests(string format)
         {
             var book = new Book("978-0-7356-6745-7", "Jeffrey Richter", "CLR via C#", "Microsoft Press", "2012", 826, 59.99m);
+
             return book.ToString(format);
         }
 
@@ -35,6 +36,7 @@ namespace Logic.NUnitTests
         public void BookToStringFormatExceptionTests(string format)
         {
             var book = new Book("978-0-7356-6745-7", "Jeffrey Richter", "CLR via C#", "Microsoft Press", "2012", 826, 59.99m);
+
             Assert.Throws<FormatException>(() => book.ToString(format));
         }
 
@@ -47,6 +49,7 @@ namespace Logic.NUnitTests
         public string BookToStringCustomFormatterTests(string format)
         {
             var book = new Book("978-0-7356-6745-7", "Jeffrey Richter", "CLR via C#", "Microsoft Press", "2012", 826, 59.99m);
+
             return string.Format(new CustomBookFormatter(), format, book);
         }
 
@@ -55,6 +58,7 @@ namespace Logic.NUnitTests
         public void BookToStringCustomFormatterFormatExceptionTests(string format)
         {
             var book = new Book("978-0-7356-6745-7", "Jeffrey Richter", "CLR via C#", "Microsoft Press", "2012", 826, 59.99m);
+
             Assert.Throws<FormatException>(() => string.Format(new CustomBookFormatter(), format, book));
         }
 

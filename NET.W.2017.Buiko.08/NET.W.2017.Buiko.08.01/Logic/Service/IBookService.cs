@@ -91,13 +91,13 @@ namespace Logic.Service
         void Sort();
 
         /// <summary>
-        /// Sorts all books in the storage using <paramref name="comparator"/>.
+        /// Sorts all books in the storage using <paramref name="comparer"/>.
         /// </summary>
-        /// <param name="comparator">criterion for sorting books.</param>
+        /// <param name="comparer">criterion for sorting books.</param>
         /// <exception cref="ServiceException">
         /// Thrown when an error occurred in service.
         /// </exception>
-        void Sort(IComparer<Book> comparator);
+        void Sort(IComparer<Book> comparer);
 
         /// <summary>
         /// Save changes.

@@ -40,7 +40,8 @@ namespace Logic.Storage.Implementation
         public IEnumerable<Book> GetBooks()
         {
             var books = new List<Book>();
-            using (var binaryReader = new BinaryReader(File.Open(_dataFilePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.UTF8, false))
+            using (var binaryReader = new BinaryReader(
+                File.Open(_dataFilePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.UTF8, false))
             {
                 while (binaryReader.PeekChar() > -1)
                 {
@@ -55,7 +56,8 @@ namespace Logic.Storage.Implementation
         /// <inheritdoc />
         public void Save(IEnumerable<Book> books)
         {
-            using (var binaryWriter = new BinaryWriter(File.Open(_dataFilePath, FileMode.Create, FileAccess.Write, FileShare.None), Encoding.UTF8, false))
+            using (var binaryWriter = new BinaryWriter(
+                File.Open(_dataFilePath, FileMode.Create, FileAccess.Write, FileShare.None), Encoding.UTF8, false))
             {
                 foreach (var book in books)
                 {

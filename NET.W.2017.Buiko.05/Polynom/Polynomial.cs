@@ -79,7 +79,7 @@ namespace Polynom
         /// <exception cref="ArgumentNullException">Thrown when coefficients or degrees is null</exception>
         public Polynomial(double[] coefficients)
         {
-            if (coefficients == null)
+            if (ReferenceEquals(coefficients, null))
             {
                 throw new ArgumentNullException(nameof(coefficients));
             }
@@ -146,6 +146,8 @@ namespace Polynom
 
         #endregion // !properties.
 
+        #region other
+
         /// <summary>
         /// Indexer by polynomial.
         /// </summary>
@@ -165,6 +167,11 @@ namespace Polynom
             }
         }
 
+        /// <summary>
+        /// Returns the degrees of a polynomial.
+        /// </summary>
+        /// <param name="data">polinomial</param>
+        /// <returns>Degrees of a polynomial.</returns>
         public static int[] GetDegrees(IEnumerable<Tuple<double, int>> data)
         {
             int[] result = new int[data.Count()];
@@ -178,6 +185,11 @@ namespace Polynom
             return result;
         }
 
+        /// <summary>
+        /// Returns the coefficients  of a polynomial.
+        /// </summary>
+        /// <param name="data">polinomial</param>
+        /// <returns>Сoefficients  of a polynomial.</returns>
         public static double[] GetCoefficients(IEnumerable<Tuple<double, int>> data)
         {
             double[] result = new double[data.Count()];
@@ -190,6 +202,8 @@ namespace Polynom
 
             return result;
         }
+
+        #endregion // !other.
 
         #region add methods and operator +
 
@@ -220,10 +234,8 @@ namespace Polynom
         /// <param name="polynomial1">addendum 1</param>
         /// <param name="polynomial2">addendum 2</param>
         /// <returns>Polynomial result of addition.</returns>
-        public static Polynomial Add(Polynomial polynomial1, Tuple<double, int> polynomial2)
-        {
-            return Add(polynomial1, new Polynomial(new[] { polynomial2 }));
-        }
+        public static Polynomial Add(Polynomial polynomial1, Tuple<double, int> polynomial2) =>
+            Add(polynomial1, new Polynomial(new[] { polynomial2 }));
 
         /// <summary>
         /// Adds two polynomials.
@@ -283,10 +295,8 @@ namespace Polynom
         /// <param name="polynomial1">addendum 1</param>
         /// <param name="polynomial2">addendum 2</param>
         /// <returns>Polynomial result of subtraction.</returns>
-        public static Polynomial Subtract(Polynomial polynomial1, Tuple<double, int> polynomial2)
-        {
-            return Subtract(polynomial1, new Polynomial(new[] { polynomial2 }));
-        }
+        public static Polynomial Subtract(Polynomial polynomial1, Tuple<double, int> polynomial2) =>
+            Subtract(polynomial1, new Polynomial(new[] { polynomial2 }));
 
         /// <summary>
         /// Subtract two polynomials.
@@ -294,10 +304,8 @@ namespace Polynom
         /// <param name="lhs">addendum 1</param>
         /// <param name="rhs">addendum 2</param>
         /// <returns>Polynomial result of subtraction.</returns>
-        public static Polynomial operator -(Polynomial lhs, Polynomial rhs)
-        {
-            return OperatorX(lhs, rhs, false);
-        }         
+        public static Polynomial operator -(Polynomial lhs, Polynomial rhs) =>
+            OperatorX(lhs, rhs, false);
 
         /// <summary>
         /// Unary minus.
@@ -322,11 +330,9 @@ namespace Polynom
         /// <param name="lhs">addendum 1</param>
         /// <param name="rhs">addendum 2</param>
         /// <returns>Polynomial result of subtraction.</returns>
-        public static Polynomial operator -(Tuple<double, int> lhs, Polynomial rhs)
-        {
-            return OperatorX(new Polynomial(new[] { lhs }), rhs, false);
-        }
-           
+        public static Polynomial operator -(Tuple<double, int> lhs, Polynomial rhs) =>
+            OperatorX(new Polynomial(new[] { lhs }), rhs, false);
+
         #endregion // !subtract methods and operator -.
 
         #region multiply methods and operator *
@@ -359,7 +365,8 @@ namespace Polynom
         /// <summary>
         /// Multiplies a polynomial by a number.
         /// </summary>
-        /// <param name="multiplier">multiplier</param>
+        /// <param name="lhs">multiplier1</param>
+        /// <param name="rhs">multiplier1</param>
         /// <returns>Polynomial result of multiplication.</returns>
         public static Polynomial Multiply(Polynomial lhs, Polynomial rhs)
         {
@@ -520,7 +527,7 @@ namespace Polynom
         /// <returns>True if equivalents, false otherwise</returns>
         public static bool operator ==(Tuple<double, int> lhs, Polynomial rhs)
         {
-            if (lhs == null)
+            if (ReferenceEquals(lhs, null))
             {
                 throw new ArgumentNullException(nameof(lhs));
             }
@@ -699,7 +706,7 @@ namespace Polynom
 
         private static void VerifyCoefficients(double[] coefficients)
         {
-            if (coefficients == null)
+            if (ReferenceEquals(coefficients, null))
             {
                 throw new ArgumentNullException(nameof(coefficients));
             }
@@ -712,7 +719,7 @@ namespace Polynom
 
         private static void VerifyDegrees(int[] degrees)
         {
-            if (degrees == null)
+            if (ReferenceEquals(degrees, null))
             {
                 throw new ArgumentNullException(nameof(degrees));
             }

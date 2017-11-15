@@ -7,7 +7,7 @@ namespace Algorithm2
     /// <summary>
     /// The class that adapts the delegate to the interface.
     /// </summary>
-    internal class InterfaceAdapter : IComparer<int[]>
+    internal class DelegateAdapter : IComparer<int[]>
     {
         private readonly Comparison<int[]> _delegateComparator;
 
@@ -16,7 +16,7 @@ namespace Algorithm2
         /// </summary>
         /// <param name="comparator">the delegate for the conversion to the interface</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="comparator"/> is null.</exception>
-        public InterfaceAdapter(Comparison<int[]> comparator)
+        public DelegateAdapter(Comparison<int[]> comparator)
         {
             if (ReferenceEquals(comparator, null))
             {

@@ -18,14 +18,14 @@
 <p>
 Не изменяя класс Book, добавить для объектов данного класса дополнительную возможность форматирования, изначально не предусмотренную классом. 
 <br>
-<a href="https://github.com/buiko20/NET.W.2017.Buiko/tree/master/NET.W.2017.Buiko.08/NET.W.2017.Buiko.08.01">Смотреть</a>
+<a href="https://github.com/buiko20/NET.W.2017.Buiko/blob/master/NET.W.2017.Buiko.08/NET.W.2017.Buiko.08.01/Logic/Domain/CustomBookFormatter.cs">Смотреть</a>
 </p>
 
 <p><b>Задание 3</b></p>
 <p>
 Для реализованных в пп. 1, 2 функциональностей разработать модульные тесты.
 <br>
-<a href="https://github.com/buiko20/NET.W.2017.Buiko/tree/master/NET.W.2017.Buiko.08/NET.W.2017.Buiko.08.01">Смотреть</a>
+<a href="https://github.com/buiko20/NET.W.2017.Buiko/tree/master/NET.W.2017.Buiko.08/NET.W.2017.Buiko.08.01/Logic.NUnitTests">Смотреть</a>
 </p>
 
 <p><b>Задание 4</b></p>
@@ -39,7 +39,7 @@
 <p>
 В класс с алгоритмом сортировки не прямоугольной матрицы, принимающим как компаратор интерфейс IComparer<int[]> добавить метод, принимающий как параметр делегат-компаратор, инкапсулирующий логику сравнения строк матрицы. Протестировать работу разработанного метода на примере сортировки матрицы, используя прежние критерии сравнения. Класс реализовать двумя способами, «замкнув» в первом варианте реализацию метода сортировки с делегатом на метод с интерфейсом, во втором – наоборот.
 <br>
-<a href="https://github.com/buiko20/NET.W.2017.Buiko/tree/master/NET.W.2017.Buiko.05">Смотреть</a>
+<a href="https://github.com/buiko20/NET.W.2017.Buiko/tree/master/NET.W.2017.Buiko.05">Смотреть Algorithm & Algorithm2</a>
 </p>
 
 <p><b>Задание 6</b></p>

@@ -10,6 +10,8 @@ namespace Algorithm.MSUnitTests
         private static readonly int[] Array1 = { 1, 2, 3, 4, 5, 6, 7, 68, 69, 70, 15, 17 };
         private static readonly int[] Expected1 = { 7, 70, 17 };
 
+        #region BitInsert tests
+
         [TestMethod]
         public void BitInsert_15insert15from0to0_15returned()
         {
@@ -65,8 +67,6 @@ namespace Algorithm.MSUnitTests
 
             // Act.
             MathAlgorithm.BitInsert(number1, number2, i, j);
-
-            // Assert.
         }
 
         [TestMethod]
@@ -79,9 +79,11 @@ namespace Algorithm.MSUnitTests
 
             // Act.
             MathAlgorithm.BitInsert(number1, number2, i, j);
-
-            // Assert.
         }
+
+        #endregion // !BitInsert tests.
+
+        #region FindNextBiggerNumber tests
 
         [TestMethod]
         public void FindNextBiggerNumber_12_21returned()
@@ -134,15 +136,15 @@ namespace Algorithm.MSUnitTests
 
             // Act.
             MathAlgorithm.FindNextBiggerNumber(number);
-
-            // Assert.
         }
+
+        #endregion // !FindNextBiggerNumber tests.
+
+        #region FilterDigit tests
 
         [TestMethod]
         public void FilterDigit_digit7array1_expected1returned()
         {
-            // Arrange.
-
             // Act.
             int[] actual = MathAlgorithm.FilterDigit(new Predicate(), Array1);
 
@@ -182,12 +184,8 @@ namespace Algorithm.MSUnitTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void FilterDigit_digit7nullarray_exceptionreturned()
         {
-            // Arrange.
-
             // Act.
             MathAlgorithm.FilterDigit(new Predicate(), null);
-
-            // Assert.
         }
 
         [TestMethod]
@@ -207,13 +205,13 @@ namespace Algorithm.MSUnitTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void FilterDigit_digit7array_exceptionreturned()
         {
-            // Arrange.
-
             // Act.
             MathAlgorithm.FilterDigit(null, 123);
-
-            // Assert.
         }
+
+        #endregion // !FilterDigit tests.
+
+        #region FindNthRoot tests
 
         [TestMethod]
         public void FindNthRoot_number1root5eps00001_1returned()
@@ -295,5 +293,7 @@ namespace Algorithm.MSUnitTests
             // Act.
             MathAlgorithm.FindNthRoot(number, root, eps);
         }
+
+        #endregion // !FindNthRoot tests.
     }
 }

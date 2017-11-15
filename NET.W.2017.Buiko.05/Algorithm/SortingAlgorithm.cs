@@ -24,14 +24,6 @@ namespace Algorithm
         public static void Sort(int[][] jaggedArray, Comparison<int[]> comparator) =>
             BubbleSort(jaggedArray, comparator);
 
-        /// <summary>
-        /// Sorts the jagged array using the passed comparator.
-        /// </summary>
-        /// <param name="jaggedArray">source jagged array</param>
-        /// <param name="comparator">sorting criterion</param>
-        //// public static void Sort(int[][] jaggedArray, Func<int[], int[], int> comparator) =>
-        ////     BubbleSort(jaggedArray, new Comparison<int[]>(comparator));
-
         #endregion // !public methods.
 
         #region private methods
@@ -61,19 +53,19 @@ namespace Algorithm
 
         private static void VerifyInput(int[][] jaggedArray, Comparison<int[]> comparator)
         {
-            if (jaggedArray == null)
+            if (ReferenceEquals(jaggedArray, null))
             {
                 throw new ArgumentNullException(nameof(jaggedArray));
             }
 
-            if (comparator == null)
+            if (ReferenceEquals(comparator, null))
             {
                 throw new ArgumentNullException(nameof(comparator));
             }
 
             for (int i = 0; i < jaggedArray.Length; i++)
             {
-                if (jaggedArray[i] == null)
+                if (ReferenceEquals(jaggedArray[i], null))
                 {
                     throw new ArgumentNullException(nameof(jaggedArray), $"{i}th nested array in {nameof(jaggedArray)} is null");
                 }

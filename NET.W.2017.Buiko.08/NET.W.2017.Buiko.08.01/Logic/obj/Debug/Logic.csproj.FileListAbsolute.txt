@@ -3,3 +3,8 @@ D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic\bin\Debug\
 D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic\obj\Debug\Logic.dll
 D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic\obj\Debug\Logic.pdb
 D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic\obj\Debug\Logic.csprojResolveAssemblyReference.cache
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic\bin\Debug\Logger.dll
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic\bin\Debug\NLog.dll
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic\bin\Debug\Logger.pdb
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic\bin\Debug\NLog.xml
+D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic\bin\Debug\NLog.config

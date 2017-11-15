@@ -339,6 +339,7 @@ namespace Logic.Domain
         /// <exception cref="FormatException">Thrown when <paramref name="format"/> is not supported.</exception>
         public string ToString(string format, IFormatProvider formatProvider)
         {
+            
             if (string.IsNullOrWhiteSpace(format))
             {
                 format = "G";

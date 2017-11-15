@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Logger;
 using Logic.Domain;
 using Logic.Service.Exceptions;
 using Logic.Storage;
@@ -15,6 +16,8 @@ namespace Logic.Service
         private readonly IBookStorage _bookStorage;
         private readonly List<Book> _books = new List<Book>();
 
+        private ILogger _logger;
+
         #endregion // !private fields.
 
         #region public
@@ -24,7 +27,8 @@ namespace Logic.Service
         /// <summary>
         /// Initializes an instance of BookService with the passed parameter.
         /// </summary>
-        /// <param name="bookStorage">Book storage implementation.</param>
+        /// <param name="bookStorage">book storage implementation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="bookStorage"/>.</exception>
         public BookService(IBookStorage bookStorage)
         {
             if (ReferenceEquals(bookStorage, null))
@@ -33,6 +37,39 @@ namespace Logic.Service
             }
 
             _bookStorage = bookStorage;
+            Logger = LoggerFactory.GetNLogger(this.GetType().FullName);
+
+            try
+            {
+                _books.AddRange(_bookStorage.GetBooks());
+            }
+            catch (Exception)
+            {
+                _books.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Initializes an instance of BookService with the passed parameter.
+        /// </summary>
+        /// <param name="bookStorage">book storage implementation.</param>
+        /// <param name="logger">logger</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="bookStorage"/>
+        /// or <paramref name="logger"/> is null.</exception>
+        public BookService(IBookStorage bookStorage, ILogger logger)
+        {
+            if (ReferenceEquals(bookStorage, null))
+            {
+                throw new ArgumentNullException(nameof(bookStorage));
+            }
+
+            if (ReferenceEquals(logger, null))
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            _bookStorage = bookStorage;
+            Logger = logger;
 
             try
             {
@@ -46,6 +83,32 @@ namespace Logic.Service
 
         #endregion // !constructors.
 
+        #region properties
+
+        /// <summary>
+        /// Logger property injection.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> is null.</exception>
+        public ILogger Logger
+        {
+            get
+            {
+                return _logger;
+            }
+
+            set
+            {
+                if (ReferenceEquals(value, null))
+                {
+                    throw new ArgumentNullException(nameof(Logger));
+                }
+
+                _logger = value;
+            }
+        }
+
+        #endregion // !properties.
+
         #region interfaces implementation
 
         /// <inheritdoc />
@@ -53,6 +116,7 @@ namespace Logic.Service
         {
             if (ReferenceEquals(book, null))
             {
+                Logger.Info($"{nameof(AddBook)}. book is null");
                 throw new ArgumentNullException(nameof(book));
             }
 
@@ -62,6 +126,7 @@ namespace Logic.Service
             }
             catch (Exception e)
             {
+                Logger.Info(e, "Add book error");
                 throw new ServiceException("Add book error", e);
             }
         }
@@ -71,6 +136,7 @@ namespace Logic.Service
         {
             if (ReferenceEquals(books, null))
             {
+                Logger.Info($"{nameof(AddBook)}. book is null");
                 throw new ArgumentNullException(nameof(books));
             }
 
@@ -78,11 +144,15 @@ namespace Logic.Service
             {
                 foreach (var book in books)
                 {
-                    _books.Add(book);
+                    if (!ReferenceEquals(book, null))
+                    {
+                        _books.Add(book);
+                    }
                 }
             }
             catch (Exception e)
             {
+                Logger.Info(e, "Add book error");
                 throw new ServiceException("Add book error", e);
             }
         }
@@ -92,6 +162,7 @@ namespace Logic.Service
         {
             if (ReferenceEquals(book, null))
             {
+                Logger.Info($"{nameof(RemoveBook)}. book is null");
                 throw new ArgumentNullException(nameof(book));
             }
 
@@ -101,6 +172,7 @@ namespace Logic.Service
             }
             catch (Exception e)
             {
+                Logger.Info(e, "Remove book error");
                 throw new ServiceException("Remove book error", e);
             }
         }
@@ -110,6 +182,7 @@ namespace Logic.Service
         {
             if (string.IsNullOrWhiteSpace(isbn))
             {
+                Logger.Info($"{nameof(RemoveBook)}. isbn is invalid");
                 throw new ArgumentException(nameof(isbn));
             }
 
@@ -126,6 +199,7 @@ namespace Logic.Service
             }
             catch (Exception e)
             {
+                Logger.Info(e, "Remove book error");
                 throw new ServiceException("Remove book error", e);
             }
         }
@@ -135,6 +209,7 @@ namespace Logic.Service
         {
             if (ReferenceEquals(predicate, null))
             {
+                Logger.Info($"{nameof(RemoveBook)}. predicate is null");
                 throw new ArgumentNullException(nameof(predicate));
             }
 
@@ -150,6 +225,7 @@ namespace Logic.Service
             }
             catch (Exception e)
             {
+                Logger.Info(e, "Remove book error");
                 throw new ServiceException("Remove book error", e);
             }
         }
@@ -169,7 +245,8 @@ namespace Logic.Service
         public IEnumerable<Book> FindBook(IPredicate<Book> predicate)
         {
             if (ReferenceEquals(predicate, null))
-            {
+            { 
+                Logger.Info($"{nameof(FindBook)}. predicate is null");
                 throw new ArgumentNullException(nameof(predicate));
             }
 
@@ -182,11 +259,19 @@ namespace Logic.Service
 
         /// <inheritdoc />
         public void Sort() => 
-            _Sort(null);
+            _books.Sort();
 
         /// <inheritdoc />
-        public void Sort(IComparer<Book> comparator) => 
-            _Sort(comparator);
+        public void Sort(IComparer<Book> comparer)
+        {
+            if (ReferenceEquals(comparer, null))
+            {
+                Logger.Info($"{nameof(comparer)}. is null");
+                throw new ArgumentNullException(nameof(comparer));
+            }
+
+            _books.Sort(comparer);
+        }
 
         /// <inheritdoc />
         public void Save() =>
@@ -195,26 +280,5 @@ namespace Logic.Service
         #endregion // !interfaces implementation.
 
         #endregion // !public.
-
-        #region private
-
-        private void _Sort(IComparer<Book> comparator)
-        {
-            var books = _books.ToArray();
-
-            if (ReferenceEquals(comparator, null))
-            {
-                Array.Sort(books);
-            }
-            else
-            {
-                Array.Sort(books, comparator);
-            }
-
-            _books.Clear();
-            _books.AddRange(books);
-        }
-
-        #endregion // !private.
     }
 }

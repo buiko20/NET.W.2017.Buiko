@@ -22,6 +22,7 @@ namespace Logic.AccountService.Implementation
         private readonly IAccountRepository _accountRepository;
         private readonly AccountIdService _accountIdService;
         private readonly IAccountCreater _accountCreater;
+
         private readonly List<Account> _accounts = new List<Account>();
 
         #endregion // !private fields.
@@ -60,12 +61,12 @@ namespace Logic.AccountService.Implementation
 
         /// <inheritdoc />
         public string OpenAccount(string onwerFirstName, string onwerSecondName, decimal sum) =>
-            OpenAccount(typeof(BaseAccount), onwerFirstName, onwerSecondName, sum);
+            OpenAccount(AccountType.Base, onwerFirstName, onwerSecondName, sum);
 
         /// <inheritdoc />
-        public string OpenAccount(Type accountType, string onwerFirstName, string onwerSecondName, decimal sum)
+        public string OpenAccount(AccountType accountType, string onwerFirstName, string onwerSecondName, decimal sum)
         {
-            VerifyInput(accountType, onwerFirstName, onwerSecondName, sum);
+            VerifyInput(onwerFirstName, onwerSecondName, sum);
 
             try
             {
@@ -73,8 +74,10 @@ namespace Logic.AccountService.Implementation
 
                 int initialBonuses = GetInitialBonuses(accountType);
 
+                Type typeOfAccount = GetTypeOfAccount(accountType);
+
                 var account =
-                    _accountCreater.CreateAccount(accountType, accountId, onwerFirstName, onwerSecondName, sum, initialBonuses);
+                    _accountCreater.CreateAccount(typeOfAccount, accountId, onwerFirstName, onwerSecondName, sum, initialBonuses);
 
                 _accounts.Add(account);
                 _accountRepository.AddAccount(account);
@@ -122,15 +125,8 @@ namespace Logic.AccountService.Implementation
 
         #region private
 
-        private static void VerifyInput(Type accountType, string onwerFirstName, string onwerSecondName, decimal sum)
+        private static void VerifyInput(string onwerFirstName, string onwerSecondName, decimal sum)
         {
-            if (accountType != typeof(BaseAccount) && 
-                accountType != typeof(GoldAccount) &&
-                accountType != typeof(PlatinumAccount))
-            {
-                throw new ArgumentException("Invalid account type", nameof(accountType));
-            }
-
             if (string.IsNullOrWhiteSpace(onwerFirstName))
             {
                 throw new ArgumentException($"{nameof(onwerFirstName)} IsNullOrWhiteSpace", nameof(onwerFirstName));
@@ -165,19 +161,33 @@ namespace Logic.AccountService.Implementation
             }
         }
 
-        private static int GetInitialBonuses(Type accountType)
+        private static int GetInitialBonuses(AccountType accountType)
         {
-            if (accountType == typeof(GoldAccount))
+            switch (accountType)
             {
-                return GoldAccountInitialBonuses;
+                case AccountType.Gold:
+                    return GoldAccountInitialBonuses;
+                case AccountType.Platinum:
+                    return PlatinumAccountInitialBonuses;
+                case AccountType.Base:
+                default:
+                    return BaseAccountInitialBonuses;
+            }
+        }
+
+        private static Type GetTypeOfAccount(AccountType accountType)
+        {
+            if (accountType == AccountType.Gold)
+            {
+                return typeof(GoldAccount);
             }
 
-            if (accountType == typeof(PlatinumAccount))
+            if (accountType == AccountType.Platinum)
             {
-                return PlatinumAccountInitialBonuses;
+                return typeof(PlatinumAccount);
             }
 
-            return BaseAccountInitialBonuses;
+            return typeof(BaseAccount);
         }
 
         private void Operation(string accountId, decimal sum, Action<Account, decimal> operation)
@@ -206,15 +216,13 @@ namespace Logic.AccountService.Implementation
         private void DepositOperation(Account account, decimal sum)
         {
             account.DepositMoney(sum);
-            _accountRepository.RemoveAccount(account);
-            _accountRepository.AddAccount(account);
+            _accountRepository.UpdateAccount(account);
         }
 
         private void WithdrawOperation(Account account, decimal sum)
         {
             account.WithdrawMoney(sum);
-            _accountRepository.RemoveAccount(account);
-            _accountRepository.AddAccount(account);
+            _accountRepository.UpdateAccount(account);
         }
 
         private void CloseOperation(Account account, decimal sum)

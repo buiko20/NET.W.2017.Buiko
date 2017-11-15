@@ -1,13 +1,10 @@
 <stylecopresultscache>
   <version>12</version>
-  <project key="767547924">
-    <configuration>DEBUG;TRACE</configuration>
-  </project>
-  <sourcecode name="AlgorithmTests.cs" parser="StyleCop.CSharp.CsParser">
+  <sourcecode name="AssemblyInfo.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2017.11.09 14:47:57.487</styleCop>
       <settingsFile>2017.11.09 14:47:57.469</settingsFile>
-      <sourceFile>2017.11.09 15:03:17.903</sourceFile>
+      <sourceFile>2017.11.04 13:14:54.332</sourceFile>
       <parser>2017.11.09 14:47:57.487</parser>
       <StyleCop.CSharp.DocumentationRules>2017.11.09 14:47:57.487</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>-2073312677</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -26,11 +23,14 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <sourcecode name="AssemblyInfo.cs" parser="StyleCop.CSharp.CsParser">
+  <project key="767547924">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
+  <sourcecode name="AlgorithmTests.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2017.11.09 14:47:57.487</styleCop>
       <settingsFile>2017.11.09 14:47:57.469</settingsFile>
-      <sourceFile>2017.11.04 13:14:54.332</sourceFile>
+      <sourceFile>2017.11.12 11:38:55.152</sourceFile>
       <parser>2017.11.09 14:47:57.487</parser>
       <StyleCop.CSharp.DocumentationRules>2017.11.09 14:47:57.487</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>-2073312677</StyleCop.CSharp.DocumentationRules.FilesHashCode>

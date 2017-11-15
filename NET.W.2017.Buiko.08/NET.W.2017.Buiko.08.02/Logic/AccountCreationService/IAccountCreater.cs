@@ -22,7 +22,6 @@ namespace Logic.AccountCreationService
         /// <exception cref="AccountCreationServiceException">
         /// Thrown when an exception occurred in service.
         /// </exception>
-        Account CreateAccount(
-            Type accountType, string id, string onwerFirstName, string onwerSecondName, decimal sum, int bonusPoints);
+        Account CreateAccount(Type accountType, string id, string onwerFirstName, string onwerSecondName, decimal sum, int bonusPoints);
     }
 }

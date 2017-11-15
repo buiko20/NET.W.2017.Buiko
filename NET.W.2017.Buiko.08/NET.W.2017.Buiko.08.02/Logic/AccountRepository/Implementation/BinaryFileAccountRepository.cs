@@ -170,12 +170,15 @@ namespace Logic.AccountRepository.Implementation
         }
 
         private static Account CreateAccount(
-            Type accountType, string id, string onwerFirstName, string onwerSecondName, decimal sum, int bonusPoints) =>
-            Activator.CreateInstance(accountType, id, onwerFirstName, onwerSecondName, sum, bonusPoints) as Account;
+            Type accountType, string id, string onwerFirstName, string onwerSecondName, decimal sum, int bonusPoints) 
+        {
+            return Activator.CreateInstance(accountType, id, onwerFirstName, onwerSecondName, sum, bonusPoints) as Account;
+        }
 
         private void ParseFile(string filePath)
         {
-            using (var binaryReader = new BinaryReader(File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.UTF8, false))
+            using (var binaryReader = new BinaryReader(
+                File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.UTF8, false))
             {
                 while (binaryReader.PeekChar() > -1)
                 {
@@ -187,7 +190,8 @@ namespace Logic.AccountRepository.Implementation
 
         private void AppendAccountToFile(Account account)
         {
-            using (var binaryWriter = new BinaryWriter(File.Open(_dataFilePath, FileMode.Append, FileAccess.Write, FileShare.None), Encoding.UTF8, false))
+            using (var binaryWriter = new BinaryWriter(
+                File.Open(_dataFilePath, FileMode.Append, FileAccess.Write, FileShare.None), Encoding.UTF8, false))
             {
                 WriteAccountToFile(binaryWriter, account);
             }
@@ -195,7 +199,8 @@ namespace Logic.AccountRepository.Implementation
 
         private void WriteAccountsToFile(IEnumerable<Account> accounts)
         {
-            using (var binaryWriter = new BinaryWriter(File.Open(_dataFilePath, FileMode.Create, FileAccess.Write, FileShare.None), Encoding.UTF8, false))
+            using (var binaryWriter = new BinaryWriter(
+                File.Open(_dataFilePath, FileMode.Create, FileAccess.Write, FileShare.None), Encoding.UTF8, false))
             {
                 foreach (var account in accounts)
                 {

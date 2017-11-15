@@ -17,10 +17,10 @@ namespace ConsoleUI
         {
             try
             {
+                // Seam.
                 IAccountRepository accountRepository = new BinaryFileAccountRepository(@"accounts.bin");
                 AccountIdService accountIdService = new GuidAccountIdService();
                 IAccountCreater accountCreater = new AccountCreater();
-
                 IAccountService accountService = new AccountService(accountRepository, accountIdService, accountCreater);
 
                 if (File.Exists(@"accounts.bin"))
@@ -48,7 +48,7 @@ namespace ConsoleUI
             accountService.WithdrawMoney(id1, 40);
             Console.WriteLine($"{accountService.GetAccountStatus(id1)}  {accountService.GetAccountStatus(id1).Length}");
 
-            var id2 = accountService.OpenAccount("Name2", "Surname2", 444);
+            var id2 = accountService.OpenAccount(AccountType.Platinum, "Name2", "Surname2", 444);
             Console.WriteLine("Account2 id: " + id2);
             accountService.DepositMoney(id2, 6);
             accountService.WithdrawMoney(id2, 40);

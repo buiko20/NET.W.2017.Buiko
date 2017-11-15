@@ -51,6 +51,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{6853259e-9270-49be-8fff-cacfadc98ba0}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logic\Logic.csproj">
       <Project>{ca3e29d9-bd92-44d4-ab08-b7ca60eab99f}</Project>
       <Name>Logic</Name>

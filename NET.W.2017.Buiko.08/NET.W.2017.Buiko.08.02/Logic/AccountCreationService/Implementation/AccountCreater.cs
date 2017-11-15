@@ -8,13 +8,11 @@ namespace Logic.AccountCreationService.Implementation
     public class AccountCreater : IAccountCreater
     {
         /// <inheritdoc />
-        public Account CreateAccount(
-            Type accountType, string id, string onwerFirstName, string onwerSecondName, decimal sum, int bonusPoints)
+        public Account CreateAccount(Type accountType, string id, string onwerFirstName, string onwerSecondName, decimal sum, int bonusPoints)
         {
             try
             {
-                return (Account)Activator.CreateInstance(
-                    accountType, id, onwerFirstName, onwerSecondName, sum, bonusPoints);
+                return (Account)Activator.CreateInstance(accountType, id, onwerFirstName, onwerSecondName, sum, bonusPoints);
             }
             catch (Exception e)
             {

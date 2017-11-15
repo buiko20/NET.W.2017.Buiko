@@ -46,6 +46,8 @@
     <Compile Include="AccountIdGeneratorService\AccountIdService.cs" />
     <Compile Include="AccountIdGeneratorService\Exceptions\AccountIdServiceException.cs" />
     <Compile Include="AccountIdGeneratorService\Implementation\GuidAccountIdService.cs" />
+    <Compile Include="AccountRepository\Implementation\MockAccountRepository.cs" />
+    <Compile Include="AccountService\AccountType.cs" />
     <Compile Include="AccountService\Exceptions\AccountServiceException.cs" />
     <Compile Include="AccountService\IAccountService.cs" />
     <Compile Include="AccountService\Implementation\AccountService.cs" />

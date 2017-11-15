@@ -84,7 +84,7 @@ namespace Algorithm
             }
         }
 
-        #endregion
+        #endregion // !public methods.
 
         #region private methods
 
@@ -118,7 +118,7 @@ namespace Algorithm
 
         private static int[] PMergeSort(int[] array)
         {
-            if (array == null)
+            if (ReferenceEquals(array, null))
             {
                 throw new ArgumentNullException(nameof(array));
             }
@@ -179,6 +179,6 @@ namespace Algorithm
             y = temp;
         }
 
-        #endregion
+        #endregion // !private methods.
     }
 }

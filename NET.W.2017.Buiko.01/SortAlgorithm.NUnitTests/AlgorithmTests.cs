@@ -8,7 +8,7 @@ namespace SortAlgorithm.NUnitTests
     [TestFixture]
     public class AlgorithmTests
     {
-        #region Test data
+        #region test data
 
         private static readonly int[] TestArray1 = Enumerable.Range(0, 1000).Reverse().ToArray();
         private static readonly int[] TestArray2 = Enumerable.Range(0, 10000).Reverse().ToArray();
@@ -25,7 +25,7 @@ namespace SortAlgorithm.NUnitTests
             TestArray7
         };
 
-        #endregion
+        #endregion // !test data.
 
         #region QuickSort tests
 
@@ -88,8 +88,6 @@ namespace SortAlgorithm.NUnitTests
         [TestCase(0, 0, new[] { 5 })]
         public void QuickSortTests_ArraySortingWithinBorders(int start, int end, int[] array)
         {
-            // Arrange.
-
             // Act.
             Sort.QuickSort(array, start, end);
 
@@ -117,7 +115,7 @@ namespace SortAlgorithm.NUnitTests
             Assert.Throws<ArgumentNullException>(() => Sort.QuickSort(null));
         }
 
-        #endregion
+        #endregion // !QuickSort tests.
 
         #region MergeSort tests
 
@@ -129,8 +127,6 @@ namespace SortAlgorithm.NUnitTests
         [TestCase(new int[0])]
         public void MergeSortTests_SortingArray(int[] array)
         {
-            // Arrange.
-
             // Act.
             Sort.MergeSort(array);
 
@@ -176,7 +172,7 @@ namespace SortAlgorithm.NUnitTests
             Assert.Throws<ArgumentNullException>(() => Sort.MergeSort(null));
         }
 
-        #endregion
+        #endregion // !MergeSort tests.
 
         #region BubbleSort tests
 
@@ -188,8 +184,6 @@ namespace SortAlgorithm.NUnitTests
         [TestCase(new int[0])]
         public void BubbleSortTests_SortingArray(int[] array)
         {
-            // Arrange.
-
             // Act.
             Sort.BubbleSort(array);
 
@@ -235,7 +229,7 @@ namespace SortAlgorithm.NUnitTests
             Assert.Throws<ArgumentNullException>(() => Sort.BubbleSort(null));
         }
 
-        #endregion
+        #endregion // !BubbleSort tests.
 
         #region test helpers
 
@@ -249,6 +243,6 @@ namespace SortAlgorithm.NUnitTests
             }
         }
 
-        #endregion
+        #endregion // !test helpers.
     }
 }

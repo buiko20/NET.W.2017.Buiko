@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Algorithm
+﻿namespace Algorithm
 {
+    /// <inheritdoc />
     public class Predicate : IPredicate<int>
     {
+        /// <inheritdoc />
         public bool Choose(int data) => data.ToString().Contains("7");
     }
 }

@@ -16,14 +16,15 @@ namespace Algorithm
         private const int MantissaLength = 52;
         private const int DenormalizedBias = -1022;
 
-        #endregion
+        #endregion // !private constants.
 
         #region public methods
+
         /// <summary>
-        /// Convert double into string which represents it in IEEE 754.
+        /// Convert <paramref name="number"/> into string which represents it in IEEE 754.
         /// </summary>
         /// <param name="number">double number</param>
-        /// <returns>bit string which represents it in IEEE 754</returns>
+        /// <returns>Bit string which represents it in IEEE 754.</returns>
         public static string ToBitStringUsingBitArray(this double number)
         {
             var bitArray = new BitArray(BitConverter.GetBytes(number));
@@ -38,10 +39,10 @@ namespace Algorithm
         }
 
         /// <summary>
-        /// Convert double into string which represents it in IEEE 754.
+        /// Convert <paramref name="number"/> into string which represents it in IEEE 754.
         /// </summary>
         /// <param name="number">double number</param>
-        /// <returns>bit string which represents it in IEEE 754</returns>
+        /// <returns>Bit string which represents it in IEEE 754.</returns>
         public static string ToBitString(this double number)
         {
             var result = new StringBuilder(sizeof(double) * 8);
@@ -58,7 +59,7 @@ namespace Algorithm
             return result.ToString();
         }
 
-        #endregion
+        #endregion // !public methods.
 
         #region private methods
 
@@ -76,22 +77,6 @@ namespace Algorithm
 
         private static string GetExponentBinary(double number)
         {
-            /*
-             * An attempt to calculate the exponent through working with strings 
-             * leads to success only in extreme cases, such as double.MinValue
-             * double.MaxValue e.c.
-
-             long integerPart = (long)Math.Truncate(number);
-             string binary = IntegerToBinary(integerPart);
-
-             int exponent = binary.Length - binary.IndexOf(TrueBit) - 1;
-             exponent = exponent >= 64 ? 0 : exponent + Bias;
-
-             string result = IntegerToBinary(exponent);
-             result = result.Substring(result.Length - ExponentLength, ExponentLength);
-
-             return result;*/
-
             int exponent = GetExponent(number);
             exponent += Bias;
             exponent = exponent < 0 ? 0 : exponent;
@@ -117,22 +102,6 @@ namespace Algorithm
 
         private static string GetMantissaBinary(double number)
         {
-            /* long integerPart = (long)Math.Truncate(number);
-             double fraction = number - integerPart;
-             fraction = Math.Abs(fraction);
-
-             string binaryInteger = IntegerToBinary(integerPart);
-             string binaryFraction = FractionToBinary(fraction);
-
-             int exponent = binaryInteger.Length - binaryInteger.IndexOf(TrueBit) - 1;
-             exponent = exponent < 0 || exponent >= 63 ? 0 : exponent;
-
-             var result = new StringBuilder(MantissaLength);
-             result.Append(binaryInteger.Substring(binaryInteger.Length - exponent, exponent));
-             result.Append(binaryFraction.Substring(0, MantissaLength - exponent));
-
-             return result.ToString();*/
-
             int exponent = GetExponent(number);
             exponent += Bias;
             exponent = exponent < 0 ? 0 : exponent;
@@ -193,6 +162,6 @@ namespace Algorithm
             return new string(result);
         }
 
-        #endregion
+        #endregion // !private methods.
     }
 }

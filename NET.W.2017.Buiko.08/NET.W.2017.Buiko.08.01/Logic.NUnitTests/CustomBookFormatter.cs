@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Globalization;
+using Logic.Domain;
 
-namespace Logic.Domain
+namespace Logic.NUnitTests
 {
     public class CustomBookFormatter : IFormatProvider, ICustomFormatter
     {
         #region private fields
+
+        private const string SupportedFormat = "IAN";
 
         private readonly IFormatProvider _parentFormatProvider;
 
@@ -15,6 +18,7 @@ namespace Logic.Domain
 
         #region constructors
 
+        /// <inheritdoc />
         /// <summary>
         /// Initializes an instance of a class with default parameters.
         /// </summary>
@@ -53,7 +57,7 @@ namespace Logic.Domain
                 return HandleOtherFormats(format, arg);
             }
 
-            if (format.Trim().ToUpperInvariant() != "IAN")
+            if (format.Trim().ToUpperInvariant() != SupportedFormat)
             {
                 return HandleOtherFormats(format, arg);
             }

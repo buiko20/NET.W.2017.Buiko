@@ -21,7 +21,7 @@ namespace Polynom.NUnitTests
         [TestCase(new double[0] { }, new int[0] { })]
         public void PolynomialConstructorExceptionTests(double[] coefficients, int[] degrees)
         {
-            if ((coefficients == null) || (degrees == null))
+            if (ReferenceEquals(coefficients, null) || ReferenceEquals(degrees, null))
             {
                 Assert.Throws<ArgumentNullException>(() => new Polynomial(coefficients, degrees));
             }

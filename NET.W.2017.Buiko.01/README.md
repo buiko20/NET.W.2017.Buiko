@@ -1,5 +1,9 @@
-NET.W.2017.Buiko.01 
+<p><b>Задание 1</b></p>
+<p>
+Реализовать методы быстрой сортировки и  сортировки слиянием для целочисленного массива.  Протестировать работу методов в консольном приложении или с помощью модульного тестирования. (залить на github).
+</p>
 
-Algorithm implement quick sort and merge sort methods for an integer array.
-
-AssemblyTask4 contains a multi-file assembly and a library added to the GAC.
+<p><b>Задание 2</b></p>
+<p>
+Задача на понимание многофайловых сборок и подписание сборок
+</p>

@@ -1,5 +1,4 @@
-﻿using System;
-using Logic.AccountService.Exceptions;
+﻿using Logic.AccountService.Exceptions;
 
 namespace Logic.AccountService
 {
@@ -31,7 +30,7 @@ namespace Logic.AccountService
         /// <exception cref="AccountServiceException">
         /// Thrown when an exception occurred in service.
         /// </exception>
-        string OpenAccount(Type accountType, string onwerFirstName, string onwerSecondName, decimal sum);
+        string OpenAccount(AccountType accountType, string onwerFirstName, string onwerSecondName, decimal sum);
 
         /// <summary>
         /// Deposit money to your account with a specific <paramref name="accountId"/>.
@@ -54,7 +53,7 @@ namespace Logic.AccountService
         /// <paramref name="accountId"/> does not exists.
         /// </exception>
         void WithdrawMoney(string accountId, decimal sum);
-
+        
         /// <summary>
         /// Closes an account with a specific <paramref name="accountId"/>.
         /// </summary>

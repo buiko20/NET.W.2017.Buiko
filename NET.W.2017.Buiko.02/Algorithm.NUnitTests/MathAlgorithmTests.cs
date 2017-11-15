@@ -18,17 +18,9 @@ namespace Algorithm.NUnitTests
         [TestCase(12, ExpectedResult = 21)]
         [TestCase(1234126, ExpectedResult = 1234162)]
         [TestCase(10, ExpectedResult = -1)]
-        [TestCase(-56, ExpectedResult = -2)]
         public int FindNextBiggerNumberTest(int number)
         {
-            try
-            {
-                return MathAlgorithm.FindNextBiggerNumber(number);
-            }
-            catch (ArgumentException)
-            {
-                return -2;
-            }
+            return MathAlgorithm.FindNextBiggerNumber(number);
         }
 
         [TestCase(77, 17, 32, ExpectedResult = new[] { 77, 17 })]

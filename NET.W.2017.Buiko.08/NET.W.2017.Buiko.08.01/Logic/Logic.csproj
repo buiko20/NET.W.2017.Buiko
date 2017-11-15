@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\CustomBookFormatter.cs" />
     <Compile Include="Domain\IPredicate.cs" />
     <Compile Include="Domain\Book.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -52,7 +51,12 @@
     <Compile Include="Storage\IBookStorage.cs" />
     <Compile Include="Storage\Implementation\BinaryFileBookStorage.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{6853259e-9270-49be-8fff-cacfadc98ba0}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

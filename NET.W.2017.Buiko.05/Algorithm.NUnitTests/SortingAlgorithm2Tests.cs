@@ -51,10 +51,10 @@ namespace Algorithm.NUnitTests
             for (int j = 0; j < 10; j++)
             {
                 var array = TestHelper.GenerateJaggedArray(Guid.NewGuid().GetHashCode());
-                TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
+                //// TestHelper.Track(array, $"---------------------------\nUnsorted array {j + 1}:");
 
                 SortingAlgorithm2.Sort(array, new AscendingMaxElementComparator());
-                TestHelper.Track(array, $"Sorted array {j + 1}:");
+                //// TestHelper.Track(array, $"Sorted array {j + 1}:");
 
                 Assert.IsTrue(TestHelper.IsXscendingOrder(array, arr => arr.Max(), (a, b) => a > b));
             }

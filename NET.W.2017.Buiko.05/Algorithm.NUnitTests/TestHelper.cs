@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Algorithm.NUnitTests
 {
     internal static class TestHelper
     {
+        #region private fields
+
         private const int LeftBorder = 1;
         private const int RightBorder = 10;
+
+        #endregion // !private fields.
 
         #region public methods
 
@@ -64,7 +64,7 @@ namespace Algorithm.NUnitTests
             return true;
         }
 
-        #endregion
+        #endregion // !public methods.
 
         #region private methods
 
@@ -88,6 +88,6 @@ namespace Algorithm.NUnitTests
             }
         }
 
-        #endregion
+        #endregion // !private methods.
     }
 }
