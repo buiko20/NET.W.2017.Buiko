@@ -22,11 +22,21 @@ namespace Clock
                 throw new ArgumentOutOfRangeException(nameof(milliseconds), $"{nameof(milliseconds)} must be greater than or equal to zero");
             }
 
+            /* ThreadPool.QueueUserWorkItem(state =>
+             {
+                 Thread.Sleep(milliseconds);
+                 OnNotification(this, new ClockEventArgs(DateTime.Now, milliseconds));
+             });*/
+
             Thread.Sleep(milliseconds);
             OnNotification(this, new ClockEventArgs(DateTime.Now, milliseconds));
         }
 
-        protected virtual void OnNotification(object sender, ClockEventArgs arg) =>
-            Notification?.Invoke(sender, arg);
+        protected virtual void OnNotification(object sender, ClockEventArgs arg)
+        {
+            EventHandler<ClockEventArgs> temp = Notification;
+
+            temp?.Invoke(sender, arg);
+        }
     }
 }
