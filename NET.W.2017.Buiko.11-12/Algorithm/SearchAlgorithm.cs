@@ -43,6 +43,19 @@ namespace Algorithm
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="array"/> or
         /// <paramref name="comparer"/> is null.</exception>
         public static int BinarySearch<T>(T[] array, T value, IComparer<T> comparer) =>
+            BinarySearch(array, 0, array?.Length - 1 ?? -1, value, comparer.Compare);
+
+        /// <summary>
+        /// Searches for an <paramref name="value"/> using the binary search method.
+        /// </summary>
+        /// <typeparam name="T">object type</typeparam>
+        /// <param name="array">an array in which to search for the <paramref name="value"/></param>
+        /// <param name="value">search object</param>
+        /// <param name="comparer">comparer for comparing objects</param>
+        /// <returns>The index in the array or -1 if no such.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="array"/> or
+        /// <paramref name="comparer"/> is null.</exception>
+        public static int BinarySearch<T>(T[] array, T value, Comparison<T> comparer) =>
             BinarySearch(array, 0, array?.Length - 1 ?? -1, value, comparer);
 
         /// <summary>
@@ -60,7 +73,25 @@ namespace Algorithm
         /// <exception cref="ArgumentException">Thrown when <paramref name="startIndex"/> less than 0 or
         /// greater than <paramref name="endIndex"/> or <paramref name="endIndex"/> less than 0
         /// or greater than or equal to <paramref name="array"/> length.</exception>
-        public static int BinarySearch<T>(T[] array, int startIndex, int endIndex, T value, IComparer<T> comparer)
+        public static int BinarySearch<T>(T[] array, int startIndex, int endIndex, T value, IComparer<T> comparer) =>
+            BinarySearch(array, startIndex, endIndex, value, comparer.Compare);
+
+        /// <summary>
+        /// Searches for an <paramref name="value"/> using the binary search method.
+        /// </summary>
+        /// <typeparam name="T">object type</typeparam>
+        /// <param name="array">an array in which to search for the <paramref name="value"/></param>
+        /// <param name="startIndex">position from which to start the search</param>
+        /// <param name="endIndex">position on which to finish</param>
+        /// <param name="value">search object</param>
+        /// <param name="comparer">comparer for comparing objects</param>
+        /// <returns>The index in the array or -1 if no such.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="array"/> or
+        /// <paramref name="comparer"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="startIndex"/> less than 0 or
+        /// greater than <paramref name="endIndex"/> or <paramref name="endIndex"/> less than 0
+        /// or greater than or equal to <paramref name="array"/> length.</exception>
+        public static int BinarySearch<T>(T[] array, int startIndex, int endIndex, T value, Comparison<T> comparer)
         {
             VerifyInput(array, startIndex, endIndex, comparer);
 
@@ -68,7 +99,7 @@ namespace Algorithm
             {
                 int mid = startIndex + ((endIndex - startIndex) >> 1);
 
-                int comparisonResult = comparer.Compare(array[mid], value);
+                int comparisonResult = comparer(array[mid], value);
                 if (comparisonResult == 0)
                 {
                     return mid;
@@ -91,7 +122,7 @@ namespace Algorithm
 
         #region private
 
-        private static void VerifyInput<T>(T[] array, int startIndex, int endIndex, IComparer<T> comparer)
+        private static void VerifyInput<T>(T[] array, int startIndex, int endIndex, Comparison<T> comparer)
         {
             if (ReferenceEquals(array, null))
             {
