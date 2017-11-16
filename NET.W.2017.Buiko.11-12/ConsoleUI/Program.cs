@@ -22,9 +22,7 @@ namespace ConsoleUI
 
             clock.Notify(2000);
 
-
             Console.ReadLine();
         }
-
     }
 }

@@ -146,7 +146,7 @@ namespace Algorithm.MSUnitTests
         public void FilterDigit_digit7array1_expected1returned()
         {
             // Act.
-            int[] actual = MathAlgorithm.FilterDigit(new Predicate(), Array1);
+            int[] actual = MathAlgorithm.FilterDigit(i => i.ToString().Contains("7"), Array1);
 
             // Assert.
             Assert.IsTrue(actual.SequenceEqual(Expected1));
@@ -160,7 +160,7 @@ namespace Algorithm.MSUnitTests
             int expected = 72;
 
             // Act.
-            int[] actual = MathAlgorithm.FilterDigit(new Predicate(), number1, number2);
+            int[] actual = MathAlgorithm.FilterDigit(i => i.ToString().Contains("7"), number1, number2);
 
             // Assert.
             Assert.AreEqual(expected, actual[0]);
@@ -174,7 +174,7 @@ namespace Algorithm.MSUnitTests
             int expectedArrayLength = 0;
 
             // Act.
-            int[] actual = MathAlgorithm.FilterDigit(new Predicate(), number1, number2);
+            int[] actual = MathAlgorithm.FilterDigit(i => i.ToString().Contains("7"), number1, number2);
 
             // Assert.
             Assert.AreEqual(expectedArrayLength, actual.Length);
@@ -185,7 +185,7 @@ namespace Algorithm.MSUnitTests
         public void FilterDigit_digit7nullarray_exceptionreturned()
         {
             // Act.
-            MathAlgorithm.FilterDigit(new Predicate(), null);
+            MathAlgorithm.FilterDigit(i => i.ToString().Contains("7"), null);
         }
 
         [TestMethod]
@@ -195,7 +195,7 @@ namespace Algorithm.MSUnitTests
             int expected = 0;
 
             // Act.
-            int[] actual = MathAlgorithm.FilterDigit(new Predicate());
+            int[] actual = MathAlgorithm.FilterDigit(i => i.ToString().Contains("7"));
 
             // Assert.
             Assert.AreEqual(expected, actual.Length);

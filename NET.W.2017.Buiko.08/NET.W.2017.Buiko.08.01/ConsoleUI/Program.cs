@@ -12,12 +12,12 @@ namespace ConsoleUI
     {
         private static void Main()
         {
-            var logger = LoggerFactory.GetNLogger("ConsoleUI.Program");
+            var logger = LoggerFactory.GetLogger("ConsoleUI.Program");
             try
             {
                 // Seam.
                 IBookStorage bookRepository = new BinaryFileBookStorage(@"books.bin");
-                IBookService bookService = new BookService(bookRepository);
+                IBookService bookService = new BookService(bookRepository, LoggerFactory.GetLogger(nameof(BookService)));
 
                 if (bookService.GetBooks().ToArray().Length != 0)
                 {
@@ -32,7 +32,7 @@ namespace ConsoleUI
             }
             catch (Exception e)
             {
-                logger.Error(e, e.Message);
+                logger.Error(e.Message, e);
             }
             
             Console.ReadLine();
@@ -46,7 +46,7 @@ namespace ConsoleUI
             var book4 = new Book("978-3-16-148413-3", "author4", "name4", "publishing house4", "2017", 4, 4m);
             var book5 = new Book("978-3-16-148414-4", "author5", "name5", "publishing house5", "2017", 5, 5m);
 
-            //// bookService.RemoveBook((Book)null);
+             bookService.RemoveBook((Book)null);
             bookService.AddBook(book4, book5, book1, book2, book3);
 
             bookService.Sort();
@@ -62,13 +62,13 @@ namespace ConsoleUI
         {
             PrintBook(bookService.GetBooks().ToArray());
             PrintBook(bookService.FindBook("978-3-16-148410-0"));
-            PrintBook(bookService.FindBook(new FindByNamePredicate()).ToArray());
+            PrintBook(bookService.FindBook(book => book.Name.Contains("name")).ToArray());
 
             bookService.RemoveBook("978-3-16-148413-3");
 
             bookService.Sort();
 
-            PrintBook(bookService.FindBook(new FindByNamePredicate()).ToArray());
+            PrintBook(bookService.FindBook(book => book.Name.Contains("name")).ToArray());
 
             bookService.Save();
         }

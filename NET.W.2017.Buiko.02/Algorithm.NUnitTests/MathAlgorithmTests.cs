@@ -28,7 +28,7 @@ namespace Algorithm.NUnitTests
         [TestCase(ExpectedResult = new int[0])]
         public int[] FilterDigitTests(params int[] numbers)
         {
-            return MathAlgorithm.FilterDigit(new Predicate(), numbers);
+            return MathAlgorithm.FilterDigit(i => i.ToString().Contains("7"), numbers);
         }
 
         [TestCase(77, 77, 89)]

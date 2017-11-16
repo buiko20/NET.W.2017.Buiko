@@ -14,9 +14,9 @@ namespace Algorithm.NUnitTests
         {
             get
             {
-                yield return new TestCaseData(new[] {1, 2, 3, 4, 5, 6, 7}, 4).Returns(3);
-                yield return new TestCaseData(new[] {1, 1, 1, 1, 1, 1}, 1).Returns(2);
-                yield return new TestCaseData(new[] {1}, 1).Returns(0);
+                yield return new TestCaseData(new[] { 1, 2, 3, 4, 5, 6, 7 }, 4).Returns(3);
+                yield return new TestCaseData(new[] { 1, 1, 1, 1, 1, 1 }, 1).Returns(2);
+                yield return new TestCaseData(new[] { 1 }, 1).Returns(0);
 
                 yield return new TestCaseData(new[] { 1, 2, 3, 4, 5, 6, 7 }, 77).Returns(-1);
                 yield return new TestCaseData(new[] { 1, 1, 1, 1, 1, 1 }, 77).Returns(-1);
@@ -88,7 +88,8 @@ namespace Algorithm.NUnitTests
         {
             get
             {
-                yield return new TestCaseData(new[]
+                yield return new TestCaseData(
+                    new[] 
                 {
                     new CustomClass(0, string.Empty),
                     new CustomClass(-1, "1"),
@@ -97,7 +98,9 @@ namespace Algorithm.NUnitTests
                     new CustomClass(4, "4"),
                 }, 
                 new CustomClass(0, string.Empty)).Returns(0);
-                yield return new TestCaseData(new[]
+
+                yield return new TestCaseData(
+                    new[]
                     {
                         new CustomClass(0, string.Empty),
                         new CustomClass(0, string.Empty),
@@ -105,9 +108,11 @@ namespace Algorithm.NUnitTests
                         new CustomClass(0, string.Empty)
                     },
                     new CustomClass(0, string.Empty)).Returns(1);
+
                 yield return new TestCaseData(new[] { new CustomClass(0, string.Empty) }, new CustomClass(0, string.Empty)).Returns(0);
 
-                yield return new TestCaseData(new[]
+                yield return new TestCaseData(
+                    new[]
                     {
                         new CustomClass(0, string.Empty),
                         new CustomClass(-1, "1"),
@@ -116,7 +121,9 @@ namespace Algorithm.NUnitTests
                         new CustomClass(4, "4"),
                     },
                     new CustomClass(0, "1111")).Returns(-1);
-                yield return new TestCaseData(new[]
+
+                yield return new TestCaseData(
+                    new[]
                     {
                         new CustomClass(0, string.Empty),
                         new CustomClass(0, string.Empty),
@@ -124,6 +131,7 @@ namespace Algorithm.NUnitTests
                         new CustomClass(0, string.Empty)
                     },
                     new CustomClass(0, "1")).Returns(-1);
+
                 yield return new TestCaseData(new[] { new CustomClass(0, string.Empty) }, new CustomClass(0, "1")).Returns(-1);
             }
         }
@@ -132,7 +140,8 @@ namespace Algorithm.NUnitTests
         {
             get
             {
-                yield return new TestCaseData(new[]
+                yield return new TestCaseData(
+                    new[]
                     {
                         new CustomStructure(0, string.Empty),
                         new CustomStructure(-1, "1"),
@@ -141,7 +150,9 @@ namespace Algorithm.NUnitTests
                         new CustomStructure(4, "4"),
                     },
                     new CustomStructure(0, string.Empty)).Returns(0);
-                yield return new TestCaseData(new[]
+
+                yield return new TestCaseData(
+                    new[]
                     {
                         new CustomStructure(0, string.Empty),
                         new CustomStructure(0, string.Empty),
@@ -149,9 +160,11 @@ namespace Algorithm.NUnitTests
                         new CustomStructure(0, string.Empty)
                     },
                     new CustomStructure(0, string.Empty)).Returns(1);
+
                 yield return new TestCaseData(new[] { new CustomStructure(0, string.Empty) }, new CustomStructure(0, string.Empty)).Returns(0);
 
-                yield return new TestCaseData(new[]
+                yield return new TestCaseData(
+                    new[]
                     {
                         new CustomStructure(0, string.Empty),
                         new CustomStructure(-1, "1"),
@@ -160,7 +173,9 @@ namespace Algorithm.NUnitTests
                         new CustomStructure(4, "4"),
                     },
                     new CustomStructure(0, "1111")).Returns(-1);
-                yield return new TestCaseData(new[]
+
+                yield return new TestCaseData(
+                    new[]
                     {
                         new CustomStructure(0, string.Empty),
                         new CustomStructure(0, string.Empty),
@@ -168,6 +183,7 @@ namespace Algorithm.NUnitTests
                         new CustomStructure(0, string.Empty)
                     },
                     new CustomStructure(0, "1")).Returns(-1);
+
                 yield return new TestCaseData(new[] { new CustomStructure(0, string.Empty) }, new CustomStructure(0, "1")).Returns(-1);
             }
         }

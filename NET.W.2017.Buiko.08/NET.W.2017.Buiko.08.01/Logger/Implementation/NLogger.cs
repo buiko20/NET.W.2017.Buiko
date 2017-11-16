@@ -3,6 +3,7 @@ using NLog;
 
 namespace Logger.Implementation
 {
+    /// <inheritdoc />
     internal class NLogger : ILogger
     {
         #region private fields
@@ -15,6 +16,11 @@ namespace Logger.Implementation
 
         public NLogger(string className)
         {
+            if (string.IsNullOrWhiteSpace(className))
+            {
+                throw new ArgumentException($"{nameof(className)} IsNullOrWhiteSpace", nameof(className));
+            }
+
             _logger = LogManager.GetLogger(className);
         }
 
@@ -22,65 +28,53 @@ namespace Logger.Implementation
 
         #region interface implementation
 
-        public void Trace(string message)
-        {
+        /// <inheritdoc />
+        public void Trace(string message) =>
             _logger.Trace(message);
-        }
 
-        public void Trace(Exception exception, string message)
-        {
+        /// <inheritdoc />
+        public void Trace(string message, Exception exception) =>
             _logger.Trace(exception, message);
-        }
 
-        public void Debug(string message)
-        {
+        /// <inheritdoc />
+        public void Debug(string message) =>
             _logger.Debug(message);
-        }
 
-        public void Debug(Exception exception, string message)
-        {
+        /// <inheritdoc />
+        public void Debug(string message, Exception exception) =>
             _logger.Debug(exception, message);
-        }
 
-        public void Info(string message)
-        {
+        /// <inheritdoc />
+        public void Info(string message) =>
             _logger.Info(message);
-        }
 
-        public void Info(Exception exception, string message)
-        {
+        /// <inheritdoc />
+        public void Info(string message, Exception exception) =>
             _logger.Info(exception, message);
-        }
 
-        public void Warn(string message)
-        {
+        /// <inheritdoc />
+        public void Warn(string message) =>
             _logger.Warn(message);
-        }
 
-        public void Warn(Exception exception, string message)
-        {
+        /// <inheritdoc />
+        public void Warn(string message, Exception exception) =>
             _logger.Warn(exception, message);
-        }
 
-        public void Error(string message)
-        {
+        /// <inheritdoc />
+        public void Error(string message) =>
             _logger.Error(message);
-        }
 
-        public void Error(Exception exception, string message)
-        {
+        /// <inheritdoc />
+        public void Error(string message, Exception exception) =>
             _logger.Error(exception, message);
-        }
 
-        public void Fatal(string message)
-        {
+        /// <inheritdoc />
+        public void Fatal(string message) =>
             _logger.Fatal(message);
-        }
 
-        public void Fatal(Exception exception, string message)
-        {
+        /// <inheritdoc />
+        public void Fatal(string message, Exception exception) =>
             _logger.Fatal(exception, message);
-        }
 
         #endregion // !interface implementation.
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Algorithm
 {
@@ -21,30 +22,19 @@ namespace Algorithm
         /// number of the last Fibonacci number which is the same.</param>
         /// <returns>Array of Fibonacci numbers.</returns>
         /// <exception cref="ArgumentException">Thrown when <paramref name="length"/> &lt; 0.</exception>
-        public static IEnumerable<int> CalculateFibonacciNumbers(int length)
+        public static IEnumerable<BigInteger> CalculateFibonacciNumbers(int length)
         {
             if (length < 0)
             {
-                throw new ArgumentException(nameof(length) + " must be >= 0.", nameof(length));
+                throw new ArgumentException(nameof(length) + " must be greater than or equal to", nameof(length));
             }
 
-            switch (length)
-            {
-                case 0:
-                    return new int[] { };
-                case 1:
-                    return new[] { FirstFibonacciNumber };
-            }
+            var result = new BigInteger[length];
 
-            int[] result = new int[length];
-            result[0] = FirstFibonacciNumber;
-            result[1] = SecondFibonacciNumber;
-            if (length > 2)
+            int i = 0;
+            foreach (var fibonacciNumber in FibonacciNumbers(length))
             {
-                for (int i = 2; i < length; i++)
-                {
-                    result[i] = result[i - 1] + result[i - 2];
-                }
+                result[i++] = fibonacciNumber;
             }
 
             return result;
@@ -57,40 +47,33 @@ namespace Algorithm
         /// number of the last Fibonacci number which is the same.</param>
         /// <returns>Fibonacci numbers.</returns>
         /// <exception cref="ArgumentException">Thrown when <paramref name="length"/> &lt; 0.</exception>
-        public static IEnumerable<int> FibonacciNumbers(int length)
+        public static IEnumerable<BigInteger> FibonacciNumbers(int length)
         {
             if (length < 0)
             {
-                throw new ArgumentException(nameof(length) + " must be >= 0.", nameof(length));
+                throw new ArgumentException(nameof(length) + " must be greater than or equal to 0", nameof(length));
             }
 
-            switch (length)
-            {
-                case 0:
-                    yield break;
-                case 1:
-                    yield return FirstFibonacciNumber;
-                    yield break;
-            }
-
-            yield return FirstFibonacciNumber;
-            yield return SecondFibonacciNumber;
-
-            if (length == 2)
-            {
-                yield break;
-            }
-
-            int number1 = FirstFibonacciNumber, number2 = SecondFibonacciNumber;
-            for (int i = 2; i < length; i++)
-            {
-                int result = number1 + number2;
-                number1 = number2;
-                number2 = result;
-                yield return result;
-            }
+            return GetFibonacciNumbers(length);
         }
 
         #endregion // !public.
+
+        #region private
+
+        private static IEnumerable<BigInteger> GetFibonacciNumbers(int length)
+        {
+            BigInteger previous = FirstFibonacciNumber;
+            BigInteger current = SecondFibonacciNumber;
+            for (int i = 0; i < length; i++)
+            {
+                yield return previous;
+                var temp = previous;
+                previous = current;
+                current += temp;
+            }
+        }
+
+        #endregion // !private.
     }
 }

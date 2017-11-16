@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Logic.Domain;
 using Logic.Service.Exceptions;
 
@@ -51,7 +52,7 @@ namespace Logic.Service
         /// <exception cref="ServiceException">
         /// Thrown when an error occurred in service.
         /// </exception>
-        void RemoveBook(IPredicate<Book> predicate);
+        void RemoveBook(Predicate<Book> predicate);
 
         /// <summary>
         /// Looks for a book by the specified <paramref name="isbn"/> in the storage.
@@ -71,7 +72,7 @@ namespace Logic.Service
         /// <exception cref="ServiceException">
         /// Thrown when an error occurred in service.
         /// </exception>
-        IEnumerable<Book> FindBook(IPredicate<Book> predicate);
+        IEnumerable<Book> FindBook(Predicate<Book> predicate);
 
         /// <summary>
         /// Returns all books stored in the storage.

@@ -11,4 +11,3 @@ D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests
 D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\bin\Debug\NLog.dll
 D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\bin\Debug\Logger.pdb
 D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\bin\Debug\NLog.xml
-D:\epam\homework_git\NET.W.2017.Buiko.08\NET.W.2017.Buiko.08.01\Logic.NUnitTests\bin\Debug\NLog.config

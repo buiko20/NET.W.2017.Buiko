@@ -40,13 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\IPredicate.cs" />
     <Compile Include="Domain\Book.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Exceptions\ServiceException.cs" />
     <Compile Include="Service\IBookService.cs" />
     <Compile Include="Service\BookService.cs" />
-    <Compile Include="Service\RemoveAllBooksPredicate.cs" />
     <Compile Include="Storage\Exceptions\StorageException.cs" />
     <Compile Include="Storage\IBookStorage.cs" />
     <Compile Include="Storage\Implementation\BinaryFileBookStorage.cs" />

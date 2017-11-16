@@ -122,7 +122,7 @@ namespace Algorithm
         /// <param name="predicate">predicate determining the choice of an element</param>
         /// <returns>The numbers selected by the <paramref name="predicate"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="predicate"/> or <paramref name="numbers"/> is null.</exception>
-        public static int[] FilterDigit(IPredicate<int> predicate, params int[] numbers)
+        public static int[] FilterDigit(Predicate<int> predicate, params int[] numbers)
         {
             if (ReferenceEquals(predicate, null))
             {
@@ -139,7 +139,7 @@ namespace Algorithm
                 return new int[0];
             }
 
-            return numbers.Where(predicate.Choose).ToArray();
+            return numbers.Where(predicate.Invoke).ToArray();
         }
 
         /// <summary>
