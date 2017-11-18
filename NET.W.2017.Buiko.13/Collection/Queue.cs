@@ -85,13 +85,7 @@ namespace Collection
         #region ICollection
 
         /// <inheritdoc />
-        public int Count
-        {
-            get
-            {
-                return _size;
-            }
-        }
+        public int Count => _size;
 
         /// <inheritdoc />
         public bool IsSynchronized => false;
@@ -107,7 +101,7 @@ namespace Collection
             try
             {
                 // Array.Copy will verify the validity of the input parameters.
-                Array.Copy(_queue, array, _queue.Length);
+                Array.Copy(_queue, 0, array, index, _queue.Length);
             }
             catch (Exception e)
             {
@@ -133,6 +127,13 @@ namespace Collection
         #endregion // !IEnumerable.
 
         #endregion // !interface implementation.
+
+        #region object override
+
+        public override string ToString() =>
+            $"Queue version: {_version}. {base.ToString()}";
+
+        #endregion // !object override.
 
         #region other queue methods
 
@@ -161,7 +162,7 @@ namespace Collection
             try
             {
                 // Array.Copy will verify the validity of the input parameters.
-                Array.Copy(_queue, array, _queue.Length);
+                Array.Copy(_queue, 0, array, index, _queue.Length);
             }
             catch (Exception e)
             {

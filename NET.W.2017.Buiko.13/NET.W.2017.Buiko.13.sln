@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collection", "Collection\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collection.NUnitTests", "Collection.NUnitTests\Collection.NUnitTests.csproj", "{6D36582E-DD33-4CBA-B402-EF82E5FB8F8D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matrix", "Matrix\Matrix.csproj", "{20ADE2C8-1EFB-4063-A0C7-40096E37C58B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matrix.NUnitTests", "Matrix.NUnitTests\Matrix.NUnitTests.csproj", "{13B39F7A-AF99-441C-8989-130B0999F9F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{6D36582E-DD33-4CBA-B402-EF82E5FB8F8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D36582E-DD33-4CBA-B402-EF82E5FB8F8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D36582E-DD33-4CBA-B402-EF82E5FB8F8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20ADE2C8-1EFB-4063-A0C7-40096E37C58B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20ADE2C8-1EFB-4063-A0C7-40096E37C58B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20ADE2C8-1EFB-4063-A0C7-40096E37C58B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20ADE2C8-1EFB-4063-A0C7-40096E37C58B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13B39F7A-AF99-441C-8989-130B0999F9F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13B39F7A-AF99-441C-8989-130B0999F9F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13B39F7A-AF99-441C-8989-130B0999F9F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13B39F7A-AF99-441C-8989-130B0999F9F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

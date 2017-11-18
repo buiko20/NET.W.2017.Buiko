@@ -94,13 +94,7 @@ namespace Collection
         #region ICollection
 
         /// <inheritdoc cref="ICollection.Count"/>
-        public int Count
-        {
-            get
-            {
-                return _count;
-            }
-        }
+        public int Count => _count;
 
         public bool IsReadOnly { get; } = false;
 
@@ -120,7 +114,7 @@ namespace Collection
                 var temp = this.ToArray();
 
                 // Array.Copy will verify the validity of the input parameters.
-                Array.Copy(temp, array, temp.Length);
+                Array.Copy(temp, 0, array, index, temp.Length);
             }
             catch (Exception e)
             {
@@ -156,13 +150,45 @@ namespace Collection
                 var temp = this.ToArray();
 
                 // Array.Copy will verify the validity of the input parameters.
-                Array.Copy(temp, array, temp.Length);
+                Array.Copy(temp, 0, array, index, temp.Length);
             }
             catch (Exception e)
             {
                 throw new ArgumentException(e.Message);
             }
         }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Clears the tree.
+        /// </summary>
+        public void Clear()
+        {
+            _root = null;
+            _count = 0;
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Adds an <paramref name="item" /> to the tree. 
+        /// If such an <paramref name="item" /> already exists, then it updates its data.
+        /// </summary>
+        /// <param name="item">element to add to the tree</param>
+        /// <exception cref="T:System.ArgumentNullException">Exception thrown when <paramref name="item" /> is null.</exception>
+        public void Add(T item)
+        {
+            BinarySearchTreeHelper.Add(ref _root, item, OrderComparer);
+            _count++;
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Checks if an <paramref name="item" /> is in the tree.
+        /// </summary>
+        /// <param name="item">search item</param>
+        /// <returns>True is if such an element exists in the tree, false otherwise.</returns>
+        /// <exception cref="T:System.ArgumentNullException">Exception thrown when <paramref name="item" /> is null.</exception>
+        public bool Contains(T item) => this.Contains(item, OrderComparer);
 
         public bool Remove(T item)
         {
@@ -209,26 +235,6 @@ namespace Collection
 
             return BinarySearchTreeHelper.Find(_root, selectorAndGuider);
         }
-
-        /// <summary>
-        /// Adds an <paramref name="item"/> to the tree. 
-        /// If such an <paramref name="item"/> already exists, then it updates its data.
-        /// </summary>
-        /// <param name="item">element to add to the tree</param>
-        /// <exception cref="ArgumentNullException">Exception thrown when <paramref name="item"/> is null.</exception>
-        public void Add(T item)
-        {
-            BinarySearchTreeHelper.Add(ref _root, item, OrderComparer);
-            _count++;
-        }           
-
-        /// <summary>
-        /// Checks if an <paramref name="item"/> is in the tree.
-        /// </summary>
-        /// <param name="item">search item</param>
-        /// <returns>True is if such an element exists in the tree, false otherwise.</returns>
-        /// <exception cref="ArgumentNullException">Exception thrown when <paramref name="item"/> is null.</exception>
-        public bool Contains(T item) => this.Contains(item, OrderComparer);
 
         /// <summary>
         /// Checks if an <paramref name="item"/> is in the tree.
@@ -332,6 +338,9 @@ namespace Collection
             }
         }
 
+        /// <see cref="CopyTo(T[], int)"/>
+        public void CopyTo(T[] array) => this.CopyTo(array, 0);
+
         /// <summary>
         /// Copies the elements of the tree into an array.
         /// </summary>
@@ -346,15 +355,6 @@ namespace Collection
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Clears the tree.
-        /// </summary>
-        public void Clear()
-        {
-            _root = null;
-            _count = 0;
         }
 
         #endregion // !other.
