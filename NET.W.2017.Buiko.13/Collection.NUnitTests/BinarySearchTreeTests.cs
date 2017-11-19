@@ -271,6 +271,20 @@ namespace Collection.NUnitTests
             Assert.IsFalse(tree.Contains(new Point(88, 888)));
         }
 
+        [TestCase(new[] { 100, 130, 50, 25, 70, 140, 120 }, 140, ExpectedResult = new[] { 100, 50, 25, 70, 130, 120 })]
+        [TestCase(new[] { 100, 130, 50, 25, 70, 140, 120 }, 25, ExpectedResult = new[] { 100, 50, 70, 130, 120, 140 })]
+        [TestCase(new[] { 100, 130, 50, 25, 70, 140, 120 }, 100, ExpectedResult = new[] { 120, 50, 25, 70, 130, 140 })]
+        [TestCase(new[] { 100, 130, 50, 25, 70, 140, 120 }, 130, ExpectedResult = new[] { 100, 50, 25, 70, 140, 120 })]
+        [TestCase(new[] { 100, 130, 50, 25, 70, 140, 120 }, 1500, ExpectedResult = new[] { 100, 50, 25, 70, 130, 120, 140 })]
+        public int[] RemoveTest(int[] array, int item)
+        {
+            var tree = new BinarySearchTree<int>(array);
+            tree.Remove(item);
+
+            var temp = tree.ToArray();
+            return temp;
+        }
+
         private static void VerifyOrder<T>(IReadOnlyList<T> items, Func<IEnumerable<T>> getEnumerator, Action<T, T> assert)
         {
             int i = 0;

@@ -31,13 +31,14 @@ namespace Collection
                 return;
             }
 
-            if (orderComparer(root.Data, item) == 0)
+            var comparisonResult = orderComparer(root.Data, item);
+            if (comparisonResult == 0)
             {
                 root.Data = item;
                 return;
             }
 
-            if (orderComparer(root.Data, item) > 0)
+            if (comparisonResult > 0)
             {
                 Add(ref root.Left, item, orderComparer);
                 return;
@@ -55,12 +56,13 @@ namespace Collection
                     return default(T);
                 }
 
-                if (selectorAndGuider(root.Data) == 0)
+                var comparisonResult = selectorAndGuider(root.Data);
+                if (comparisonResult == 0)
                 {
                     return root.Data;
                 }
 
-                if (selectorAndGuider(root.Data) > 0)
+                if (comparisonResult > 0)
                 {
                     root = root.Left;
                     continue;
@@ -79,12 +81,13 @@ namespace Collection
                     return false;
                 }
 
-                if (orderComparer(root.Data, item) == 0)
+                var comparisonResult = orderComparer(root.Data, item);
+                if (comparisonResult == 0)
                 {
                     return true;
                 }
 
-                if (orderComparer(root.Data, item) > 0)
+                if (comparisonResult > 0)
                 {
                     root = root.Left;
                     continue;
@@ -92,6 +95,64 @@ namespace Collection
 
                 root = root.Rigth;
             }
+        }
+
+        internal static bool Remove<T>(ref TreeNode<T> root, ref TreeNode<T> parent, T item, Comparison<T> orderComparer)
+        {
+            if (ReferenceEquals(root, null))
+            {
+                return false;
+            }
+
+            var comparisonResult = orderComparer(item, root.Data);
+            if (comparisonResult < 0)
+            {
+                parent = root;
+                return Remove(ref root.Left, ref parent, item, orderComparer);
+            }
+
+            if (comparisonResult > 0)
+            {
+                parent = root;
+                return Remove(ref root.Rigth, ref parent, item, orderComparer);
+            }
+
+            if (ReferenceEquals(root.Left, null) && ReferenceEquals(root.Rigth, null))
+            {
+                root = null;
+                return true;
+            }
+
+            if (!ReferenceEquals(root.Left, null) && ReferenceEquals(root.Rigth, null))
+            {
+                root = root.Left;
+                return true;
+            }
+
+            if (ReferenceEquals(root.Left, null))
+            {
+                root = root.Rigth;
+                return true;
+            }
+
+            if (ReferenceEquals(root.Rigth.Left, null))
+            {
+                root.Data = root.Rigth.Data;
+                root.Rigth = root.Rigth.Rigth;
+                return true;
+            }
+
+            var temp = root.Rigth;
+            while (!ReferenceEquals(temp.Left, null))
+            {
+                parent = temp;
+                temp = temp.Left;
+            }
+
+            var data = temp.Data;           
+            Remove(ref root, ref parent, data, orderComparer);
+            root.Data = data;
+            return true;
         }
 
         internal static IEnumerable<T> GetPreorderEnumerator<T>(TreeNode<T> root)

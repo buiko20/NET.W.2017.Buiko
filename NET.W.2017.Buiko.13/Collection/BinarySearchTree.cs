@@ -190,10 +190,9 @@ namespace Collection
         /// <exception cref="T:System.ArgumentNullException">Exception thrown when <paramref name="item" /> is null.</exception>
         public bool Contains(T item) => this.Contains(item, OrderComparer);
 
-        public bool Remove(T item)
-        {
-            throw new NotImplementedException();
-        }
+        /// <inheritdoc />
+        public bool Remove(T item) =>
+            this.Remove(item, OrderComparer);
 
         #endregion // !ICollection.
 
@@ -285,6 +284,54 @@ namespace Collection
             }
 
             return BinarySearchTreeHelper.Contains(_root, item, orderComparer);
+        }
+
+        /// <summary>
+        /// Remove <paramref name="item"/> from the tree.
+        /// </summary>
+        /// <param name="item">item to remove</param>
+        /// <param name="orderComparer">element order comparer</param>
+        /// <returns>True if the element is deleted, false otherwise.</returns>
+        /// <exception cref="ArgumentNullException">Exception thrown when
+        /// <paramref name="item"/> or <paramref name="orderComparer"/> is null.</exception>
+        public bool Remove(T item, IComparer<T> orderComparer)
+        {
+            if (ReferenceEquals(orderComparer, null))
+            {
+                throw new ArgumentNullException(nameof(orderComparer));
+            }
+
+            return this.Remove(item, orderComparer.Compare);
+        }
+
+        /// <summary>
+        /// Remove <paramref name="item"/> from the tree.
+        /// </summary>
+        /// <param name="item">item to remove</param>
+        /// <param name="orderComparer">element order comparer</param>
+        /// <returns>True if the element is deleted, false otherwise.</returns>
+        /// <exception cref="ArgumentNullException">Exception thrown when
+        /// <paramref name="item"/> or <paramref name="orderComparer"/> is null.</exception>
+        public bool Remove(T item, Comparison<T> orderComparer)
+        {
+            if (ReferenceEquals(item, null))
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            if (ReferenceEquals(orderComparer, null))
+            {
+                throw new ArgumentNullException(nameof(orderComparer));
+            }
+
+            var temp = _root;
+            var isRemoved = BinarySearchTreeHelper.Remove(ref _root, ref temp, item, orderComparer);
+            if (isRemoved)
+            {
+                _count--;
+            }
+
+            return isRemoved;
         }
 
         /// <summary>
