@@ -16,8 +16,17 @@ namespace Matrix
         /// <returns>Sum of two matrices.</returns>
         /// <exception cref="ArgumentNullException">Exception thrown when <paramref name="addMatrix"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Exception thrown when the addition operation is impossible.</exception>
-        public static SquareMatrix<T> Add<T>(this SquareMatrix<T> matrix, SquareMatrix<T> addMatrix) =>
-            matrix.Add(addMatrix, (arg1, arg2) => (dynamic)arg1 + (dynamic)arg2);
+        public static SquareMatrix<T> Add<T>(this SquareMatrix<T> matrix, SquareMatrix<T> addMatrix)
+        {
+            try
+            {
+                return matrix.Add(addMatrix, (arg1, arg2) => (dynamic)arg1 + (dynamic)arg2);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException(e.Message, e);
+            }
+        }           
 
         /// <summary>
         /// Summarizes two matrices.
@@ -25,6 +34,7 @@ namespace Matrix
         /// <typeparam name="T">Matrix element type.</typeparam>
         /// <param name="matrix">first summand</param>
         /// <param name="addMatrix">second term</param>
+        /// <param name="sumOperation">element sum operation</param>
         /// <returns>Sum of two matrices.</returns>
         /// <exception cref="ArgumentNullException">Exception thrown when <paramref name="addMatrix"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Exception thrown when the addition operation is impossible.</exception>

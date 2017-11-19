@@ -1,4 +1,6 @@
-﻿namespace Matrix
+﻿using System;
+
+namespace Matrix
 {
     /// <inheritdoc />
     /// <summary>
@@ -32,6 +34,17 @@
         }
 
         #endregion // !constructors.
+
+        #region protected
+
+        /// <inheritdoc />
+        protected override void SetValue(T value, int i, int j)
+        {
+            this.matrix[i, j] = value;
+            this.matrix[j, i] = value;
+        }
+
+        #endregion // !protected.
 
         #region private
 
