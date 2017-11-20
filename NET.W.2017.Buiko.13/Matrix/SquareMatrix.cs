@@ -10,7 +10,15 @@ namespace Matrix
     {
         #region private fileds
 
-        private readonly T[,] matrix;
+        /*
+         
+        |1 2 3|
+        |4 5 6| --> matrix = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        |7 8 9|
+
+        */
+
+        private readonly T[] matrix;
 
         #endregion
 
@@ -19,20 +27,35 @@ namespace Matrix
         /// <inheritdoc />
         public SquareMatrix(int order) : base(order)
         {
-            this.matrix = new T[order, order];
+            this.matrix = new T[order * order];
         }
 
         /// <inheritdoc />
         public SquareMatrix(T[,] sorceMatrix) : base(sorceMatrix)
         {
-            this.matrix = new T[this.Order, this.Order];
-            Array.Copy(sorceMatrix, this.matrix, this.Order * this.Order);
+            this.matrix = new T[this.Order * this.Order];
+            for (int i = 0; i < this.Order; i++)
+            {
+                for (int j = 0; j < this.Order; j++)
+                {
+                    int index = ComputeIndex(i, j, this.Order);
+                    this.matrix[index] = sorceMatrix[i, j];
+                }
+            }
         }
 
         /// <inheritdoc />
         public SquareMatrix(AbstractSquareMatrix<T> sorceMatrix) : base(sorceMatrix)
         {
-            this.matrix = sorceMatrix.ToArray();
+            this.matrix = new T[this.Order * this.Order];
+            for (int i = 0; i < this.Order; i++)
+            {
+                for (int j = 0; j < this.Order; j++)
+                {
+                    int index = ComputeIndex(i, j, this.Order);
+                    this.matrix[index] = sorceMatrix[i, j];
+                }
+            }
         }
 
         #endregion // !constructors.
@@ -41,12 +64,19 @@ namespace Matrix
 
         /// <inheritdoc />
         protected override void SetValue(T value, int i, int j) =>
-            this.matrix[i, j] = value;
+            this.matrix[ComputeIndex(i, j, this.Order)] = value;
 
         /// <inheritdoc />
         protected override T GetValue(int i, int j) =>
-            this.matrix[i, j];
+            this.matrix[ComputeIndex(i, j, this.Order)];
 
         #endregion // !protected.
+
+        #region private
+
+        private static int ComputeIndex(int i, int j, int columnCount) =>
+            (i * columnCount) + j;
+
+        #endregion // !private.
     }
 }

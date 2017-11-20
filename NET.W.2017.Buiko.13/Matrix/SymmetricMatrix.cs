@@ -7,6 +7,13 @@
     {
         #region private fields
 
+        /*
+         
+        |1 2 3|
+        |4 5 6| --> matrix = { 1, 2, 3, 5, 6, 9 };
+        |7 8 9|
+
+        */
         private readonly T[] matrix;
 
         #endregion // !private fields.

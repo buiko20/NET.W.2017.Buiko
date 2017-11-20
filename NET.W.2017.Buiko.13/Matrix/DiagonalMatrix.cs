@@ -6,6 +6,14 @@ namespace Matrix
     {
         #region private fields
 
+        /*
+         
+        |1 2 3|
+        |4 5 6| --> matrix = { 1, 5, 9 };
+        |7 8 9|
+
+        */
+
         private readonly T[] diagonalElements;
 
         #endregion // !private fields.
