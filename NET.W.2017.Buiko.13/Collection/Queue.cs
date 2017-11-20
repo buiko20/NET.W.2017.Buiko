@@ -84,7 +84,7 @@ namespace Collection
 
         #region ICollection
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="ICollection.Count" />
         public int Count => _size;
 
         /// <inheritdoc />
@@ -100,7 +100,6 @@ namespace Collection
 
             try
             {
-                // Array.Copy will verify the validity of the input parameters.
                 Array.Copy(_queue, 0, array, index, _queue.Length);
             }
             catch (Exception e)
@@ -128,13 +127,6 @@ namespace Collection
 
         #endregion // !interface implementation.
 
-        #region object override
-
-        public override string ToString() =>
-            $"Queue version: {_version}. {base.ToString()}";
-
-        #endregion // !object override.
-
         #region other queue methods
 
         /// <summary>
@@ -154,14 +146,13 @@ namespace Collection
                 throw new ArgumentNullException(nameof(array));
             }
 
-            if ((index < 0) || (index > array.Length))
+            if (index < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} must be between 0 and {array.Length}.");
+                throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} must be greater than or equal to 0.");
             }
 
             try
             {
-                // Array.Copy will verify the validity of the input parameters.
                 Array.Copy(_queue, 0, array, index, _queue.Length);
             }
             catch (Exception e)
@@ -251,7 +242,6 @@ namespace Collection
                 throw new ArgumentNullException(nameof(item));
             }
 
-            // Contains use EqualityComparer<T>.Default.
             return _queue.Contains(item);
         }
 

@@ -1,12 +1,21 @@
-﻿namespace Matrix
+﻿using System;
+
+namespace Matrix
 {
-    public class DiagonalMatrix<T> : SquareMatrix<T>
+    public class DiagonalMatrix<T> : AbstractSquareMatrix<T>
     {
+        #region private fields
+
+        private readonly T[] diagonalElements;
+
+        #endregion // !private fields.
+
         #region constructors
 
         /// <inheritdoc />
         public DiagonalMatrix(int order) : base(order)
         {
+            this.diagonalElements = new T[order];
         }
 
         /// <inheritdoc />
@@ -15,16 +24,48 @@
         /// </summary>
         public DiagonalMatrix(T[,] sorceMatrix) : base(sorceMatrix)
         {
-            this.MakeMatrixDiagonal();
+            this.diagonalElements = new T[this.Order];
+            for (int i = 0; i < this.Order; i++)
+            {
+                this.diagonalElements[i] = sorceMatrix[i, i];
+            }
         }
 
         /// <inheritdoc />
         /// <summary>
         /// Creates a matrix by transforming the <paramref name="sorceMatrix"/> into a diagonal matrix.
         /// </summary>
-        public DiagonalMatrix(Matrix<T> sorceMatrix) : base(sorceMatrix)
+        public DiagonalMatrix(AbstractSquareMatrix<T> sorceMatrix) : base(sorceMatrix)
         {
-            this.MakeMatrixDiagonal();
+            this.diagonalElements = new T[this.Order];
+            for (int i = 0; i < this.Order; i++)
+            {
+                this.diagonalElements[i] = sorceMatrix[i, i];
+            }
+        }
+
+        /// <summary>
+        /// Creates a diagonal matrix based on <paramref name="matrixDiagonalElements"/>.
+        /// </summary>
+        /// <param name="matrixDiagonalElements">matrix diagonal elements</param>
+        /// <exception cref="ArgumentNullException">Exception thrown when <paramref name="matrixDiagonalElements"/> is null.</exception>
+        /// <exception cref="ArgumentException">Exception thrown when <paramref name="matrixDiagonalElements"/>
+        /// length equals to 0.</exception>
+        public DiagonalMatrix(T[] matrixDiagonalElements) : base()
+        {
+            if (object.ReferenceEquals(matrixDiagonalElements, null))
+            {
+                throw new ArgumentNullException(nameof(matrixDiagonalElements));
+            }
+
+            if (matrixDiagonalElements.Length == 0)
+            {
+                throw new ArgumentException($"{nameof(matrixDiagonalElements)} is empty", nameof(matrixDiagonalElements));
+            }
+
+            this.Order = matrixDiagonalElements.Length;
+            this.diagonalElements = new T[this.Order];
+            Array.Copy(matrixDiagonalElements, this.diagonalElements, this.Order);
         }
 
         #endregion // !constructors.
@@ -36,28 +77,14 @@
         {
             if (i == j)
             {
-                this.matrix[i, j] = value;
+                this.diagonalElements[i] = value;
             }
         }
+
+        /// <inheritdoc />
+        protected override T GetValue(int i, int j) =>
+            i == j ? this.diagonalElements[i] : default(T);
 
         #endregion // !protected.
-
-        #region private
-
-        private void MakeMatrixDiagonal()
-        {
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < matrix.GetLength(1); j++)
-                {
-                    if (i != j)
-                    {
-                        this.matrix[i, j] = default(T);
-                    }
-                }
-            }
-        }
-
-        #endregion
     }
 }

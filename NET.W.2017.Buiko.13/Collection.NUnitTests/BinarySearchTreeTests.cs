@@ -16,27 +16,6 @@ namespace Collection.NUnitTests
         }
 
         [Test]
-        public void FindTest()
-        {
-            var array = new[] { 100, 130, 50, 25, 70 };
-            var tree = new BinarySearchTree<int>(array);
-  
-            // We want to find the first element in the tree with a value from 20 to 30. 
-            // Just Containes will show whether there is an element or not, 
-            // but does not return the element itself. 
-            // Returns 0 if the element is found. 
-            // If the item is greater than 30, then return 1, otherwise 0.
-            Func<int, int> selector = (item) =>
-            {
-                if ((item < 30) && (item > 20)) return 0;
-                if (item > 30) return 1;
-                return -1;
-            };
-
-            Assert.AreEqual(25, tree.Find(selector));
-        }
-
-        [Test]
         public void AddIntTest()
         {
             var array = new[] { 100, 130, 50, 25 ,70 };

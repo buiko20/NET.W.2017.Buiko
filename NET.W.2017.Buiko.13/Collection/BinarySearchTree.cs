@@ -8,13 +8,12 @@ namespace Collection
     /// The class represents a simple binary search tree.
     /// </summary>
     /// <typeparam name="T">Type of tree elements.</typeparam>
-    public class BinarySearchTree<T> : ICollection<T>, IEnumerable<T>, IReadOnlyCollection<T>, IEnumerable, ICollection
+    public class BinarySearchTree<T> : ICollection<T>, IReadOnlyCollection<T>, IEnumerable<T>, IEnumerable
     {
         #region private fields
 
         private TreeNode<T> _root;
         private Comparison<T> _orderComparer;
-        private int _count;
 
         #endregion // !private fields.
 
@@ -93,46 +92,13 @@ namespace Collection
 
         #region ICollection
 
-        /// <inheritdoc cref="ICollection.Count"/>
-        public int Count => _count;
+        /// <inheritdoc cref="ICollection{T}.Count" />
+        public int Count { get; private set; }
 
+        /// <inheritdoc />
         public bool IsReadOnly { get; } = false;
 
         /// <inheritdoc />
-        public object SyncRoot { get; } = new object();
-
-        /// <inheritdoc />
-        public bool IsSynchronized => false;
-
-        /// <inheritdoc />
-        void ICollection.CopyTo(Array array, int index)
-        {
-            BinarySearchTreeHelper.VerifyInput(array, index);
-
-            try
-            {
-                var temp = this.ToArray();
-
-                // Array.Copy will verify the validity of the input parameters.
-                Array.Copy(temp, 0, array, index, temp.Length);
-            }
-            catch (Exception e)
-            {
-                throw new ArgumentException(e.Message);
-            }
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Copies the elements of the tree into an <paramref name="array" /> starting from <paramref name="index" />.
-        /// </summary>
-        /// <param name="array">array where the elements of the tree will be copied</param>
-        /// <param name="index">index in the array from which the elements of the tree will be written</param>
-        /// <exception cref="T:System.ArgumentNullException">Exception thrown when <paramref name="array" /> is null.</exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">Exception thrown when <paramref name="index" /> less than 0 or
-        /// <paramref name="index" /> greater than <paramref name="array" /> length.</exception>
-        /// <exception cref="T:System.ArgumentException">Exception thrown when <paramref name="array" /> 
-        /// and <paramref name="index" /> are not valid for the copy operation.</exception>
         public void CopyTo(T[] array, int index)
         {
             if (ReferenceEquals(array, null))
@@ -140,16 +106,14 @@ namespace Collection
                 throw new ArgumentNullException(nameof(array));
             }
 
-            if ((index < 0) || (index > array.Length))
+            if (index < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} must be between 0 and {array.Length}.");
+                throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} must be greater than or equal to 0.");
             }
 
             try
             {
                 var temp = this.ToArray();
-
-                // Array.Copy will verify the validity of the input parameters.
                 Array.Copy(temp, 0, array, index, temp.Length);
             }
             catch (Exception e)
@@ -159,40 +123,44 @@ namespace Collection
         }
 
         /// <inheritdoc />
-        /// <summary>
-        /// Clears the tree.
-        /// </summary>
         public void Clear()
         {
             _root = null;
-            _count = 0;
+            Count = 0;
         }
 
         /// <inheritdoc />
-        /// <summary>
-        /// Adds an <paramref name="item" /> to the tree. 
-        /// If such an <paramref name="item" /> already exists, then it updates its data.
-        /// </summary>
-        /// <param name="item">element to add to the tree</param>
-        /// <exception cref="T:System.ArgumentNullException">Exception thrown when <paramref name="item" /> is null.</exception>
         public void Add(T item)
         {
-            BinarySearchTreeHelper.Add(ref _root, item, OrderComparer);
-            _count++;
+            if (ReferenceEquals(item, null))
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            this.Add(ref _root, item);
+            Count++;
         }
 
         /// <inheritdoc />
-        /// <summary>
-        /// Checks if an <paramref name="item" /> is in the tree.
-        /// </summary>
-        /// <param name="item">search item</param>
-        /// <returns>True is if such an element exists in the tree, false otherwise.</returns>
-        /// <exception cref="T:System.ArgumentNullException">Exception thrown when <paramref name="item" /> is null.</exception>
-        public bool Contains(T item) => this.Contains(item, OrderComparer);
+        public bool Contains(T item) => this.Contains(_root, item);
 
         /// <inheritdoc />
-        public bool Remove(T item) =>
-            this.Remove(item, OrderComparer);
+        public bool Remove(T item)
+        {
+            if (ReferenceEquals(item, null))
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var parent = _root;
+            var isRemoved = this.Remove(ref _root, ref parent, item);
+            if (isRemoved)
+            {
+                Count--;
+            }
+
+            return isRemoved;
+        }
 
         #endregion // !ICollection.
 
@@ -212,129 +180,6 @@ namespace Collection
         #region other
 
         /// <summary>
-        /// Searches for an element defined by a selector.
-        /// </summary>
-        /// <param name="selectorAndGuider"> delegate who checks whether the element is suitable, 
-        /// and if the element does not fit, then it indicates in which direction to move along the tree.
-        /// </param>
-        /// <returns>Element or default(T) if the item is not found.</returns>
-        /// <remarks> 
-        /// <paramref name="selectorAndGuider"/> return 0 if the element is the one you are looking for. 
-        /// Otherwise return the value greater than 0 if you need to move left along the tree or 
-        /// less than 0 if you need to move to the right along the tree.
-        /// </remarks>
-        /// <exception cref="ArgumentNullException">Exception thrown when <paramref name="selectorAndGuider"/> is null.</exception>
-        public T Find(Func<T, int> selectorAndGuider)
-        {
-            // Do we need such an opportunity for a tree? An example of use is in the tests.
-            if (ReferenceEquals(selectorAndGuider, null))
-            {
-                throw new ArgumentNullException(nameof(selectorAndGuider));
-            }
-
-            return BinarySearchTreeHelper.Find(_root, selectorAndGuider);
-        }
-
-        /// <summary>
-        /// Checks if an <paramref name="item"/> is in the tree.
-        /// </summary>
-        /// <remarks>
-        /// The method allows you to search for items in a binary 
-        /// tree in an order different from the order in which the 
-        /// tree was built. Allows you to walk on a binary tree 
-        /// in any direction to search for items.
-        /// </remarks>
-        /// <param name="item">search item</param>
-        /// <param name="orderComparer">element order comparer</param>
-        /// <returns>True is if such an element exists in the tree, false otherwise.</returns>
-        /// <exception cref="ArgumentNullException">Exception thrown when <paramref name="item"/> is null.</exception>
-        public bool Contains(T item, IComparer<T> orderComparer)
-        {
-            if (ReferenceEquals(orderComparer, null))
-            {
-                throw new ArgumentNullException(nameof(orderComparer));
-            }
-
-            return this.Contains(item, orderComparer.Compare);
-        }
-
-        /// <summary>
-        /// Checks if an <paramref name="item"/> is in the tree.
-        /// </summary>
-        /// <remarks>
-        /// The method allows you to search for items in a binary 
-        /// tree in an order different from the order in which the 
-        /// tree was built. Allows you to walk on a binary tree 
-        /// in any direction to search for items.
-        /// </remarks>
-        /// <param name="item">search item</param>
-        /// <param name="orderComparer">element order comparer</param>
-        /// <returns>True is if such an element exists in the tree, false otherwise.</returns>
-        /// <exception cref="ArgumentNullException">Exception thrown when <paramref name="item"/> is null.</exception>
-        public bool Contains(T item, Comparison<T> orderComparer)
-        {
-            if (ReferenceEquals(item, null))
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
-            if (ReferenceEquals(orderComparer, null))
-            {
-                throw new ArgumentNullException(nameof(orderComparer));
-            }
-
-            return BinarySearchTreeHelper.Contains(_root, item, orderComparer);
-        }
-
-        /// <summary>
-        /// Remove <paramref name="item"/> from the tree.
-        /// </summary>
-        /// <param name="item">item to remove</param>
-        /// <param name="orderComparer">element order comparer</param>
-        /// <returns>True if the element is deleted, false otherwise.</returns>
-        /// <exception cref="ArgumentNullException">Exception thrown when
-        /// <paramref name="item"/> or <paramref name="orderComparer"/> is null.</exception>
-        public bool Remove(T item, IComparer<T> orderComparer)
-        {
-            if (ReferenceEquals(orderComparer, null))
-            {
-                throw new ArgumentNullException(nameof(orderComparer));
-            }
-
-            return this.Remove(item, orderComparer.Compare);
-        }
-
-        /// <summary>
-        /// Remove <paramref name="item"/> from the tree.
-        /// </summary>
-        /// <param name="item">item to remove</param>
-        /// <param name="orderComparer">element order comparer</param>
-        /// <returns>True if the element is deleted, false otherwise.</returns>
-        /// <exception cref="ArgumentNullException">Exception thrown when
-        /// <paramref name="item"/> or <paramref name="orderComparer"/> is null.</exception>
-        public bool Remove(T item, Comparison<T> orderComparer)
-        {
-            if (ReferenceEquals(item, null))
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
-            if (ReferenceEquals(orderComparer, null))
-            {
-                throw new ArgumentNullException(nameof(orderComparer));
-            }
-
-            var temp = _root;
-            var isRemoved = BinarySearchTreeHelper.Remove(ref _root, ref temp, item, orderComparer);
-            if (isRemoved)
-            {
-                _count--;
-            }
-
-            return isRemoved;
-        }
-
-        /// <summary>
         /// Directly traversing a tree.
         /// </summary>
         /// <returns>The next element in the order of traversing the tree.</returns>
@@ -345,7 +190,7 @@ namespace Collection
                 yield break;
             }
             
-            foreach (var element in BinarySearchTreeHelper.GetPreorderEnumerator(_root))
+            foreach (var element in GetPreorderEnumerator(_root))
             {
                 yield return element;
             }
@@ -362,7 +207,7 @@ namespace Collection
                 yield break;
             }
 
-            foreach (var element in BinarySearchTreeHelper.GetInorderEnumerator(_root))
+            foreach (var element in GetInorderEnumerator(_root))
             {
                 yield return element;
             }
@@ -379,14 +224,11 @@ namespace Collection
                 yield break;
             }
 
-            foreach (var element in BinarySearchTreeHelper.GetPostorderEnumerator(_root))
+            foreach (var element in GetPostorderEnumerator(_root))
             {
                 yield return element;
             }
         }
-
-        /// <see cref="CopyTo(T[], int)"/>
-        public void CopyTo(T[] array) => this.CopyTo(array, 0);
 
         /// <summary>
         /// Copies the elements of the tree into an array.
@@ -394,7 +236,7 @@ namespace Collection
         /// <returns>Array of tree elements</returns>
         public T[] ToArray()
         {
-            var result = new T[_count];
+            var result = new T[Count];
             int i = 0;
             foreach (var item in this)
             {
@@ -409,6 +251,93 @@ namespace Collection
         #endregion // !public.
 
         #region private
+
+        private static IComparer<T> GetDefaultOrderComparer()
+        {
+            var type = typeof(T);
+
+            if (type == typeof(string))
+            {
+                return StringComparer.CurrentCulture as IComparer<T>;
+            }
+
+            if ((!ReferenceEquals(type.GetInterface("IComparable`1"), null)) ||
+                (!ReferenceEquals(type.GetInterface("IComparable"), null)))
+            {
+                return Comparer<T>.Default;
+            }
+
+            throw new ArgumentException("At least one object must implement IComparable interface.");
+        }
+
+        private static IEnumerable<T> GetPreorderEnumerator(TreeNode<T> root)
+        {
+            while (true)
+            {
+                yield return root.Data;
+
+                if (!ReferenceEquals(root.Left, null))
+                {
+                    foreach (var item in GetPreorderEnumerator(root.Left))
+                    {
+                        yield return item;
+                    }
+                }
+
+                if (!ReferenceEquals(root.Rigth, null))
+                {
+                    root = root.Rigth;
+                    continue;
+                }
+
+                break;
+            }
+        }
+
+        private static IEnumerable<T> GetInorderEnumerator(TreeNode<T> root)
+        {
+            while (true)
+            {
+                if (!ReferenceEquals(root.Left, null))
+                {
+                    foreach (var item in GetInorderEnumerator(root.Left))
+                    {
+                        yield return item;
+                    }
+                }
+
+                yield return root.Data;
+
+                if (!ReferenceEquals(root.Rigth, null))
+                {
+                    root = root.Rigth;
+                    continue;
+                }
+
+                break;
+            }
+        }
+
+        private static IEnumerable<T> GetPostorderEnumerator(TreeNode<T> root)
+        {
+            if (!ReferenceEquals(root.Left, null))
+            {
+                foreach (var item in GetPostorderEnumerator(root.Left))
+                {
+                    yield return item;
+                }
+            }
+
+            if (!ReferenceEquals(root.Rigth, null))
+            {
+                foreach (var item in GetPostorderEnumerator(root.Rigth))
+                {
+                    yield return item;
+                }
+            }
+
+            yield return root.Data;
+        }
 
         private Comparison<T> OrderComparer
         {
@@ -430,7 +359,7 @@ namespace Collection
 
         private void SetDefaultOrderComparer()
         {
-            var temp = BinarySearchTreeHelper.GetDefaultOrderComparer<T>();
+            var temp = GetDefaultOrderComparer();
             _orderComparer = (item1, item2) => temp.Compare(item1, item2);
         }
 
@@ -445,6 +374,113 @@ namespace Collection
             {
                 this.Add(item);
             }
+        }
+
+        private void Add(ref TreeNode<T> root, T item)
+        {
+            if (ReferenceEquals(root, null))
+            {
+                root = new TreeNode<T>(null, null, item);
+                return;
+            }
+
+            var comparisonResult = OrderComparer(root.Data, item);
+            if (comparisonResult == 0)
+            {
+                root.Data = item;
+                return;
+            }
+
+            if (comparisonResult > 0)
+            {
+                Add(ref root.Left, item);
+                return;
+            }
+
+            Add(ref root.Rigth, item);
+        }
+
+        private bool Contains(TreeNode<T> root, T item)
+        {
+            while (true)
+            {
+                if (ReferenceEquals(root, null))
+                {
+                    return false;
+                }
+
+                var comparisonResult = OrderComparer(root.Data, item);
+                if (comparisonResult == 0)
+                {
+                    return true;
+                }
+
+                if (comparisonResult > 0)
+                {
+                    root = root.Left;
+                    continue;
+                }
+
+                root = root.Rigth;
+            }
+        }
+
+        private bool Remove(ref TreeNode<T> root, ref TreeNode<T> parent, T item)
+        {
+            if (ReferenceEquals(root, null))
+            {
+                return false;
+            }
+
+            var comparisonResult = OrderComparer(item, root.Data);
+            if (comparisonResult < 0)
+            {
+                parent = root;
+                return Remove(ref root.Left, ref parent, item);
+            }
+
+            if (comparisonResult > 0)
+            {
+                parent = root;
+                return Remove(ref root.Rigth, ref parent, item);
+            }
+
+            if (ReferenceEquals(root.Left, null) && ReferenceEquals(root.Rigth, null))
+            {
+                root = null;
+                return true;
+            }
+
+            if (!ReferenceEquals(root.Left, null) && ReferenceEquals(root.Rigth, null))
+            {
+                root = root.Left;
+                return true;
+            }
+
+            if (ReferenceEquals(root.Left, null))
+            {
+                root = root.Rigth;
+                return true;
+            }
+
+            if (ReferenceEquals(root.Rigth.Left, null))
+            {
+                root.Data = root.Rigth.Data;
+                root.Rigth = root.Rigth.Rigth;
+                return true;
+            }
+
+            var temp = root.Rigth;
+            while (!ReferenceEquals(temp.Left, null))
+            {
+                parent = temp;
+                temp = temp.Left;
+            }
+
+            var data = temp.Data;
+            Remove(ref root, ref parent, data);
+            root.Data = data;
+            return true;
         }
 
         #endregion // !private.
