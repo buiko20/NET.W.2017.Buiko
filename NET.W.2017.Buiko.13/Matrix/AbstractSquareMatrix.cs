@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Matrix
 {
@@ -10,7 +8,7 @@ namespace Matrix
     /// Abstract class representing the square matrix.
     /// </summary>
     /// <typeparam name="T">Matrix element type.</typeparam>
-    public abstract class AbstractSquareMatrix<T> : IEnumerable<T>, IEquatable<AbstractSquareMatrix<T>>, IEnumerable
+    public abstract class AbstractSquareMatrix<T> : IEnumerable<T>, IEnumerable
     {
         #region public 
 
@@ -138,39 +136,6 @@ namespace Matrix
         #region interface implementation
 
         /// <inheritdoc />
-        public bool Equals(AbstractSquareMatrix<T> other)
-        {
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            if (ReferenceEquals(other, null))
-            {
-                return false;
-            }
-
-            if (other.Order != this.Order)
-            {
-                return false;
-            }
-
-            var equalityComparer = EqualityComparer<T>.Default;
-            for (int i = 0; i < this.Order; i++)
-            {
-                for (int j = 0; j < this.Order; j++)
-                {
-                    if (!equalityComparer.Equals(this[i, j], other[i, j]))
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        /// <inheritdoc />
         public IEnumerator<T> GetEnumerator()
         {
             for (int i = 0; i < this.Order; i++)
@@ -187,59 +152,6 @@ namespace Matrix
             this.GetEnumerator();
 
         #endregion // !interface implementation.
-
-        #region object override
-
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            var result = new StringBuilder(this.Order * this.Order);
-
-            for (int i = 0; i < this.Order; i++)
-            {
-                for (int j = 0; j < this.Order; j++)
-                {
-                    result.Append(this.GetValue(i, j));
-                }
-
-                result.Append(Environment.NewLine);
-            }
-
-            return result.ToString();
-        }
-
-        /// <inheritdoc />
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (ReferenceEquals(obj, null))
-            {
-                return false;
-            }
-
-            if (this.GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            return this.Equals((AbstractSquareMatrix<T>)obj);
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = this.Aggregate(0, (current, element) => (current * 397) ^ element.GetHashCode());
-                return hashCode;
-            }
-        }
-
-        #endregion // !object override.
 
         #endregion // !public.
 

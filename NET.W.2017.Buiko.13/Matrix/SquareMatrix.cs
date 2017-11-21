@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Matrix
+﻿namespace Matrix
 {
     /// <inheritdoc />
     /// <summary>
@@ -9,14 +7,6 @@ namespace Matrix
     public class SquareMatrix<T> : AbstractSquareMatrix<T>
     {
         #region private fileds
-
-        /*
-         
-        |1 2 3|
-        |4 5 6| --> matrix = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        |7 8 9|
-
-        */
 
         private readonly T[] matrix;
 

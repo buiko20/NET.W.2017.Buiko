@@ -6,7 +6,7 @@ using Logic.AccountRepository.Exceptions;
 
 namespace Logic.AccountRepository.Implementation
 {
-    public class MockAccountRepository : IAccountRepository
+    public class FakeAccountRepository : IAccountRepository
     {
         #region private fields
 

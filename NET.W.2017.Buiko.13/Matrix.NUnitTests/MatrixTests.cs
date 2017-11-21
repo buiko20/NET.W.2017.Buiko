@@ -28,20 +28,6 @@ namespace Matrix.NUnitTests
         }
 
         [Test]
-        public void EqalityTest()
-        {
-            var array = new[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-
-            Assert.IsTrue(new SquareMatrix<int>(array).Equals(new SquareMatrix<int>(array)));
-            Assert.IsTrue(new SymmetricMatrix<int>(array).Equals(new SymmetricMatrix<int>(array)));
-            Assert.IsTrue(new DiagonalMatrix<int>(array).Equals(new DiagonalMatrix<int>(array)));
-
-            Assert.IsFalse(new SquareMatrix<int>(array).Equals(new SymmetricMatrix<int>(array)));
-            Assert.IsFalse(new SymmetricMatrix<int>(array).Equals(new DiagonalMatrix<int>(array)));
-            Assert.IsFalse(new DiagonalMatrix<int>(array).Equals(new SquareMatrix<int>(array)));
-        }
-
-        [Test]
         public void ToArrayTest()
         {
             var array = new[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
@@ -64,6 +50,58 @@ namespace Matrix.NUnitTests
                     Assert.AreEqual(result[i, j], array[i, j] * 2);
                 }
             }
+        }
+
+        [Test]
+        public void AddTestResultMatrixType()
+        {
+            var array = new[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+
+            AbstractSquareMatrix<int> matrix1 = new SquareMatrix<int>(array);
+            AbstractSquareMatrix<int> matrix2 = new SquareMatrix<int>(array);
+            var result = matrix1.Add(matrix2);
+            Assert.AreEqual(typeof(SquareMatrix<int>), result.GetType());
+
+            matrix1 = new SquareMatrix<int>(array);
+            matrix2 = new DiagonalMatrix<int>(array);
+            result = matrix1.Add(matrix2);
+            Assert.AreEqual(typeof(SquareMatrix<int>), result.GetType());
+
+            matrix1 = new SquareMatrix<int>(array);
+            matrix2 = new SymmetricMatrix<int>(array);
+            result = matrix1.Add(matrix2);
+            Assert.AreEqual(typeof(SquareMatrix<int>), result.GetType());
+
+            matrix1 = new DiagonalMatrix<int>(array);
+            matrix2 = new SquareMatrix<int>(array);
+            result = matrix1.Add(matrix2);
+            Assert.AreEqual(typeof(SquareMatrix<int>), result.GetType());
+
+            matrix1 = new DiagonalMatrix<int>(array);
+            matrix2 = new DiagonalMatrix<int>(array);
+            result = matrix1.Add(matrix2);
+            Assert.AreEqual(typeof(DiagonalMatrix<int>), result.GetType());
+
+            matrix1 = new DiagonalMatrix<int>(array);
+            matrix2 = new SymmetricMatrix<int>(array);
+            result = matrix1.Add(matrix2);
+            Assert.AreEqual(typeof(SymmetricMatrix<int>), result.GetType());
+
+            matrix1 = new SymmetricMatrix<int>(array);
+            matrix2 = new SymmetricMatrix<int>(array);
+            result = matrix1.Add(matrix2);
+            Assert.AreEqual(typeof(SymmetricMatrix<int>), result.GetType());
+
+            matrix1 = new SymmetricMatrix<int>(array);
+            matrix2 = new DiagonalMatrix<int>(array);
+            result = matrix1.Add(matrix2);
+            Assert.AreEqual(typeof(SymmetricMatrix<int>), result.GetType());
+
+            matrix1 = new SymmetricMatrix<int>(array);
+            matrix2 = new SquareMatrix<int>(array);
+            result = matrix1.Add(matrix2);
+            Assert.AreEqual(typeof(SquareMatrix<int>), result.GetType());
+
         }
 
         private static void ConstructorTest(int order, AbstractSquareMatrix<int> abstractSquareMatrix)
