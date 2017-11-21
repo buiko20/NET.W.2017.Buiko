@@ -1,6 +1,4 @@
-﻿using Logic.AccountService.Exceptions;
-
-namespace Logic.AccountService
+﻿namespace BLL.Interface.AccountService
 {
     /// <summary>
     /// Interface describing service contract.
@@ -53,7 +51,7 @@ namespace Logic.AccountService
         /// <paramref name="accountId"/> does not exists.
         /// </exception>
         void WithdrawMoney(string accountId, decimal sum);
-        
+
         /// <summary>
         /// Closes an account with a specific <paramref name="accountId"/>.
         /// </summary>
