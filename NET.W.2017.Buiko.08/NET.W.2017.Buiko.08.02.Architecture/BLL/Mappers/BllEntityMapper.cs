@@ -4,9 +4,9 @@ using DAL.Interface.DTO;
 
 namespace BLL.Mappers
 {
-    public static class BllEntityMapper
+    internal static class BllEntityMapper
     {
-        public static DalAccount ToDalAccount(this Account account) =>
+        internal static DalAccount ToDalAccount(this Account account) =>
             new DalAccount
             {
                 AccountType = account.GetType(),
@@ -17,7 +17,7 @@ namespace BLL.Mappers
                 OwnerSecondName = account.OwnerSecondName
             };
 
-        public static Account ToBllAccount(this DalAccount dalAccount) =>
+        internal static Account ToBllAccount(this DalAccount dalAccount) =>
             (Account)Activator.CreateInstance(
                 dalAccount.AccountType,
                 dalAccount.Id,

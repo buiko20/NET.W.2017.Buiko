@@ -2,9 +2,9 @@
 using BLL.Services;
 using DAL;
 using DAL.Interface;
+using Ninject;
 using Services.AccountIdService;
 using Services.Interface.AccountIdService;
-using Ninject;
 
 namespace DependencyResolver
 {
