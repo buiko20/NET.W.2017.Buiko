@@ -30,8 +30,7 @@ namespace Matrix
 
             try
             {
-                Type resultMatrixType = ComputeResultantMatrixType(matrix, addMatrix);
-                return Add(matrix, addMatrix, resultMatrixType);
+                return Add((dynamic)matrix, (dynamic)addMatrix);
             }
             catch (Exception e)
             {
@@ -39,34 +38,92 @@ namespace Matrix
             }
         }
 
-        private static AbstractSquareMatrix<T> Add<T>(AbstractSquareMatrix<T> matrix1, AbstractSquareMatrix<T> matrix2, Type resultMatrixType)
+        private static SquareMatrix<T> Add<T>(SquareMatrix<T> lhs, SquareMatrix<T> rhs)
         {
-            var resultArray = new T[matrix1.Order, matrix2.Order];
+            var resultArray = new T[lhs.Order, lhs.Order];
 
-            for (int i = 0; i < matrix1.Order; i++)
+            for (int i = 0; i < lhs.Order; i++)
             {
-                for (int j = 0; j < matrix1.Order; j++)
+                for (int j = 0; j < lhs.Order; j++)
                 {
-                    resultArray[i, j] = (dynamic)matrix1[i, j] + (dynamic)matrix2[i, j];
+                    resultArray[i, j] = (dynamic)lhs[i, j] + (dynamic)rhs[i, j];
                 }
             }
 
-            return (AbstractSquareMatrix<T>)Activator.CreateInstance(resultMatrixType, resultArray);
+            return new SquareMatrix<T>(resultArray);
         }
 
-        private static Type ComputeResultantMatrixType<T>(AbstractSquareMatrix<T> matrix1, AbstractSquareMatrix<T> matrix2)
+        private static SquareMatrix<T> Add<T>(SquareMatrix<T> lhs, SymmetricMatrix<T> rhs)
         {
-            if ((matrix1.GetType() == typeof(SquareMatrix<T>)) || (matrix2.GetType() == typeof(SquareMatrix<T>)))
+            var resultArray = new T[lhs.Order, lhs.Order];
+
+            for (int i = 0; i < lhs.Order; i++)
             {
-                return typeof(SquareMatrix<T>);
+                for (int j = i; j < lhs.Order; j++)
+                {
+                    resultArray[i, j] = (dynamic)lhs[i, j] + (dynamic)rhs[i, j];
+                    resultArray[j, i] = (dynamic)lhs[j, i] + (dynamic)rhs[i, j];
+                }
             }
 
-            if ((matrix1.GetType() == typeof(SymmetricMatrix<T>)) || (matrix2.GetType() == typeof(SymmetricMatrix<T>)))
-            {
-                return typeof(SymmetricMatrix<T>);
-            }
-
-            return typeof(DiagonalMatrix<T>);
+            return new SquareMatrix<T>(resultArray);
         }
+
+        private static SquareMatrix<T> Add<T>(SquareMatrix<T> lhs, DiagonalMatrix<T> rhs)
+        {
+            var result = new SquareMatrix<T>(lhs);
+
+            for (int i = 0; i < result.Order; i++)
+            {
+                result[i, i] = (dynamic)result[i, i] + (dynamic)rhs[i, i];
+            }
+
+            return result;
+        }
+
+        private static DiagonalMatrix<T> Add<T>(DiagonalMatrix<T> lhs, DiagonalMatrix<T> rhs)
+        {
+            var resultArray = new T[lhs.Order];
+
+            for (int i = 0; i < lhs.Order; i++)
+            {
+                resultArray[i] = (dynamic)lhs[i, i] + (dynamic)rhs[i, i];
+            }
+
+            return new DiagonalMatrix<T>(resultArray);
+        }
+
+        private static SquareMatrix<T> Add<T>(DiagonalMatrix<T> lhs, SquareMatrix<T> rhs) => Add(rhs, lhs);
+
+        private static SymmetricMatrix<T> Add<T>(DiagonalMatrix<T> lhs, SymmetricMatrix<T> rhs)
+        {
+            var result = new SymmetricMatrix<T>(rhs);
+
+            for (int i = 0; i < lhs.Order; i++)
+            {
+                result[i, i] = (dynamic)lhs[i, i] + (dynamic)result[i, i];
+            }
+
+            return result;
+        }
+
+        private static SymmetricMatrix<T> Add<T>(SymmetricMatrix<T> lhs, SymmetricMatrix<T> rhs)
+        {
+            var resultArray = new T[lhs.Order, lhs.Order];
+
+            for (int i = 0; i < lhs.Order; i++)
+            {
+                for (int j = i; j < lhs.Order; j++)
+                {
+                    resultArray[i, j] = (dynamic)lhs[i, j] + (dynamic)rhs[i, j];
+                }
+            }
+
+            return new SymmetricMatrix<T>(resultArray);
+        }
+
+        private static SymmetricMatrix<T> Add<T>(SymmetricMatrix<T> lhs, DiagonalMatrix<T> rhs) => Add(rhs, lhs);
+
+        private static SquareMatrix<T> Add<T>(SymmetricMatrix<T> lhs, SquareMatrix<T> rhs) => Add(rhs, lhs);
     }
 }
