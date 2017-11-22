@@ -2,16 +2,26 @@
 using System.IO;
 using BLL.Interface.AccountService;
 using DependencyResolver;
+using Ninject;
 
 namespace PL.Console
 {
     internal class Program
     {
+        private static readonly IKernel NinjectKernel;
+
+        static Program()
+        {
+            NinjectKernel = new StandardKernel();
+            NInjectDependencyResolver.Configure(NinjectKernel);   
+        }
+
         private static void Main()
         {
             try
             {
-                var accountService = SimpleDependencyResolver.GetAccountService();
+               // var accountService = SimpleDependencyResolver.GetAccountService();
+                var accountService = NinjectKernel.Get<IAccountService>();
 
                 if (File.Exists(@"accounts.bin"))
                 {
