@@ -167,7 +167,8 @@ namespace DAL
             return CreateAccount(bllAccountType, id, ownerFirstName, ownerSecondName, sum, bonusPoints);
         }
 
-        private static void WriteAccountToFile(BinaryWriter binaryWriter, DalAccount account)
+        private static void WriteAccountToFile(
+            BinaryWriter binaryWriter, DalAccount account)
         {
             binaryWriter.Write(account.AccountType.AssemblyQualifiedName);
             binaryWriter.Write(account.Id);
@@ -178,8 +179,14 @@ namespace DAL
         }
 
         private static DalAccount CreateAccount(
-            Type accountType, string id, string ownerFirstName, string ownerSecondName, decimal sum, int bonusPoints) =>
-            new DalAccount
+            Type accountType,
+            string id,
+            string ownerFirstName,
+            string ownerSecondName,
+            decimal sum,
+            int bonusPoints)
+        {
+            return new DalAccount
             {
                 AccountType = accountType,
                 BonusPoints = bonusPoints,
@@ -188,7 +195,8 @@ namespace DAL
                 OwnerFirstName = ownerFirstName,
                 OwnerSecondName = ownerSecondName
             };
-
+        }
+            
         private void ParseFile(string filePath)
         {
             using (var binaryReader = new BinaryReader(

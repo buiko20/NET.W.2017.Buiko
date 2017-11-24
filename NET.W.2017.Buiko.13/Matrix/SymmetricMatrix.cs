@@ -65,11 +65,15 @@
         /// <inheritdoc />
         protected override void SetValue(T value, int i, int j)
         {
-            if (j >= i)
+            if (j < i)
             {
-                int index = ComputeIndex(i, j, this.Order);
-                this.matrix[index] = value;
-            }          
+                i ^= j;
+                j ^= i;
+                i ^= j;
+            }
+
+            int index = ComputeIndex(i, j, this.Order);
+            this.matrix[index] = value;
         }
 
         /// <inheritdoc />

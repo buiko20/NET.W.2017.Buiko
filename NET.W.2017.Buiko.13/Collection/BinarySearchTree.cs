@@ -252,7 +252,7 @@ namespace Collection
 
         #region private
 
-        private static IComparer<T> GetDefaultOrderComparer()
+        private static IComparer<T> TryGetDefaultOrderComparer()
         {
             var type = typeof(T);
 
@@ -359,7 +359,7 @@ namespace Collection
 
         private void SetDefaultOrderComparer()
         {
-            var temp = GetDefaultOrderComparer();
+            var temp = TryGetDefaultOrderComparer();
             _orderComparer = (item1, item2) => temp.Compare(item1, item2);
         }
 

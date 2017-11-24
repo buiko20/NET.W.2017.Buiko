@@ -65,14 +65,6 @@
       <Project>{29f2f7c3-4163-4622-ab10-f5655d63628d}</Project>
       <Name>DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Services.Interface\Services.Interface.csproj">
-      <Project>{6b494ec8-9818-4145-8c25-ea4930cbbaba}</Project>
-      <Name>Services.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Services\Services.csproj">
-      <Project>{b8772172-5470-4b58-9b5b-c9dd570b66fa}</Project>
-      <Name>Services</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

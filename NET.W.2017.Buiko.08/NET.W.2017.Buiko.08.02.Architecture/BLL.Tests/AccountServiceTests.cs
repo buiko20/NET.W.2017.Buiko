@@ -1,66 +1,48 @@
 ﻿using System;
-using BLL.Interface.AccountService;
+using System.Linq.Expressions;
+using BLL.Interface.Account;
+using BLL.Interface.AccountIdService;
 using BLL.Services;
 using DAL.Interface;
 using DAL.Interface.DTO;
 using Moq;
 using NUnit.Framework;
-using Services.Interface.AccountIdService;
 
 namespace BLL.Tests
 {
     [TestFixture]
     public class AccountServiceTests
     {
-        private static string _firstName;
-        private static string _secondName;
-        private static string _accountId;
-
-        private static Mock<IAccountRepository> _repositoryMock;
-        private static Mock<IAccountIdService> _accountIdServiceMock;
-        private static IAccountService _accountService;
-
-        [OneTimeSetUp]
-        public void Init()
+        [TestCase("Anders", "Hejlsberg", "i++")]
+        [TestCase("Bjarne", "Stroustrup", "++i")]
+        [TestCase("Dennis", "Ritchie", "i += 1")]
+        [TestCase("Niklaus", "Wirth", "i := i + 1")]
+        public void TestAllAtOnce(string firstName, string secondName, string accountId)
         {
             // Arrange.
-            _firstName = "Jon";
-            _secondName = "Skeet";
-            _accountId = "1";
-
-            _repositoryMock = new Mock<IAccountRepository>();
-
-            _accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
-            _accountIdServiceMock.Setup(service => service.GenerateAccountId(_firstName, _secondName))
-                .Returns(_accountId);
-
-            _accountService = new AccountService(_repositoryMock.Object, _accountIdServiceMock.Object);
-
-            // Act. Because all tests use this method.
-            _accountService.OpenAccount(_firstName, _secondName, 100m);
-        }
-
-        [Test]
-        public void TestAllAtOnce()
-        {
-            // Arrange.
-            string firstName = "Jon";
-            string secondName = "Skeet";
-            string accountId = "123";
-
             var repositoryMock = new Mock<IAccountRepository>();
 
             var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
             accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
                 .Returns(accountId);
 
-            var accountService = new AccountService(repositoryMock.Object, accountIdServiceMock.Object);
-
-            Predicate<DalAccount> predicate = account =>
-                string.Equals(account.Id, accountId, StringComparison.Ordinal);
+            var accountService = new AccountService(repositoryMock.Object);
 
             // Act.
-            accountService.OpenAccount(firstName, secondName, 100m);
+            accountService.OpenAccount(firstName, secondName, 100m, accountIdServiceMock.Object);
+
+            var dalAccount = new DalAccount
+            {
+                AccountType = typeof(BaseAccount),
+                BonusPoints = 0,
+                CurrentSum = 100m,
+                Id = accountId,
+                OwnerFirstName = firstName,
+                OwnerSecondName = secondName
+            };
+
+            repositoryMock.Setup(repository => repository.GetAccounts())
+                .Returns(new[] { dalAccount });
 
             accountService.DepositMoney(accountId, 100m);
             accountService.DepositMoney(accountId, 100m);
@@ -69,9 +51,14 @@ namespace BLL.Tests
             accountService.CloseAccount(accountId);
 
             // Assert.
-            accountIdServiceMock.Verify(service => service.GenerateAccountId(firstName, secondName), Times.Once);
+            Predicate<DalAccount> predicate = account =>
+                string.Equals(account.Id, accountId, StringComparison.Ordinal);
 
-            repositoryMock.Verify(repository => repository.GetAccounts(), Times.Once);
+            accountIdServiceMock.Verify(
+                service => service.GenerateAccountId(firstName, secondName), Times.AtLeastOnce);
+
+            repositoryMock.Verify(
+                repository => repository.GetAccounts(), Times.AtLeastOnce);
 
             repositoryMock.Verify(
                 repository => repository.AddAccount(It.Is<DalAccount>(account => predicate(account))), Times.Once);
@@ -83,62 +70,157 @@ namespace BLL.Tests
                 repository => repository.RemoveAccount(It.Is<DalAccount>(account => predicate(account))), Times.Once);
         }
 
-        [Test]
-        public void CallAccountIdService_GenerateAccountIdMethod()
-        {
-            // Assert.
-            _accountIdServiceMock.Verify(
-                service => service.GenerateAccountId(_firstName, _secondName), Times.Once);
-        }
-
-        [Test]
-        public void CallAccountRepository_GetAccountsMethod()
-        {
-            // Assert.
-            _repositoryMock.Verify(repository => repository.GetAccounts(), Times.Once);
-        }
-
-        [Test]
-        public void CallAccountRepository_AddAccountMethod()
-        {
-            // Assert.
-            _repositoryMock.Verify(
-                repository => repository.AddAccount(It.Is<DalAccount>(
-                    account => string.Equals(account.Id, _accountId, StringComparison.Ordinal))), Times.Once);
-        }
-
-        [Test]
-        public void CallAccountRepository_UpdateAccountMethod()
-        {
-            // Act.
-            _accountService.DepositMoney(_accountId, 100m);
-            _accountService.DepositMoney(_accountId, 100m);
-            _accountService.WithdrawMoney(_accountId, 100m);
-
-            // Assert.
-            _repositoryMock.Verify(
-                repository => repository.UpdateAccount(It.Is<DalAccount>(
-                    account => string.Equals(account.Id, _accountId, StringComparison.Ordinal))), Times.Exactly(3));
-        }
-
-        [Test]
-        public void CallAccountRepository_RemoveAccountMethod()
+        [TestCase("Jon", "Skeet", "123")]
+        [TestCase("Jeffrey", "Richter", "ABC")]
+        public void CallAccountIdService_GenerateAccountIdMethod(string firstName, string secondName, string accountId)
         {
             // Arrange.
-            string localAccountId = "2";
+            var repositoryMock = new Mock<IAccountRepository>();
 
-            _accountIdServiceMock.Setup(service => service.GenerateAccountId(_firstName, _secondName))
-                .Returns(localAccountId);
+            var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
+            accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
+                .Returns(accountId);
 
-            _accountService.OpenAccount(_firstName, _secondName, 100m);
+            var accountService = new AccountService(repositoryMock.Object);
 
             // Act.
-            _accountService.CloseAccount(localAccountId);
+            accountService.OpenAccount(firstName, secondName, 100m, accountIdServiceMock.Object);
 
             // Assert.
-            _repositoryMock.Verify(
-                repository => repository.RemoveAccount(It.Is<DalAccount>(
-                    account => string.Equals(account.Id, localAccountId, StringComparison.Ordinal))), Times.Once);
+            accountIdServiceMock.Verify(
+                service => service.GenerateAccountId(firstName, secondName), Times.AtLeastOnce);
+        }
+
+        [TestCase("Jon", "Skeet", "123")]
+        [TestCase("Jeffrey", "Richter", "ABC")]
+        public void CallAccountRepository_GetAccountsMethod(string firstName, string secondName, string accountId)
+        {
+            // Arrange.
+            var repositoryMock = new Mock<IAccountRepository>();
+
+            var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
+            accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
+                .Returns(accountId);
+
+            var accountService = new AccountService(repositoryMock.Object);
+
+            // Act.
+            accountService.OpenAccount(firstName, secondName, 100m, accountIdServiceMock.Object);
+
+            // Assert.
+            repositoryMock.Verify(repository => repository.GetAccounts(), Times.Once);
+        }
+
+        [TestCase("Jon", "Skeet", "123")]
+        [TestCase("Jeffrey", "Richter", "ABC")]
+        public void CallAccountRepository_AddAccountMethod(string firstName, string secondName, string accountId)
+        {
+            // Arrange.
+            var repositoryMock = new Mock<IAccountRepository>();
+
+            var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
+            accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
+                .Returns(accountId);
+
+            var accountService = new AccountService(repositoryMock.Object);
+
+            // Act.
+            accountService.OpenAccount(firstName, secondName, 100m, accountIdServiceMock.Object);
+
+            // Assert.
+            Predicate<DalAccount> predicate = account =>
+                string.Equals(account.Id, accountId, StringComparison.Ordinal);
+
+            Expression<Action<IAccountRepository>> addMethodInvoke = repository =>
+                repository.AddAccount(It.Is<DalAccount>(account => predicate(account)));
+
+            repositoryMock.Verify(addMethodInvoke, Times.Once);
+        }
+
+        [TestCase("Jon", "Skeet", "123")]
+        [TestCase("Jeffrey", "Richter", "ABC")]
+        public void CallAccountRepository_UpdateAccountMethod(string firstName, string secondName, string accountId)
+        {
+            // Arrange.
+            var repositoryMock = new Mock<IAccountRepository>();
+            repositoryMock.Setup(repository => repository.GetAccounts())
+                .Returns(new DalAccount[0]);
+
+            var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
+            accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
+                .Returns(accountId);
+
+            var accountService = new AccountService(repositoryMock.Object);
+
+            // Act.
+            accountService.OpenAccount(firstName, secondName, 100m, accountIdServiceMock.Object);
+
+            var dalAccount = new DalAccount
+            {
+                AccountType = typeof(BaseAccount),
+                BonusPoints = 0,
+                CurrentSum = 100m,
+                Id = accountId,
+                OwnerFirstName = firstName,
+                OwnerSecondName = secondName
+            };
+
+            repositoryMock.Setup(repository => repository.GetAccounts())
+                .Returns(new[] { dalAccount });
+
+            accountService.DepositMoney(accountId, 100m);
+            accountService.DepositMoney(accountId, 100m);
+            accountService.WithdrawMoney(accountId, 100m);
+
+            // Assert.
+            Predicate<DalAccount> predicate = account =>
+                string.Equals(account.Id, accountId, StringComparison.Ordinal);
+
+            Expression<Action<IAccountRepository>> updateMethodInvoke = repository =>
+                repository.UpdateAccount(It.Is<DalAccount>(account => predicate(account)));
+
+            repositoryMock.Verify(updateMethodInvoke, Times.Exactly(3));
+        }
+
+        [TestCase("Jon", "Skeet", "123")]
+        [TestCase("Jeffrey", "Richter", "ABC")]
+        public void CallAccountRepository_RemoveAccountMethod(string firstName, string secondName, string accountId)
+        {
+            // Arrange.
+            var repositoryMock = new Mock<IAccountRepository>();
+
+            var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
+            accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
+                .Returns(accountId);
+
+            var accountService = new AccountService(repositoryMock.Object);
+
+            // Act.
+            accountService.OpenAccount(firstName, secondName, 100m, accountIdServiceMock.Object);
+
+            var dalAccount = new DalAccount
+            {
+                AccountType = typeof(BaseAccount),
+                BonusPoints = 0,
+                CurrentSum = 100m,
+                Id = accountId,
+                OwnerFirstName = firstName,
+                OwnerSecondName = secondName
+            };
+
+            repositoryMock.Setup(repository => repository.GetAccounts())
+                .Returns(new[] { dalAccount });
+
+            accountService.CloseAccount(accountId);
+
+            // Assert.
+            Predicate<DalAccount> predicate = account =>
+                string.Equals(account.Id, accountId, StringComparison.Ordinal);
+
+            Expression<Action<IAccountRepository>> removeMethodInvoke = repository =>
+                repository.RemoveAccount(It.Is<DalAccount>(account => predicate(account)));
+
+            repositoryMock.Verify(removeMethodInvoke, Times.Once);
         }
     }
 }

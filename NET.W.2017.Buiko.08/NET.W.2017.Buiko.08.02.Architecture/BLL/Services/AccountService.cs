@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using BLL.Interface.Account;
+using BLL.Interface.AccountIdService;
 using BLL.Interface.AccountService;
 using BLL.Mappers;
 using DAL.Interface;
-using Services.Interface.AccountIdService;
+using DAL.Interface.DTO;
 
 namespace BLL.Services
 {
@@ -19,9 +19,6 @@ namespace BLL.Services
         private const int PlatinumAccountInitialBonuses = 500;
 
         private readonly IAccountRepository _accountRepository;
-        private readonly IAccountIdService _accountIdService;
-
-        private readonly List<Account> _accounts = new List<Account>();
 
         #endregion // !private fields.
 
@@ -33,32 +30,15 @@ namespace BLL.Services
         /// Initializes the instance of service.
         /// </summary>
         /// <param name="accountRepository">account repository service</param>
-        /// <param name="accountIdService">account id service</param>
-        /// <param name="accountCreater">account creation service</param>
-        public AccountService(IAccountRepository accountRepository, IAccountIdService accountIdService)
+        /// <exception cref="ArgumentNullException">Exception thrown when <paramref name="accountRepository"/> is null.</exception>
+        public AccountService(IAccountRepository accountRepository)
         {
             if (ReferenceEquals(accountRepository, null))
             {
                 throw new ArgumentNullException(nameof(accountRepository));
             }
 
-            if (ReferenceEquals(accountIdService, null))
-            {
-                throw new ArgumentNullException(nameof(accountIdService));
-            }
-
             _accountRepository = accountRepository;
-            _accountIdService = accountIdService;
-
-            try
-            {
-                var dalAccounts = _accountRepository.GetAccounts();
-                _accounts.AddRange(dalAccounts.Select(account => account.ToBllAccount()));
-            }
-            catch (Exception)
-            {
-                _accounts.Clear();
-            }
         }
 
         #endregion // !constructors.
@@ -66,25 +46,38 @@ namespace BLL.Services
         #region interface implementation
 
         /// <inheritdoc />
-        public string OpenAccount(string ownerFirstName, string ownerSecondName, decimal sum) =>
-            OpenAccount(AccountType.Base, ownerFirstName, ownerSecondName, sum);
+        public string OpenAccount(
+            string ownerFirstName,
+            string ownerSecondName,
+            decimal sum,
+            IAccountIdService accountIdService)
+        {
+            return OpenAccount(
+                AccountType.Base, 
+                ownerFirstName, 
+                ownerSecondName, 
+                sum, 
+                accountIdService);
+        }
 
         /// <inheritdoc />
-        public string OpenAccount(AccountType accountType, string ownerFirstName, string ownerSecondName, decimal sum)
+        public string OpenAccount(
+            AccountType accountType, 
+            string ownerFirstName, 
+            string ownerSecondName, 
+            decimal sum, 
+            IAccountIdService accountIdService)
         {
-            VerifyInput(ownerFirstName, ownerSecondName, sum);
+            VerifyInput(ownerFirstName, ownerSecondName, sum, accountIdService);
 
             try
             {
-                string accountId = this.GetUniqueAccoutId(ownerFirstName, ownerSecondName);
+                string accountId = this.GetUniqueAccoutId(ownerFirstName, ownerSecondName, accountIdService);
 
                 int initialBonuses = GetInitialBonuses(accountType);
 
-                Type typeOfAccount = GetTypeOfAccount(accountType);
+                var account = CreateAccount(accountType, accountId, ownerFirstName, ownerSecondName, sum, initialBonuses);
 
-                var account = CreateAccount(typeOfAccount, accountId, ownerFirstName, ownerSecondName, sum, initialBonuses);
-
-                _accounts.Add(account);
                 _accountRepository.AddAccount(account.ToDalAccount());
 
                 return accountId;
@@ -115,13 +108,14 @@ namespace BLL.Services
                 throw new ArgumentException(nameof(accountId));
             }
 
-            var account = _accounts.FirstOrDefault(acc => acc.Id == accountId);
-            if (ReferenceEquals(account, null))
+            var dalAccounts = _accountRepository.GetAccounts();
+            var dalAccount = dalAccounts.FirstOrDefault(acc => acc.Id == accountId);
+            if (ReferenceEquals(dalAccount, null))
             {
                 throw new AccountServiceException($"Account with id {accountId} not found");
             }
 
-            return account.ToString();
+            return dalAccount.ToBllAccount().ToString();
         }
 
         #endregion // !interface implementation.
@@ -130,7 +124,11 @@ namespace BLL.Services
 
         #region private
 
-        private static void VerifyInput(string ownerFirstName, string ownerSecondName, decimal sum)
+        private static void VerifyInput(
+            string ownerFirstName, 
+            string ownerSecondName, 
+            decimal sum, 
+            IAccountIdService accountIdService)
         {
             if (string.IsNullOrWhiteSpace(ownerFirstName))
             {
@@ -145,6 +143,11 @@ namespace BLL.Services
             if (sum < 0)
             {
                 throw new ArgumentException("sum must be greater than 0", nameof(sum));
+            }
+
+            if (ReferenceEquals(accountIdService, null))
+            {
+                throw new ArgumentNullException(nameof(accountIdService));
             }
         }
 
@@ -162,59 +165,67 @@ namespace BLL.Services
             }
         }
 
-        private static Type GetTypeOfAccount(AccountType accountType)
+        private static Account CreateAccount(
+            AccountType accountType, 
+            string id, 
+            string onwerFirstName, 
+            string onwerSecondName, 
+            decimal sum, 
+            int bonusPoints)
         {
             switch (accountType)
             {
                 case AccountType.Gold:
-                    return typeof(GoldAccount);
+                    return new GoldAccount(id, onwerFirstName, onwerSecondName, sum, bonusPoints);
                 case AccountType.Platinum:
-                    return typeof(PlatinumAccount);
+                    return new PlatinumAccount(id, onwerFirstName, onwerSecondName, sum, bonusPoints);
                 case AccountType.Base:
                 default:
-                    return typeof(BaseAccount);
-            }           
+                    return new BaseAccount(id, onwerFirstName, onwerSecondName, sum, bonusPoints);
+            }
         }
 
-        private static Account CreateAccount(
-            Type accountType, string id, string onwerFirstName, string onwerSecondName, decimal sum, int bonusPoints)
-        {
-            return (Account)Activator.CreateInstance(accountType, id, onwerFirstName, onwerSecondName, sum, bonusPoints);
-        }
-
-        private string GetUniqueAccoutId(string ownerFirstName, string ownerSecondName, int spinCount = 4000)
+        private string GetUniqueAccoutId(
+            string ownerFirstName, 
+            string ownerSecondName, 
+            IAccountIdService accountIdService, 
+            int spinCount = 4000)
         {
             string id;
             int i = 0;
+            var temp = _accountRepository.GetAccounts();
+            var dalAccounts = temp as DalAccount[] ?? temp.ToArray();
             do
             {
-                id = _accountIdService.GenerateAccountId(ownerFirstName, ownerSecondName);
+                id = accountIdService.GenerateAccountId(ownerFirstName, ownerSecondName);
                 if (++i >= spinCount)
                 {
                     throw new AccountServiceException("Failed to get the unique account ID.");
                 }
             }
-            while (_accounts.Any(account => string.Compare(account.Id, id, StringComparison.Ordinal) == 0));
+            while (dalAccounts.Any(dalAccount => string.Compare(dalAccount.Id, id, StringComparison.Ordinal) == 0));
 
             return id;
         }
 
-        private void Operation(string accountId, decimal sum, Action<Account, decimal> operation)
+        private void Operation(
+            string accountId, decimal sum, Action<Account, decimal> operation)
         {
             if (sum <= 0)
             {
                 throw new ArgumentException($"{nameof(sum)} must be greater than 0", nameof(sum));
             }
 
-            var account = _accounts.FirstOrDefault(acc => acc.Id == accountId);
-            if (ReferenceEquals(account, null))
+            var dalAccounts = _accountRepository.GetAccounts();
+            var dalAccount = dalAccounts.FirstOrDefault(acc => acc.Id == accountId);
+            if (ReferenceEquals(dalAccount, null))
             {
                 throw new AccountServiceException($"Account with id {accountId} not found");
             }
 
             try
             {
-                operation(account, sum);
+                operation(dalAccount.ToBllAccount(), sum);
             }
             catch (Exception e)
             {
@@ -234,11 +245,8 @@ namespace BLL.Services
             _accountRepository.UpdateAccount(account.ToDalAccount());
         }
 
-        private void CloseOperation(Account account, decimal sum)
-        {
+        private void CloseOperation(Account account, decimal sum) =>
             _accountRepository.RemoveAccount(account.ToDalAccount());
-            _accounts.Remove(account);
-        }
 
         #endregion // !private.
     }

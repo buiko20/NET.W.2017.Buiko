@@ -1,4 +1,4 @@
-﻿namespace Services.Interface.AccountIdService
+﻿namespace BLL.Interface.AccountIdService
 {
     public interface IAccountIdService
     {

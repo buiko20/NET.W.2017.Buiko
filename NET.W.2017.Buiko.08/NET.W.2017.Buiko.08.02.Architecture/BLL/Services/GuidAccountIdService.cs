@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-using Services.Interface.AccountIdService;
+using BLL.Interface.AccountIdService;
 
-namespace Services.AccountIdService
+namespace BLL.Services
 {
     public class GuidAccountIdService : IAccountIdService
     {
@@ -37,16 +37,16 @@ namespace Services.AccountIdService
 
         #region private
 
-        protected string GetFirstIdPart() =>
+        private static string GetFirstIdPart() =>
             Math.Abs(Guid.NewGuid().GetHashCode()).ToString();
 
-        protected string GetSecondIdPart(string onwerFirstName) =>
-            Math.Abs(this.Shuffle(onwerFirstName).GetHashCode()).ToString();
+        private static string GetSecondIdPart(string onwerFirstName) =>
+            Math.Abs(Shuffle(onwerFirstName).GetHashCode()).ToString();
 
-        protected string GetThirdIdPart(string onwerSecondName) =>
-            this.Shuffle(onwerSecondName);
+        private static string GetThirdIdPart(string onwerSecondName) =>
+            Shuffle(onwerSecondName);
 
-        protected string Shuffle(string str)
+        private static string Shuffle(string str)
         {
             var provider = new RNGCryptoServiceProvider();
             var stringChars = str.ToCharArray();

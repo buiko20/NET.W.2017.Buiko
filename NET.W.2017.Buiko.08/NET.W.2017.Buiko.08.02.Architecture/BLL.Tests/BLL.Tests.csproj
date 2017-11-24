@@ -72,10 +72,6 @@
       <Project>{4b8492fa-a752-4be3-964e-cb30fcebbe5f}</Project>
       <Name>DAL.Interface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Services.Interface\Services.Interface.csproj">
-      <Project>{6b494ec8-9818-4145-8c25-ea4930cbbaba}</Project>
-      <Name>Services.Interface</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,7 +1,6 @@
 ﻿using BLL.Interface.AccountService;
 using BLL.Services;
 using DAL;
-using Services.AccountIdService;
 
 namespace DependencyResolver
 {
@@ -12,8 +11,7 @@ namespace DependencyResolver
         public static IAccountService GetAccountService()
         {
             var accountRepository = new BinaryFileAccountRepository(DataFilePath);
-            var accountIdService = new GuidAccountIdService();
-            return new AccountService(accountRepository, accountIdService);
+            return new AccountService(accountRepository);
         }
     }
 }

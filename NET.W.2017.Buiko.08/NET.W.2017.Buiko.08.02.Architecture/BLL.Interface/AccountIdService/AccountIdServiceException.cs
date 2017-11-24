@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Services.Interface.AccountIdService
+namespace BLL.Interface.AccountIdService
 {
     /// <inheritdoc />
     /// <summary>

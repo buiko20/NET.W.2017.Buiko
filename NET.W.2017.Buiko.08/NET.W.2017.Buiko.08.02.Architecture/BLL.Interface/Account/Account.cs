@@ -26,9 +26,15 @@ namespace BLL.Interface.Account
         /// <param name="currentSum">account start sum</param>
         /// <param name="bonusPoints">account start bonus points</param>
         /// <exception cref="ArgumentException">Thrown when one of the parameters is incorrect</exception>
-        protected Account(string id, string onwerFirstName, string onwerSecondName, decimal currentSum, int bonusPoints)
+        protected Account(
+            string id, 
+            string onwerFirstName, 
+            string onwerSecondName, 
+            decimal currentSum, 
+            int bonusPoints)
         {
-            VerifyInput(id, onwerFirstName, onwerSecondName, currentSum, bonusPoints);
+            VerifyInput(
+                id, onwerFirstName, onwerSecondName, currentSum, bonusPoints);
 
             Id = id;
             OwnerFirstName = onwerFirstName;
@@ -171,7 +177,8 @@ namespace BLL.Interface.Account
         /// </summary>
         /// <returns>String representation of a account.</returns>
         public override string ToString() =>
-            $"{Id} {OwnerFirstName} {OwnerSecondName} {CurrentSum} {BonusPoints}";
+            $"{GetAccountAdditionalInformation()} {Id} " +
+            $"{OwnerFirstName} {OwnerSecondName} {CurrentSum} {BonusPoints}";
 
         /// <summary>
         /// Verify the equivalence of the current account and the <paramref name="obj"/>.
@@ -265,6 +272,8 @@ namespace BLL.Interface.Account
         /// <returns>Bonus increment.</returns>
         protected abstract int CalculateBonusPointsForWithdraw(decimal sum, int bonusValue);
 
+        protected abstract string GetAccountAdditionalInformation();
+
         #endregion // !methods.
 
         #endregion // !protected.
@@ -272,7 +281,11 @@ namespace BLL.Interface.Account
         #region private
 
         private static void VerifyInput(
-            string id, string onwerFirstName, string onwerSecondName, decimal currentSum, int bonusPoints)
+            string id, 
+            string onwerFirstName, 
+            string onwerSecondName, 
+            decimal currentSum, 
+            int bonusPoints)
         {
             if (string.IsNullOrWhiteSpace(id))
             {

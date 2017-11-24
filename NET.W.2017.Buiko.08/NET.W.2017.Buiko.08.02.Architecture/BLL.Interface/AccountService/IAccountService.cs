@@ -1,4 +1,7 @@
-﻿namespace BLL.Interface.AccountService
+﻿using System;
+using BLL.Interface.AccountIdService;
+
+namespace BLL.Interface.AccountService
 {
     /// <summary>
     /// Interface describing service contract.
@@ -11,11 +14,17 @@
         /// <param name="onwerFirstName">account holder name</param>
         /// <param name="onwerSecondName">surname of account holder</param>
         /// <param name="sum">the initial amount of money on your account</param>
+        /// <param name="accountIdService">service that generates an account identifier</param>
         /// <returns>Account id.</returns>
         /// <exception cref="AccountServiceException">
         /// Thrown when an exception occurred in service.
         /// </exception>
-        string OpenAccount(string onwerFirstName, string onwerSecondName, decimal sum);
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="accountIdService"/> is null.</exception>
+        string OpenAccount(
+            string onwerFirstName, 
+            string onwerSecondName, 
+            decimal sum, 
+            IAccountIdService accountIdService);
 
         /// <summary>
         /// Opens the account and returns its ID.
@@ -24,11 +33,18 @@
         /// <param name="onwerFirstName">account holder name</param>
         /// <param name="onwerSecondName">surname of account holder</param>
         /// <param name="sum">the initial amount of money on your account</param>
+        /// <param name="accountIdService">service that generates an account identifier</param>
         /// <returns>Account id.</returns>
         /// <exception cref="AccountServiceException">
         /// Thrown when an exception occurred in service.
         /// </exception>
-        string OpenAccount(AccountType accountType, string onwerFirstName, string onwerSecondName, decimal sum);
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="accountIdService"/> is null.</exception>
+        string OpenAccount(
+            AccountType accountType, 
+            string onwerFirstName, 
+            string onwerSecondName, 
+            decimal sum, 
+            IAccountIdService accountIdService);
 
         /// <summary>
         /// Deposit money to your account with a specific <paramref name="accountId"/>.
