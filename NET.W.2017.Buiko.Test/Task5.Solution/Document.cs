@@ -17,16 +17,17 @@ namespace Task5.Solution
             this.parts = new List<DocumentPart>(parts);
         }
 
-        public string Convert(IConverter converter)
+        public string Convert(IVisitor visitor)
         {
             string output = string.Empty;
 
             foreach (DocumentPart part in this.parts)
             {
-                output += $"{converter.Convert(part)}\n";
+                output += $"{part.Visit(visitor)}\n";
             }
 
             return output;
         }
+            
     }
 }

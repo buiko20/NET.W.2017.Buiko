@@ -25,9 +25,9 @@ namespace Task5.Console
 
             Console.WriteLine(document.ToLaTeX());*/
 
-            var htmlConverter = new HtmlConverter();
-            var latexConverter = new LaTeXConverter();
-            var plainTextConverter = new PlainTextConverter();
+            var htmlVisitor = new HtmlVisitor();
+            var laTeXVisitor = new LaTeXVisitor();
+            var plainTextVisitor = new PlainTextVisitor();
 
             var parts = new List<Task5.Solution.DocumentPart>
             {
@@ -38,11 +38,11 @@ namespace Task5.Console
 
             var document = new Task5.Solution.Document(parts);
 
-            Console.WriteLine(document.Convert(htmlConverter));
+            Console.WriteLine(document.Convert(htmlVisitor));
 
-            Console.WriteLine(document.Convert(latexConverter));
+            Console.WriteLine(document.Convert(laTeXVisitor));
 
-            Console.WriteLine(document.Convert(plainTextConverter));
+            Console.WriteLine(document.Convert(plainTextVisitor));
 
             Console.ReadLine();
         }
