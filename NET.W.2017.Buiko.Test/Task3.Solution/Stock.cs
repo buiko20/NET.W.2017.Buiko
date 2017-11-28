@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Task3.Solution
 {
     public class Stock
     {
-        public event EventHandler<StockEventArgs> StocksInfo = delegate {  };
+        public event EventHandler<StockEventArgs> StocksInfo = delegate { };
 
         public void Market()
         {

@@ -41,11 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FibonacciNumberGenerator.cs" />
+    <Compile Include="Formula1.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="Formula2.cs" />
     <Compile Include="Formula3.cs" />
-    <Compile Include="IFormulaCalculator.cs" />
+    <Compile Include="IFormulaComputer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

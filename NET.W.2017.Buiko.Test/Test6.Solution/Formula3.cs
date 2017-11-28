@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Test6.Solution
+﻿namespace Test6.Solution
 {
-    public class Formula3 : IFormulaCalculator<double>
+    public class Formula3 : IFormulaComputer<double>
     {
-        public double CalculateNthNumber(double current, double previous)
-        {
-            return current + previous / current;
-        }
+        public double ComputeFormula(double current, double previous) =>
+            current + (previous / current);
     }
 }

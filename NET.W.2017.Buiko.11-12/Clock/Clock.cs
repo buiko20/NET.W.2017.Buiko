@@ -8,7 +8,7 @@ namespace Clock
         /// <summary>
         /// Event occurring after a certain period of time.
         /// </summary>
-        public EventHandler<ClockEventArgs> Notification = delegate { };
+        public event EventHandler<ClockEventArgs> Notification = delegate { };
 
         /// <summary>
         /// Notifies all subscribers.

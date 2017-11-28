@@ -21,12 +21,12 @@ namespace Task3
 
         public void Update(object info)
         {
-            StockInfo sInfo = (StockInfo)info;
+            var stockInfo = (StockInfo)info;
 
-            if (sInfo.Euro > 40)
-                Console.WriteLine("Банк {0} продает евро;  Курс евро: {1}", this.Name, sInfo.Euro);
+            if (stockInfo.Euro > 40)
+                Console.WriteLine("Банк {0} продает евро;  Курс евро: {1}", this.Name, stockInfo.Euro);
             else
-                Console.WriteLine("Банк {0} покупает евро;  Курс евро: {1}", this.Name, sInfo.Euro);
+                Console.WriteLine("Банк {0} покупает евро;  Курс евро: {1}", this.Name, stockInfo.Euro);
         }
     }
 }

@@ -1,14 +1,11 @@
-﻿using Task5.Solution;
+﻿using System.Collections.Generic;
+using Task5.Solution.Visitors;
 
 namespace Task5.Console
 {
-    using System.Collections.Generic;
-    using System;
-    using Task5;
-
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             /*List<DocumentPart> parts = new List<DocumentPart>
                 {
@@ -29,22 +26,22 @@ namespace Task5.Console
             var laTeXVisitor = new LaTeXVisitor();
             var plainTextVisitor = new PlainTextVisitor();
 
-            var parts = new List<Task5.Solution.DocumentPart>
+            var parts = new List<Task5.Solution.Document.DocumentPart>
             {
-                new Task5.Solution.PlainText {Text = "Some plain text"},
-                new Task5.Solution.Hyperlink {Text = "google.com", Url = "https://www.google.by/"},
-                new Task5.Solution.BoldText {Text = "Some bold text"}
+                new Task5.Solution.Document.PlainText { Text = "Some plain text" },
+                new Task5.Solution.Document.Hyperlink { Text = "google.com", Url = "https://www.google.by/" },
+                new Task5.Solution.Document.BoldText { Text = "Some bold text" }
             };
 
-            var document = new Task5.Solution.Document(parts);
+            var document = new Task5.Solution.Document.Document(parts);
 
-            Console.WriteLine(document.Convert(htmlVisitor));
+            System.Console.WriteLine(document.Convert(htmlVisitor));
 
-            Console.WriteLine(document.Convert(laTeXVisitor));
+            System.Console.WriteLine(document.Convert(laTeXVisitor));
 
-            Console.WriteLine(document.Convert(plainTextVisitor));
+            System.Console.WriteLine(document.Convert(plainTextVisitor));
 
-            Console.ReadLine();
+            System.Console.ReadLine();
         }
     }
 }

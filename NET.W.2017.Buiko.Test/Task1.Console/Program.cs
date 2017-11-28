@@ -17,7 +17,7 @@ namespace Task1.Console
             var result = passwordCheckerService.VerifyPassword("123123", repository, Verify);
             System.Console.WriteLine(result);
 
-            result = passwordCheckerService.VerifyPassword("", repository, Verify);
+            result = passwordCheckerService.VerifyPassword(string.Empty, repository, Verify);
             System.Console.WriteLine(result);
 
             result = passwordCheckerService.VerifyPassword("123", repository, Verify);

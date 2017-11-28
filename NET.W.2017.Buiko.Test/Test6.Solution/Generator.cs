@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Test6.Solution
 {
@@ -22,26 +19,24 @@ namespace Test6.Solution
             if (ReferenceEquals(calculator, null))
                 throw new ArgumentNullException(nameof(calculator));
 
-            return Generate(count, a, b, calculator);
+            return count == 0 ? new T[0] : Generate(count, a, b, calculator);
         }
 
-        public static IEnumerable<T> GenerateSequence<T>(int count, T a, T b, IFormulaCalculator<T> calculator)
+        public static IEnumerable<T> GenerateSequence<T>(int count, T a, T b, IFormulaComputer<T> computer)
         {
-            if (ReferenceEquals(calculator, null))
-                throw new ArgumentNullException(nameof(calculator));
+            if (ReferenceEquals(computer, null))
+                throw new ArgumentNullException(nameof(computer));
 
-            return Generate(count, a, b, calculator.CalculateNthNumber);
+            return Generate(count, a, b, computer.ComputeFormula);
         }
 
         private static IEnumerable<T> Generate<T>(int count, T a, T b, Func<T, T, T> calculator)
         {
-            if (count == 0) yield break;
-
             if (count >= 1) yield return a;
 
             if (count >= 2) yield return b;
 
-            for (int i = 3; i < count; i++)
+            for (int i = 3; i <= count; i++)
             {
                 var temp = b;
                 b = calculator(b, a);
@@ -49,8 +44,5 @@ namespace Test6.Solution
                 a = temp;
             }
         }
-
-        private static IEnumerable<T> Generate<T>(int count, T a, T b, IFormulaCalculator<T> calculator) =>
-            Generate(count, a, b, calculator.CalculateNthNumber);
     }
 }

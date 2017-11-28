@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task3.Solution;
+﻿using Task3.Solution;
 
 namespace Task3.Console
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             var bank = new Bank("My bank");
             var broker = new Broker("My broker");

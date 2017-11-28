@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Task4.Solution
 {
-    public class DoubleAverangeComputer2 : IDoubleAverange
+    public class DoubleAverangeComputer2 : IDoubleAverangeComputer
     {
         public double ComputeAverange(IList<double> values)
         {
@@ -14,12 +11,9 @@ namespace Task4.Solution
 
             int n = sortedValues.Count;
 
-            if (n % 2 == 1)
-            {
-                return sortedValues[(n - 1) / 2];
-            }
+            if (n % 2 == 1) return sortedValues[(n - 1) / 2];
 
-            return (sortedValues[sortedValues.Count / 2 - 1] + sortedValues[n / 2]) / 2;
+            return (sortedValues[(sortedValues.Count / 2) - 1] + sortedValues[n / 2]) / 2;
         }
     }
 }

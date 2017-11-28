@@ -8,16 +8,15 @@ namespace Task4
     {
         public double CalculateAverage(List<double> values, AveragingMethod averagingMethod)
         {
-            if (values == null)
+            if (ReferenceEquals(values, null))
             {
-                throw  new ArgumentNullException(nameof(values));
+                throw new ArgumentNullException(nameof(values));
             }
 
             switch (averagingMethod)
             {
                 case AveragingMethod.Mean:
                     return values.Sum() / values.Count;
-
                 case AveragingMethod.Median:
                     var sortedValues = values.OrderBy(x => x).ToList();
 
@@ -28,8 +27,7 @@ namespace Task4
                         return sortedValues[(n - 1) / 2];
                     }
 
-                    return (sortedValues[sortedValues.Count / 2 - 1] + sortedValues[n / 2]) / 2;
-
+                    return (sortedValues[(sortedValues.Count / 2) - 1] + sortedValues[n / 2]) / 2;
                 default:
                     throw new ArgumentException("Invalid averagingMethod value");
             }

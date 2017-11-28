@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Moq;
 using NUnit.Framework;
 using Test6.Solution;
 
@@ -15,15 +10,17 @@ namespace Task6.Tests
         [Test]
         public void Generator_ForSequence1()
         {
-            int[] expected = {1, 1, 2, 3, 5, 8, 13, 21, 34, 55};
+            int[] expected = { 1, 1, 2, 3, 5, 8, 13, 21, 34, 55 };
 
-            var computer = new FibonacciNumberGenerator();
+            var computer = new Formula1();
 
             int i = 0;
             foreach (var number in Generator.GenerateSequence(expected.Length, 1, 1, computer))
             {
                 Assert.AreEqual(expected[i++], number);
             }
+
+            Assert.AreEqual(expected.Length, i);
         }
 
         [Test]
@@ -38,6 +35,8 @@ namespace Task6.Tests
             {
                 Assert.AreEqual(expected[i++], number);
             }
+
+            Assert.AreEqual(expected.Length, i);
         }
 
         [Test]
@@ -50,8 +49,22 @@ namespace Task6.Tests
             int i = 0;
             foreach (var number in Generator.GenerateSequence(expected.Length, 1, 2, computer))
             {
-                Assert.IsTrue(expected[i++] - number < 0.0001);
+                Assert.AreEqual(expected[i++], number, 0.00001);
             }
+
+            Assert.AreEqual(expected.Length, i);
+        }
+
+        [Test]
+        public void GeneratorCallIFormulaComputer_ComputeFormulaMethod()
+        {
+            var formulaComputerMock = new Mock<IFormulaComputer<int>>();
+
+            foreach (var i in Generator.GenerateSequence(4, 1, 1, formulaComputerMock.Object))
+            {               
+            }
+
+            formulaComputerMock.Verify(computer => computer.ComputeFormula(1, 1));
         }
     }
 }

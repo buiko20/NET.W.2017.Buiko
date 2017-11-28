@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Task2.Solution
 {
@@ -42,9 +38,7 @@ namespace Task2.Solution
         private void WriteBytesToFile(string fileName, byte[] content)
         {
             if (!Directory.Exists(WorkingDirectory))
-            {
                 Directory.CreateDirectory(WorkingDirectory);
-            }
 
             File.WriteAllBytes($"{WorkingDirectory}//{fileName}", content);
         }
