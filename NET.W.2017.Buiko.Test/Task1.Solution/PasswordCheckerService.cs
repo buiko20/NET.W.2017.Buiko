@@ -11,8 +11,13 @@ namespace Task1.Solution
             if (string.Equals(password, string.Empty, StringComparison.Ordinal))
                 return Tuple.Create(false, $"{nameof(password)} is empty ");
 
-            var verification = verifier(password);
-            if (!verification.Item1) return verification;
+            var verifications = verifier.GetInvocationList();
+            foreach (var verification in verifications)
+            {
+                var verificationMethod = (Func<string, Tuple<bool, string>>)verification;
+                var result = verificationMethod.Invoke(password);
+                if (!result.Item1) return result;
+            }
 
             repository.Create(password);
 

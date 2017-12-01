@@ -26,26 +26,28 @@ namespace Converter
         /// Converts data of type <typeparamref name="T"/> to xml document.
         /// </summary>
         /// <typeparam name="T">Data type to convert to xml.</typeparam>
-        /// <param name="dataProvider">Class supplying data to transform.</param>
-        /// <param name="xmlTransformer">Class that converts data to xml.</param>
+        /// <param name="dataProvider">Class supplying data to transform</param>
+        /// <param name="xmlTransformer">Class that converts data to xml</param>
+        /// <param name="rootElementName">root element name</param>
         /// <returns>Xml document representing data.</returns>
         /// <exception cref="ArgumentNullException">Exception thrown when
         /// <paramref name="dataProvider"/> or <paramref name="xmlTransformer"/>
         /// is null.</exception>
+        /// <exception cref="ArgumentException">Exception thrown when 
+        /// <paramref name="rootElementName"/> is invalid.</exception>
         public XmlDocument ConvertDataToXml<T>(
-            IDataProvider<T> dataProvider, IXmlTransformer<T> xmlTransformer)
+            IDataProvider<T> dataProvider, IXmlTransformer<T> xmlTransformer, string rootElementName)
         {
-            VerifyInput(dataProvider, xmlTransformer);
+            VerifyInput(dataProvider, xmlTransformer, rootElementName);
 
             var xmlDocument = new XmlDocument();
             var xmlDeclaration = xmlDocument.CreateXmlDeclaration("1.0", "utf-8", null);
             xmlDocument.AppendChild(xmlDeclaration);
 
-            string rootElementName = dataProvider.GetRootElementName();
             var xmlRootElement = xmlDocument.CreateElement(rootElementName);
 
             FillRootElementWithSubElements(
-                dataProvider, xmlTransformer, xmlRootElement, xmlDocument);
+                dataProvider.GetData(), xmlTransformer, xmlRootElement, xmlDocument);
 
             xmlDocument.AppendChild(xmlRootElement);
 
@@ -53,7 +55,7 @@ namespace Converter
         }
 
         private static void VerifyInput<T>(
-            IDataProvider<T> dataProvider, IXmlTransformer<T> xmlTransformer)
+            IDataProvider<T> dataProvider, IXmlTransformer<T> xmlTransformer, string rootElementName)
         {
             if (ReferenceEquals(dataProvider, null))
             {
@@ -63,6 +65,11 @@ namespace Converter
             if (ReferenceEquals(xmlTransformer, null))
             {
                 throw new ArgumentNullException(nameof(xmlTransformer));
+            }
+
+            if (string.IsNullOrWhiteSpace(rootElementName))
+            {
+                throw new ArgumentException($"{nameof(rootElementName)} is invalid", nameof(rootElementName));
             }
         }
 

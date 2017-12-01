@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -50,29 +49,24 @@ namespace Converter.Implementation
         }
 
         /// <inheritdoc />
-        public string GetRootElementName() =>
-            "urlAddresses";
-
-        /// <inheritdoc />
-        public IEnumerator<string> GetEnumerator()
+        public IEnumerable<string> GetData()
         {
+            var data = new List<string>();
             using (var streamReader = new StreamReader(
                 File.Open(
-                DataFilePath, 
-                FileMode.Open, 
-                FileAccess.Read, 
-                FileShare.Read), 
+                    DataFilePath,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.Read),
                 Encoding.UTF8))
             {
                 while (!streamReader.EndOfStream)
                 {
-                    yield return streamReader.ReadLine()?.Trim();
+                    data.Add(streamReader.ReadLine()?.Trim());
                 }
             }
-        }
 
-        /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator() =>
-            GetEnumerator();
+            return data;
+        }
     }
 }

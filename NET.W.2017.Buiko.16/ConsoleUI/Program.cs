@@ -14,9 +14,10 @@ namespace ConsoleUI
             var dataProvider = new FileDataProvider(DataFilePath);
             var toXmlTransformer = new UrlToXmlTransformer();
             var logger = LoggerFactory.GetLogger("Program");
-
+            
             var xmlConverter = new XmlConverter(logger);
-            var xmlDocument = xmlConverter.ConvertDataToXml(dataProvider, toXmlTransformer);
+            string rootElementName = "urlAddresses";
+            var xmlDocument = xmlConverter.ConvertDataToXml(dataProvider, toXmlTransformer, rootElementName);
             xmlDocument.Save("result_xml.xml");
 
             Console.ReadLine();
