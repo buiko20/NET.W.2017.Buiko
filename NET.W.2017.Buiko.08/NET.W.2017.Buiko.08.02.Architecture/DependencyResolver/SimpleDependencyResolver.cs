@@ -1,6 +1,6 @@
 ﻿using BLL.Interface.AccountService;
 using BLL.Services;
-using DAL;
+using DAL.BinaryFile;
 
 namespace DependencyResolver
 {

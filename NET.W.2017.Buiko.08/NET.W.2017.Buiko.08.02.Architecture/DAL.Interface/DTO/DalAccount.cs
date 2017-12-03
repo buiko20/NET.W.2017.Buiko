@@ -4,7 +4,7 @@ namespace DAL.Interface.DTO
 {
     public class DalAccount
     {
-        public Type AccountType { get; set; }
+        public string AccountType { get; set; }
 
         public string Id { get; set; }
 
@@ -15,5 +15,7 @@ namespace DAL.Interface.DTO
         public decimal CurrentSum { get; set; }
        
         public int BonusPoints { get; set; }
+
+        public string OwnerEmail { get; set; }
     }
 }

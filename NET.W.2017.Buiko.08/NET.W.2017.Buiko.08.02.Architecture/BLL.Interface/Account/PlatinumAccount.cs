@@ -12,8 +12,9 @@
             string onwerFirstName, 
             string onwerSecondName, 
             decimal currentSum, 
-            int bonusPoints) :
-            base(id, onwerFirstName, onwerSecondName, currentSum, bonusPoints)
+            int bonusPoints,
+            string ownerEmail) :
+            base(id, onwerFirstName, onwerSecondName, currentSum, bonusPoints, ownerEmail)
         {
             this.BonusValue = 42;
         }

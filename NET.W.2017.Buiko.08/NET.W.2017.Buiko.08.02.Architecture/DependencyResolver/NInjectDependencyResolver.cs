@@ -1,7 +1,8 @@
 ﻿using BLL.Interface.AccountIdService;
 using BLL.Interface.AccountService;
 using BLL.Services;
-using DAL;
+using DAL.BinaryFile;
+using DAL.EF;
 using DAL.Interface;
 using Ninject;
 
@@ -11,8 +12,10 @@ namespace DependencyResolver
     {
         public static void Configure(IKernel kernel)
         {
-            kernel.Bind<IAccountRepository>().To<BinaryFileAccountRepository>()
-                .WithConstructorArgument("dataFilePath", @"accounts.bin");
+            //  kernel.Bind<IAccountRepository>().To<BinaryFileAccountRepository>()
+            //      .WithConstructorArgument("dataFilePath", @"accounts.bin");
+
+            kernel.Bind<IAccountRepository>().To<AccountRepository>();
 
             kernel.Bind<IAccountIdService>().To<GuidAccountIdService>().InSingletonScope();
 

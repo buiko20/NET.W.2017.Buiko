@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Mail;
 using BLL.Interface.Account;
 using BLL.Interface.AccountIdService;
 using BLL.Interface.AccountService;
@@ -50,13 +51,15 @@ namespace BLL.Services
             string ownerFirstName,
             string ownerSecondName,
             decimal sum,
+            string ownerEmail,
             IAccountIdService accountIdService)
         {
             return OpenAccount(
                 AccountType.Base, 
                 ownerFirstName, 
                 ownerSecondName, 
-                sum, 
+                sum,
+                ownerEmail, 
                 accountIdService);
         }
 
@@ -65,10 +68,11 @@ namespace BLL.Services
             AccountType accountType, 
             string ownerFirstName, 
             string ownerSecondName, 
-            decimal sum, 
+            decimal sum,
+            string ownerEmail,
             IAccountIdService accountIdService)
         {
-            VerifyInput(ownerFirstName, ownerSecondName, sum, accountIdService);
+            VerifyInput(ownerFirstName, ownerSecondName, sum, ownerEmail, accountIdService);
 
             try
             {
@@ -76,7 +80,7 @@ namespace BLL.Services
 
                 int initialBonuses = GetInitialBonuses(accountType);
 
-                var account = CreateAccount(accountType, accountId, ownerFirstName, ownerSecondName, sum, initialBonuses);
+                var account = CreateAccount(accountType, accountId, ownerFirstName, ownerSecondName, sum, initialBonuses, ownerEmail);
 
                 _accountRepository.AddAccount(account.ToDalAccount());
 
@@ -128,6 +132,7 @@ namespace BLL.Services
             string ownerFirstName, 
             string ownerSecondName, 
             decimal sum, 
+            string ownerEmail,
             IAccountIdService accountIdService)
         {
             if (string.IsNullOrWhiteSpace(ownerFirstName))
@@ -143,6 +148,15 @@ namespace BLL.Services
             if (sum < 0)
             {
                 throw new ArgumentException("sum must be greater than 0", nameof(sum));
+            }
+
+            try
+            {
+                var mailAddress = new MailAddress(ownerEmail);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException($"{nameof(ownerEmail)} is invalid.", nameof(ownerEmail));
             }
 
             if (ReferenceEquals(accountIdService, null))
@@ -170,18 +184,19 @@ namespace BLL.Services
             string id, 
             string onwerFirstName, 
             string onwerSecondName, 
-            decimal sum, 
-            int bonusPoints)
+            decimal sum,
+            int bonusPoints,
+            string ownerEmail)
         {
             switch (accountType)
             {
                 case AccountType.Gold:
-                    return new GoldAccount(id, onwerFirstName, onwerSecondName, sum, bonusPoints);
+                    return new GoldAccount(id, onwerFirstName, onwerSecondName, sum, bonusPoints, ownerEmail);
                 case AccountType.Platinum:
-                    return new PlatinumAccount(id, onwerFirstName, onwerSecondName, sum, bonusPoints);
+                    return new PlatinumAccount(id, onwerFirstName, onwerSecondName, sum, bonusPoints, ownerEmail);
                 case AccountType.Base:
                 default:
-                    return new BaseAccount(id, onwerFirstName, onwerSecondName, sum, bonusPoints);
+                    return new BaseAccount(id, onwerFirstName, onwerSecondName, sum, bonusPoints, ownerEmail);
             }
         }
 

@@ -6,7 +6,7 @@ using System.Text;
 using DAL.Interface;
 using DAL.Interface.DTO;
 
-namespace DAL
+namespace DAL.BinaryFile
 {
     /// <inheritdoc />
     /// <summary>
@@ -97,11 +97,6 @@ namespace DAL
                 throw new ArgumentNullException(nameof(account));
             }
 
-          /*  if (!_accounts.Any(account.Equals))
-            {
-                throw new RepositoryException("DalAccount does not exists");
-            }*/
-
             if (_accounts.All(dalAccount => string.Compare(dalAccount.Id, account.Id, StringComparison.Ordinal) != 0))
             {
                 throw new RepositoryException("DalAccount does not exists");
@@ -156,35 +151,36 @@ namespace DAL
         private static DalAccount ReadAccountFromFile(BinaryReader binaryReader)
         {
             string typeName = binaryReader.ReadString();
-            var bllAccountType = Type.GetType(typeName);
-
             string id = binaryReader.ReadString();
             string ownerFirstName = binaryReader.ReadString();
             string ownerSecondName = binaryReader.ReadString();
             decimal sum = binaryReader.ReadDecimal();
             int bonusPoints = binaryReader.ReadInt32();
+            string ownerEmail = binaryReader.ReadString();
 
-            return CreateAccount(bllAccountType, id, ownerFirstName, ownerSecondName, sum, bonusPoints);
+            return CreateAccount(typeName, id, ownerFirstName, ownerSecondName, sum, bonusPoints, ownerEmail);
         }
 
         private static void WriteAccountToFile(
             BinaryWriter binaryWriter, DalAccount account)
         {
-            binaryWriter.Write(account.AccountType.AssemblyQualifiedName);
+            binaryWriter.Write(account.AccountType);
             binaryWriter.Write(account.Id);
             binaryWriter.Write(account.OwnerFirstName);
             binaryWriter.Write(account.OwnerSecondName);
             binaryWriter.Write(account.CurrentSum);
             binaryWriter.Write(account.BonusPoints);
+            binaryWriter.Write(account.OwnerEmail);
         }
 
         private static DalAccount CreateAccount(
-            Type accountType,
+            string accountType,
             string id,
             string ownerFirstName,
             string ownerSecondName,
             decimal sum,
-            int bonusPoints)
+            int bonusPoints,
+            string ownerEmail)
         {
             return new DalAccount
             {
@@ -193,10 +189,11 @@ namespace DAL
                 CurrentSum = sum,
                 Id = id,
                 OwnerFirstName = ownerFirstName,
-                OwnerSecondName = ownerSecondName
+                OwnerSecondName = ownerSecondName,
+                OwnerEmail = ownerEmail
             };
         }
-            
+
         private void ParseFile(string filePath)
         {
             using (var binaryReader = new BinaryReader(

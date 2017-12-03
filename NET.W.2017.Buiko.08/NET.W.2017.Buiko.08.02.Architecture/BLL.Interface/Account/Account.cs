@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Mail;
 
 namespace BLL.Interface.Account
 {
@@ -12,6 +13,7 @@ namespace BLL.Interface.Account
         private string _id;
         private string _onwerFirstName;
         private string _onwerSecondName;
+        private string _ownerEmail;
 
         #endregion // !private fields.
 
@@ -25,22 +27,25 @@ namespace BLL.Interface.Account
         /// <param name="onwerSecondName">surname of the owner</param>
         /// <param name="currentSum">account start sum</param>
         /// <param name="bonusPoints">account start bonus points</param>
+        /// <param name="ownerEmail">owner email</param>
         /// <exception cref="ArgumentException">Thrown when one of the parameters is incorrect</exception>
         protected Account(
             string id, 
             string onwerFirstName, 
             string onwerSecondName, 
             decimal currentSum, 
-            int bonusPoints)
+            int bonusPoints,
+            string ownerEmail)
         {
             VerifyInput(
-                id, onwerFirstName, onwerSecondName, currentSum, bonusPoints);
+                id, onwerFirstName, onwerSecondName, currentSum, bonusPoints, ownerEmail);
 
             Id = id;
             OwnerFirstName = onwerFirstName;
             OwnerSecondName = onwerSecondName;
             CurrentSum = currentSum;
             BonusPoints = bonusPoints;
+            OwnerEmail = ownerEmail;
         }
 
         #endregion // !constructors.
@@ -123,6 +128,31 @@ namespace BLL.Interface.Account
         public int BonusPoints { get; private set; }
 
         /// <summary>
+        /// Account owner email.
+        /// </summary>
+        public string OwnerEmail
+        {
+            get
+            {
+                return _ownerEmail;
+            }
+
+            set
+            {
+                try
+                {
+                    var mailAddress = new MailAddress(value);
+                }
+                catch (Exception)
+                {
+                    throw new ArgumentException($"{nameof(OwnerEmail)} is invalid.", nameof(value));
+                }
+
+                _ownerEmail = value;
+            }
+        }
+
+        /// <summary>
         /// Bonus value.
         /// </summary>
         protected int BonusValue { get; set; }
@@ -178,7 +208,8 @@ namespace BLL.Interface.Account
         /// <returns>String representation of a account.</returns>
         public override string ToString() =>
             $"{GetAccountAdditionalInformation()} {Id} " +
-            $"{OwnerFirstName} {OwnerSecondName} {CurrentSum} {BonusPoints}";
+            $"{OwnerFirstName} {OwnerSecondName} {CurrentSum} " +
+            $"{BonusPoints} {OwnerEmail}";
 
         /// <summary>
         /// Verify the equivalence of the current account and the <paramref name="obj"/>.
@@ -285,7 +316,8 @@ namespace BLL.Interface.Account
             string onwerFirstName, 
             string onwerSecondName, 
             decimal currentSum, 
-            int bonusPoints)
+            int bonusPoints,
+            string ownerEmail)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
@@ -310,6 +342,11 @@ namespace BLL.Interface.Account
             if (bonusPoints < 0)
             {
                 throw new ArgumentException(nameof(bonusPoints));
+            }
+
+            if (string.IsNullOrWhiteSpace(ownerEmail))
+            {
+                throw new ArgumentException(nameof(ownerEmail));
             }
         }
 

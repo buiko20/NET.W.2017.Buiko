@@ -14,6 +14,7 @@ namespace BLL.Interface.AccountService
         /// <param name="onwerFirstName">account holder name</param>
         /// <param name="onwerSecondName">surname of account holder</param>
         /// <param name="sum">the initial amount of money on your account</param>
+        /// <param name="ownerEmail">owner email</param>
         /// <param name="accountIdService">service that generates an account identifier</param>
         /// <returns>Account id.</returns>
         /// <exception cref="AccountServiceException">
@@ -23,7 +24,8 @@ namespace BLL.Interface.AccountService
         string OpenAccount(
             string onwerFirstName, 
             string onwerSecondName, 
-            decimal sum, 
+            decimal sum,
+            string ownerEmail,
             IAccountIdService accountIdService);
 
         /// <summary>
@@ -33,6 +35,7 @@ namespace BLL.Interface.AccountService
         /// <param name="onwerFirstName">account holder name</param>
         /// <param name="onwerSecondName">surname of account holder</param>
         /// <param name="sum">the initial amount of money on your account</param>
+        /// <param name="ownerEmail">owner email</param>
         /// <param name="accountIdService">service that generates an account identifier</param>
         /// <returns>Account id.</returns>
         /// <exception cref="AccountServiceException">
@@ -43,7 +46,8 @@ namespace BLL.Interface.AccountService
             AccountType accountType, 
             string onwerFirstName, 
             string onwerSecondName, 
-            decimal sum, 
+            decimal sum,
+            string ownerEmail,
             IAccountIdService accountIdService);
 
         /// <summary>
