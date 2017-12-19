@@ -1,0 +1,52 @@
+﻿@model PL.ASP_NET_MVC.Models.ViewModels.AccountStatusViewModel
+
+@{
+    ViewBag.Title = "Account operations";
+}
+
+<h2 style="text-align: center">Account operations</h2>
+
+@using (Ajax.BeginForm("DepositMoney", "Account", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div style="text-align: center">
+        <button type="submit" class="btn-custom btn-primary btn-lg">Deposit money</button> <br />
+    </div>
+}
+
+@using (Ajax.BeginForm("WithdrawMoney", "Account", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div style="text-align: center">
+        <button type="submit" class="btn-custom btn-primary btn-lg">Withdraw money</button> <br />
+    </div>
+}
+
+@using (Ajax.BeginForm("GetAccountStatus", "Account", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div style="text-align: center">
+        <button type="submit" class="btn-custom btn-primary btn-lg">Get account status</button> <br />
+    </div>
+}
+
+@using (Ajax.BeginForm("TransferFunds", "Account", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div style="text-align: center">
+        <button type="submit" class="btn-custom btn-primary btn-lg">Transfer funds</button> <br />
+    </div>
+}
+
+@using (Ajax.BeginForm("CloseAccount", "Account", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div style="text-align: center">
+        <button type="submit" class="btn-custom btn-primary btn-lg" style="margin-bottom: 0;">Close account</button> <br />
+    </div>
+}
+
+<div id="results">
+    @{
+        if ((bool)ViewBag.IsAccountStatus)
+        {
+            ViewBag.IsAccountStatus = false;
+            Html.RenderPartial("_AccountStatus", Model);
+        }
+    }
+</div>

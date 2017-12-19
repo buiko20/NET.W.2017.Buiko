@@ -105,21 +105,25 @@ namespace BLL.Services
             Operation(accountId, 1m, CloseOperation);
 
         /// <inheritdoc />
-        public string GetAccountStatus(string accountId)
+        public string GetAccountStatus(string accountId) =>
+            this.GetAccount(accountId).ToString();
+
+        /// <inheritdoc />
+        public void TransferFunds(string sourceAccountId, string destinationAccountId, decimal transferSum)
         {
-            if (string.IsNullOrWhiteSpace(accountId))
-            {
-                throw new ArgumentException(nameof(accountId));
-            }
+            // TODO: make this operation atomic somehow.
+            var sourceAccount = this.GetAccount(sourceAccountId);
+            var destinationAccount = this.GetAccount(destinationAccountId);
 
-            var dalAccounts = _accountRepository.GetAccounts();
-            var dalAccount = dalAccounts.FirstOrDefault(acc => acc.Id == accountId);
-            if (ReferenceEquals(dalAccount, null))
+            try
             {
-                throw new AccountServiceException($"Account with id {accountId} not found");
+                this.WithdrawOperation(sourceAccount, transferSum);
+                this.DepositOperation(destinationAccount, transferSum);
             }
-
-            return dalAccount.ToBllAccount().ToString();
+            catch (Exception e)
+            {
+                throw new AccountServiceException("Transfer funds error", e);
+            }
         }
 
         #endregion // !interface implementation.
@@ -262,6 +266,23 @@ namespace BLL.Services
 
         private void CloseOperation(Account account, decimal sum) =>
             _accountRepository.RemoveAccount(account.ToDalAccount());
+
+        private Account GetAccount(string accountId)
+        {
+            if (string.IsNullOrWhiteSpace(accountId))
+            {
+                throw new ArgumentException(nameof(accountId));
+            }
+
+            var dalAccounts = _accountRepository.GetAccounts();
+            var dalAccount = dalAccounts.FirstOrDefault(acc => acc.Id == accountId);
+            if (ReferenceEquals(dalAccount, null))
+            {
+                throw new AccountServiceException($"Account with id {accountId} not found");
+            }
+
+            return dalAccount.ToBllAccount();
+        }
 
         #endregion // !private.
     }

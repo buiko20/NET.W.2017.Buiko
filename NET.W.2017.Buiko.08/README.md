@@ -1,3 +1,8 @@
+<a href="https://drive.google.com/drive/u/0/folders/1RXzXh-L_YZj8MSzvW8Q1P1xU-RzTTe4o">
+Viewing files on a disk without .gitignore
+</a>
+
+<br />
 <p><b>Задание 1</b></p>
 <p>
 Разработать класс Book (ISBN, автор, название, издательство, год издания, количество страниц, цена), 

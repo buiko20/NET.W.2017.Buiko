@@ -1,6 +1,7 @@
 ﻿using System;
 using BLL.Interface.AccountIdService;
 using BLL.Interface.AccountService;
+using BLL.Interface.MailService;
 using DependencyResolver;
 using Ninject;
 

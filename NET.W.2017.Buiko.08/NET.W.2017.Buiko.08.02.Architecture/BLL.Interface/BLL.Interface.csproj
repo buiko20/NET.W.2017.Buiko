@@ -49,6 +49,8 @@
     <Compile Include="Account\BaseAccount.cs" />
     <Compile Include="Account\GoldAccount.cs" />
     <Compile Include="Account\PlatinumAccount.cs" />
+    <Compile Include="MailService\IMailService.cs" />
+    <Compile Include="MailService\MailData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -92,5 +92,16 @@ namespace BLL.Interface.AccountService
         /// <paramref name="accountId"/> does not exists.
         /// </exception>
         string GetAccountStatus(string accountId);
+
+        /// <summary>
+        /// Transfers funds from one <paramref name="sourceAccountId"/> to <paramref name="destinationAccountId"/>.
+        /// </summary>
+        /// <param name="sourceAccountId">account from which the transfer will be made</param>
+        /// <param name="destinationAccountId">account for which will be transferred</param>
+        /// <param name="transferSum">amount of remittance</param>
+        /// <exception cref="AccountServiceException">
+        /// Thrown when an exception occurred in service or accounts does not exists.
+        /// </exception>
+        void TransferFunds(string sourceAccountId, string destinationAccountId, decimal transferSum);
     }
 }
