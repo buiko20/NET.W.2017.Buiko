@@ -1,6 +1,6 @@
 ﻿@model PL.ASP_NET_MVC.Models.ViewModels.AccountNumberViewModel
 
-@using (Html.BeginForm((string)ViewBag.Operation, "Account"))
+@using (Html.BeginForm((string)ViewBag.Operation, "Account", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 

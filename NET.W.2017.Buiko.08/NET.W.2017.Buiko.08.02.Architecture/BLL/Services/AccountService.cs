@@ -111,7 +111,6 @@ namespace BLL.Services
         /// <inheritdoc />
         public void TransferFunds(string sourceAccountId, string destinationAccountId, decimal transferSum)
         {
-            // TODO: make this operation atomic somehow.
             var sourceAccount = this.GetAccount(sourceAccountId);
             var destinationAccount = this.GetAccount(destinationAccountId);
 

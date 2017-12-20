@@ -10,7 +10,7 @@ namespace PL.ASP_NET_MVC.Controllers
 {
     public class AccountController : Controller
     {
-        private const string HostEmail = "youe_email@gmail.com";
+        private const string HostEmail = "your_email@gmail.com";
         private const string HostEmailPassword = "your_email_password";
 
         private readonly IAccountService _accountService;

@@ -7,7 +7,7 @@
 <h2>@ViewBag.OperationViewName</h2>
 
 
-@using (Html.BeginForm((string)ViewBag.Operation, "Account"))
+@using (Html.BeginForm((string)ViewBag.Operation, "Account", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     

@@ -6,7 +6,7 @@
 
 <h2>Open account</h2>
 
-@using (Html.BeginForm("OpenAccount", "Account"))
+@using (Html.BeginForm("OpenAccount", "Account", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -25,7 +25,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.OwnerFirstName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.OwnerFirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.OwnerFirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "Vasia" } })
                 @Html.ValidationMessageFor(model => model.OwnerFirstName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -33,7 +33,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.OwnerSecondName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.OwnerSecondName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.OwnerSecondName, new { htmlAttributes = new { @class = "form-control", placeholder = "Puplin" } })
                 @Html.ValidationMessageFor(model => model.OwnerSecondName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -41,7 +41,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Sum, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Sum, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Sum, new { htmlAttributes = new { @class = "form-control", placeholder = "0" } })
                 @Html.ValidationMessageFor(model => model.Sum, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -49,7 +49,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.OwnerEmail, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.OwnerEmail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.OwnerEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "email@gmail.com" } })
                 @Html.ValidationMessageFor(model => model.OwnerEmail, "", new { @class = "text-danger" })
             </div>
         </div>
