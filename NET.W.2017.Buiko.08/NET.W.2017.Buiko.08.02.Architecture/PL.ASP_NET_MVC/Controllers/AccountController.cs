@@ -8,10 +8,9 @@ using PL.ASP_NET_MVC.Models.ViewModels;
 
 namespace PL.ASP_NET_MVC.Controllers
 {
-    [HandleError(Order = int.MaxValue)]
     public class AccountController : Controller
     {
-        private const string HostEmail = "your_email@gmail.com";
+        private const string HostEmail = "youe_email@gmail.com";
         private const string HostEmailPassword = "your_email_password";
 
         private readonly IAccountService _accountService;
@@ -26,6 +25,21 @@ namespace PL.ASP_NET_MVC.Controllers
             _accountService = accountService;
             _accountIdService = accountIdService;
             _mailService = mailService;
+        }
+
+        [HttpGet]
+        public JsonResult CheckAccountNumber(string accountNumber)
+        {
+            try
+            {
+                _accountService.GetAccountStatus(accountNumber);
+            }
+            catch (Exception)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         #region open account

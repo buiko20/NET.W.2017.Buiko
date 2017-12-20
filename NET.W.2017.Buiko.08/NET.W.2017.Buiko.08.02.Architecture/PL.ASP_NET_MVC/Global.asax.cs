@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -23,7 +24,22 @@ namespace PL.ASP_NET_MVC
             System.Web.Mvc.DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));         
         }
 
-        protected void Application_Error(object sender, EventArgs e) =>
-            Response.Redirect("GenericError.html");
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            var exception = Server.GetLastError();
+            if (exception.GetType() == typeof(HttpException))
+            {
+                if (exception.Message.Contains("not found"))
+                {
+                    Server.Transfer("~/404.html");
+                }
+            }
+            else
+            {
+                Server.Transfer("~/GenericError.html");
+            }
+
+            Server.ClearError();
+        }
     }
 }
