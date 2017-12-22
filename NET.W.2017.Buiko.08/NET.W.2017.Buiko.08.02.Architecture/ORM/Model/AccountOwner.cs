@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace DAL.EF.Model
+namespace ORM.Model
 {
-    internal class AccountOwner
+    public class AccountOwner
     {
         public int Id { get; set; }
 

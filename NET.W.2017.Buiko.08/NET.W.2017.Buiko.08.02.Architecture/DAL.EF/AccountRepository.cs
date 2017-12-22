@@ -2,14 +2,26 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using DAL.EF.Model;
 using DAL.Interface;
 using DAL.Interface.DTO;
+using ORM.Model;
 
 namespace DAL.EF
 {
     public class AccountRepository : IAccountRepository
     {
+        private readonly DbContext _dbContext;
+
+        public AccountRepository(DbContext dbContext)
+        {
+            if (ReferenceEquals(dbContext, null))
+            {
+                throw new ArgumentNullException(nameof(dbContext));
+            }
+
+            _dbContext = dbContext;
+        }
+
         #region interface implementation
 
         public void AddAccount(DalAccount account)
@@ -19,29 +31,11 @@ namespace DAL.EF
                 throw new ArgumentNullException(nameof(account));
             }
 
-            using (var db = new AccountContext())
-            {
-                using (var transaction = db.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        var accountOwner = GetAccountOwner(account);
-                        db.Owners.Add(accountOwner);
-                        db.SaveChanges();
+            var accountOwner = GetAccountOwner(account);
+            _dbContext.Set<AccountOwner>().Add(accountOwner);
 
-                        var efAccount = GetAccount(account, accountOwner);
-                        db.Accounts.Add(efAccount);
-                        db.SaveChanges();
-
-                        transaction.Commit();
-                    }
-                    catch (Exception e)
-                    {
-                        transaction.Rollback();
-                        throw new RepositoryException("Add account error.", e);
-                    }
-                }
-            }
+            var efAccount = GetAccount(account, accountOwner);
+            _dbContext.Set<Account>().Add(efAccount);
         }
 
         public DalAccount GetAccount(string id)
@@ -51,19 +45,12 @@ namespace DAL.EF
                 throw new ArgumentException($"{nameof(id)} is invalid.", nameof(id));
             }
 
-            using (var db = new AccountContext())
-            {
-                var account = db.Accounts
-                    .Include(acc => acc.AccountType)
-                    .Include(acc => acc.AccountOwner)
-                    .FirstOrDefault(acc => acc.AccountId == id);
-                if (ReferenceEquals(account, null))
-                {
-                    return null;
-                }
+            var account = _dbContext.Set<Account>()
+                .Include(acc => acc.AccountType)
+                .Include(acc => acc.AccountOwner)
+                .FirstOrDefault(acc => acc.AccountId == id);
 
-                return ToDalAccount(account);
-            }
+            return ReferenceEquals(account, null) ? null : ToDalAccount(account);
         }
 
         public void UpdateAccount(DalAccount account)
@@ -73,32 +60,19 @@ namespace DAL.EF
                 throw new ArgumentNullException(nameof(account));
             }
 
-            using (var db = new AccountContext())
-            {
-                using (var transaction = db.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        var efAccount = db.Accounts
-                            .Include(acc => acc.AccountType)
-                            .Include(acc => acc.AccountOwner)
-                            .FirstOrDefault(acc => acc.AccountId == account.Id);
-                        if (ReferenceEquals(efAccount, null))
-                        {
-                            throw new RepositoryException($"{nameof(account)} does not exist");
-                        }
+            var efAccount = _dbContext.Set<Account>()
+                .Include(acc => acc.AccountType)
+                .Include(acc => acc.AccountOwner)
+                .FirstOrDefault(acc => acc.AccountId == account.Id);
 
-                        UpdateAccount(efAccount, account);
-                        db.SaveChanges();
-                        transaction.Commit();
-                    }
-                    catch (Exception e)
-                    {
-                        transaction.Rollback();
-                        throw new RepositoryException("Update account error.", e);
-                    }
-                }
+            if (ReferenceEquals(efAccount, null))
+            {
+                throw new RepositoryException($"{nameof(account)} does not exist");
             }
+
+            efAccount.BonusPoints = account.BonusPoints;
+            efAccount.CurrentSum = account.CurrentSum;
+            _dbContext.Entry(efAccount).State = EntityState.Modified;
         }
 
         public void RemoveAccount(DalAccount account)
@@ -108,51 +82,32 @@ namespace DAL.EF
                 throw new ArgumentNullException(nameof(account));
             }
 
-            using (var db = new AccountContext())
+            var efAccount = _dbContext.Set<Account>()
+                .Include(acc => acc.AccountType)
+                .Include(acc => acc.AccountOwner)
+                .FirstOrDefault(acc => acc.AccountId == account.Id);
+
+            if (ReferenceEquals(efAccount, null))
             {
-                using (var transaction = db.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        var efAccount = db.Accounts
-                            .Include(acc => acc.AccountType)
-                            .Include(acc => acc.AccountOwner)
-                            .FirstOrDefault(acc => acc.AccountId == account.Id);
-                        if (ReferenceEquals(efAccount, null))
-                        {
-                            throw new RepositoryException($"{nameof(account)} does not exist");
-                        }
-
-                        var accountType = efAccount.AccountType;
-                        var accountOwner = efAccount.AccountOwner;
-
-                        db.AccountTypes.Remove(accountType);
-                        db.Owners.Remove(accountOwner);
-                        db.Accounts.Remove(efAccount);
-                        db.SaveChanges();
-
-                        transaction.Commit();
-                    }
-                    catch (Exception e)
-                    {
-                        transaction.Rollback();
-                        throw new RepositoryException("Update account error.", e);
-                    }
-                }
+                throw new RepositoryException($"{nameof(account)} does not exist");
             }
+
+            var accountType = efAccount.AccountType;
+            var accountOwner = efAccount.AccountOwner;
+
+            _dbContext.Set<AccountType>().Remove(accountType);
+            _dbContext.Set<AccountOwner>().Remove(accountOwner);
+            _dbContext.Set<Account>().Remove(efAccount);
         }
 
         public IEnumerable<DalAccount> GetAccounts()
         {
             var accounts = new List<DalAccount>();
-            using (var db = new AccountContext())
+            foreach (var acc in _dbContext.Set<Account>()
+                .Include(account => account.AccountType)
+                .Include(account => account.AccountOwner))
             {
-                foreach (var acc in db.Accounts
-                    .Include(account => account.AccountType)
-                    .Include(account => account.AccountOwner))
-                {
-                    accounts.Add(ToDalAccount(acc));
-                }
+                accounts.Add(ToDalAccount(acc));
             }
 
             return accounts;
@@ -206,12 +161,6 @@ namespace DAL.EF
                 BonusPoints = account.BonusPoints,
                 CurrentSum = account.CurrentSum
             };
-
-        private static void UpdateAccount(Account dest, DalAccount source)
-        {
-            dest.BonusPoints = source.BonusPoints;
-            dest.CurrentSum = source.CurrentSum;
-        }
 
         #endregion // !private.
     }

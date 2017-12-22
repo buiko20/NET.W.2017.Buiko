@@ -2,11 +2,12 @@
 
 @{
     ViewBag.Title = "Transfer funds";
+    TempData["isError"] = true;
 }
 
-<h2>Transfer funds</h2>
+<h2>@ViewBag.OperationName</h2>
 
-@using (Html.BeginForm("TransferFunds", "Account", FormMethod.Post))
+@using (Html.BeginForm((string)ViewBag.Operation, "Account", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     

@@ -6,6 +6,7 @@
     
     <div class="form-horizontal">
         <hr/>
+        <h3>@ViewBag.OperationName</h3>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
@@ -28,7 +29,7 @@
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Send" class="btn btn-default"/>
                 @{
-                    if (ViewBag.Error)
+                    if ((bool)TempData["isError"])
                     {
                         <div style="margin-top: 10px">
                             @Html.ActionLink("Back to account operations", "AccountOperations")

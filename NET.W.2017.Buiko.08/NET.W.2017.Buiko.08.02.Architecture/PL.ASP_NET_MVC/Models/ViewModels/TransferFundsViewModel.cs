@@ -1,18 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 
 namespace PL.ASP_NET_MVC.Models.ViewModels
 {
     public class TransferFundsViewModel
     {
-        [Display(Name = "Source account number")]
+        [Display(Name = "From account number")]
         [Required(ErrorMessage = "Field must be not empty", AllowEmptyStrings = false)]
-        [Remote("CheckAccountNumber", "Account", ErrorMessage = "Account with this id does not exist")]
         public string FromAccountNumber { get; set; }
 
-        [Display(Name = "Destination account number")]
+        [Display(Name = "To account number")]
         [Required(ErrorMessage = "Field must be not empty", AllowEmptyStrings = false)]
-        [Remote("CheckAccountNumber", "Account", ErrorMessage = "Account with this id does not exist")]
         public string ToAccountNumber { get; set; }
 
         [Display(Name = "Transfer sum")]

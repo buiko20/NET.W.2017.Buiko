@@ -72,6 +72,10 @@
       <Project>{4b8492fa-a752-4be3-964e-cb30fcebbe5f}</Project>
       <Name>DAL.Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ORM\ORM.csproj">
+      <Project>{b722790d-dd22-404e-b726-177c63bff7d7}</Project>
+      <Name>ORM</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

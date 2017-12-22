@@ -41,8 +41,14 @@
     </div>
 }
 
-<div id="results">
+<div id="results" style="margin-top: 10px">
     @{
+        var isError = TempData["isError"] as bool?;
+        if (isError.HasValue && !isError.Value)
+        {
+            <h2 style="text-align: center">The operation was completed successfully</h2>
+        }
+
         if ((bool)ViewBag.IsAccountStatus)
         {
             ViewBag.IsAccountStatus = false;

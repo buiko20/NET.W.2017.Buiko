@@ -2,9 +2,10 @@
 
 @{
     ViewBag.Title = "DepositWithdrawMoney";
+    TempData["isError"] = true;
 }
 
-<h2>@ViewBag.OperationViewName</h2>
+<h2>@ViewBag.OperationName</h2>
 
 
 @using (Html.BeginForm((string)ViewBag.Operation, "Account", FormMethod.Post))

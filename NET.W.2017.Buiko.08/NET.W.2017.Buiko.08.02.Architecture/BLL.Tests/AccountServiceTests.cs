@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using BLL.Interface.Account;
 using BLL.Interface.AccountIdService;
+using BLL.Interface.MailService;
 using BLL.Services;
 using DAL.Interface;
 using DAL.Interface.DTO;
@@ -21,12 +22,14 @@ namespace BLL.Tests
         {
             // Arrange.
             var repositoryMock = new Mock<IAccountRepository>();
+            var mailServiceMock = new Mock<IMailService>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
             accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
                 .Returns(accountId);
 
-            var accountService = new AccountService(repositoryMock.Object);
+            var accountService = new AccountService(unitOfWorkMock.Object, repositoryMock.Object, mailServiceMock.Object);
 
             // Act.
             accountService.OpenAccount(firstName, secondName, 100m, "email1@mail.ru", accountIdServiceMock.Object);
@@ -77,12 +80,14 @@ namespace BLL.Tests
         {
             // Arrange.
             var repositoryMock = new Mock<IAccountRepository>();
+            var mailServiceMock = new Mock<IMailService>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
             accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
                 .Returns(accountId);
 
-            var accountService = new AccountService(repositoryMock.Object);
+            var accountService = new AccountService(unitOfWorkMock.Object, repositoryMock.Object, mailServiceMock.Object);
 
             // Act.
             accountService.OpenAccount(firstName, secondName, 100m, "email1@mail.ru", accountIdServiceMock.Object);
@@ -98,12 +103,14 @@ namespace BLL.Tests
         {
             // Arrange.
             var repositoryMock = new Mock<IAccountRepository>();
+            var mailServiceMock = new Mock<IMailService>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
             accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
                 .Returns(accountId);
 
-            var accountService = new AccountService(repositoryMock.Object);
+            var accountService = new AccountService(unitOfWorkMock.Object, repositoryMock.Object, mailServiceMock.Object);
 
             // Act.
             accountService.OpenAccount(firstName, secondName, 100m, "email1@mail.ru", accountIdServiceMock.Object);
@@ -118,12 +125,14 @@ namespace BLL.Tests
         {
             // Arrange.
             var repositoryMock = new Mock<IAccountRepository>();
+            var mailServiceMock = new Mock<IMailService>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
             accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
                 .Returns(accountId);
 
-            var accountService = new AccountService(repositoryMock.Object);
+            var accountService = new AccountService(unitOfWorkMock.Object, repositoryMock.Object, mailServiceMock.Object);
 
             // Act.
             accountService.OpenAccount(firstName, secondName, 100m, "email1@mail.ru", accountIdServiceMock.Object);
@@ -147,11 +156,14 @@ namespace BLL.Tests
             repositoryMock.Setup(repository => repository.GetAccounts())
                 .Returns(new DalAccount[0]);
 
+            var mailServiceMock = new Mock<IMailService>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+
             var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
             accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
                 .Returns(accountId);
 
-            var accountService = new AccountService(repositoryMock.Object);
+            var accountService = new AccountService(unitOfWorkMock.Object, repositoryMock.Object, mailServiceMock.Object);
 
             // Act.
             accountService.OpenAccount(firstName, secondName, 100m, email, accountIdServiceMock.Object);
@@ -190,12 +202,14 @@ namespace BLL.Tests
         {
             // Arrange.
             var repositoryMock = new Mock<IAccountRepository>();
+            var mailServiceMock = new Mock<IMailService>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             var accountIdServiceMock = new Mock<IAccountIdService>(MockBehavior.Strict);
             accountIdServiceMock.Setup(service => service.GenerateAccountId(firstName, secondName))
                 .Returns(accountId);
 
-            var accountService = new AccountService(repositoryMock.Object);
+            var accountService = new AccountService(unitOfWorkMock.Object, repositoryMock.Object, mailServiceMock.Object);
 
             // Act.
             accountService.OpenAccount(firstName, secondName, 100m, email, accountIdServiceMock.Object);

@@ -3,43 +3,19 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using BLL.Interface.AccountIdService;
 using BLL.Interface.AccountService;
-using BLL.Interface.MailService;
 using PL.ASP_NET_MVC.Models.ViewModels;
 
 namespace PL.ASP_NET_MVC.Controllers
 {
     public class AccountController : Controller
     {
-        private const string HostEmail = "your_email@gmail.com";
-        private const string HostEmailPassword = "your_email_password";
-
         private readonly IAccountService _accountService;
         private readonly IAccountIdService _accountIdService;
-        private readonly IMailService _mailService;
 
-        public AccountController(
-            IAccountService accountService, 
-            IAccountIdService accountIdService, 
-            IMailService mailService)
+        public AccountController(IAccountService accountService, IAccountIdService accountIdService)
         {
             _accountService = accountService;
             _accountIdService = accountIdService;
-            _mailService = mailService;
-        }
-
-        [HttpGet]
-        public JsonResult CheckAccountNumber(string accountNumber)
-        {
-            try
-            {
-                _accountService.GetAccountStatus(accountNumber);
-            }
-            catch (Exception)
-            {
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
-
-            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         #region open account
@@ -57,12 +33,8 @@ namespace PL.ASP_NET_MVC.Controllers
                 return View();
             }
 
-            string openedAccountId = await Task.Run(() => _accountService.OpenAccount(account.Type, account.OwnerFirstName,
+            await Task.Run(() => _accountService.OpenAccount(account.Type, account.OwnerFirstName,
                 account.OwnerSecondName, account.Sum, account.OwnerEmail, _accountIdService));
-
-            string subject = "Opened account on localhost!";
-            string message = $"Thank you for choosing our service!<br/>Your account ID: {openedAccountId}";
-            await this.SendMailAsync(account.OwnerEmail, subject, message);
 
             TempData["isAccountOpened"] = true;
             return RedirectToAction(nameof(this.AccountSuccessfullyOpened));
@@ -88,7 +60,6 @@ namespace PL.ASP_NET_MVC.Controllers
         [HttpGet]
         public ActionResult AccountOperations()
         {
-            ViewBag.Error = false;
             ViewBag.IsAccountStatus = false;
             return View();
         }
@@ -105,20 +76,10 @@ namespace PL.ASP_NET_MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [HandleError(ExceptionType = typeof(AccountServiceException), View = "AccountServiceError")]
-        public async Task<ActionResult> DepositMoneyOperation(AccountOperationViewModel data) 
+        public async Task<ActionResult> DepositMoneyOperation(AccountOperationViewModel data)
         {
-            bool isError;
-            var result = this.DepositWithdrawOperation(data, (s, d) => s.DepositMoney(d.AccountNumber, d.Sum), out isError);
-
-            if (isError)
-            {
-                return result;
-            }
-
-            string accountOwnerEmail = this.GetAccountEmail(data.AccountNumber);
-            string subject = "Account operation";
-            string message = $"Sum={data.Sum} was paid to account id={data.AccountNumber}";
-            await this.SendMailAsync(accountOwnerEmail, subject, message);
+            var result = await Task.Run(() =>
+                this.DepositWithdrawOperation(data, (s, d) => s.DepositMoney(d.AccountNumber, d.Sum)));
 
             return result;
         }
@@ -139,18 +100,8 @@ namespace PL.ASP_NET_MVC.Controllers
         [HandleError(ExceptionType = typeof(AccountServiceException), View = "AccountServiceError")]
         public async Task<ActionResult> WithdrawMoneyOperation(AccountOperationViewModel data)
         {
-            bool isError;
-            var result = this.DepositWithdrawOperation(data, (s, d) => s.WithdrawMoney(d.AccountNumber, d.Sum), out isError);
-
-            if (isError)
-            {
-                return result;
-            }
-
-            string accountOwnerEmail = this.GetAccountEmail(data.AccountNumber);
-            string subject = "Account operation";
-            string message = $"From account with id={data.AccountNumber} sum={data.Sum} were withdrawn.";
-            await this.SendMailAsync(accountOwnerEmail, subject, message);
+            var result = await Task.Run(() =>
+                this.DepositWithdrawOperation(data, (s, d) => s.WithdrawMoney(d.AccountNumber, d.Sum)));
 
             return result;
         }
@@ -163,7 +114,7 @@ namespace PL.ASP_NET_MVC.Controllers
         public ActionResult GetAccountStatus() =>
             AccountOperationView(
                 operation: nameof(this.GetAccountStatusOperation),
-                operationName: "Account information",
+                operationName: "Get account status operation",
                 viewName: "AccountStatusOrClose");
 
         [HttpPost]
@@ -173,21 +124,21 @@ namespace PL.ASP_NET_MVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Error = true;
+                TempData["isError"] = true;
                 return View("AccountStatusOrClose");
             }
 
             try
             {
                 var accountInfo = await Task.Run(() => _accountService.GetAccountStatus(accountId.AccountNumber));
-                ViewBag.Error = false;
+                TempData["isError"] = false;
                 ViewBag.IsAccountStatus = true;
                 return View(nameof(this.AccountOperations), GetAccountStatusModel(accountInfo));
             }
             catch (Exception e)
             {
                 ModelState.AddModelError(nameof(accountId.AccountNumber), e.Message);
-                ViewBag.Error = true;
+                TempData["isError"] = true;
                 return View("AccountStatusOrClose");
             }           
         }
@@ -200,7 +151,7 @@ namespace PL.ASP_NET_MVC.Controllers
         public ActionResult TransferFunds() =>
             AccountOperationView(
                 operation: nameof(this.TransferFundsOperation),
-                operationName: "Transfer funds",
+                operationName: "Transfer funds operation",
                 viewName: "TransferFunds");
 
         [HttpPost]
@@ -210,7 +161,7 @@ namespace PL.ASP_NET_MVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Error = true;
+                TempData["isError"] = true;
                 return View("TransferFunds");
             }
 
@@ -220,23 +171,14 @@ namespace PL.ASP_NET_MVC.Controllers
                     sourceAccountId: transferData.FromAccountNumber,
                     destinationAccountId: transferData.ToAccountNumber,
                     transferSum: transferData.Sum));
-                               
-                string accountOwnerEmail = await Task.Run(() => this.GetAccountEmail(transferData.FromAccountNumber));
-                string subject = "Transfer funds operation";
-                string message = $"From account with id={transferData.FromAccountNumber} sum={transferData.Sum} were withdrawn.";
-                await this.SendMailAsync(accountOwnerEmail, subject, message);
 
-                accountOwnerEmail = await Task.Run(() => this.GetAccountEmail(transferData.ToAccountNumber));
-                message = $"Sum={transferData.Sum} was paid to account id={transferData.ToAccountNumber}";
-                await this.SendMailAsync(accountOwnerEmail, subject, message);
-
-                ViewBag.Error = false;
+                TempData["isError"] = false;
                 return RedirectToAction(nameof(this.AccountOperations));
             }
             catch (Exception e)
             {
                 ModelState.AddModelError(string.Empty, e.Message);
-                ViewBag.Error = true;
+                TempData["isError"] = true;
                 return View("_TransferFunds");
             }
         }
@@ -259,29 +201,21 @@ namespace PL.ASP_NET_MVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Error = true;
+                TempData["isError"] = true;
                 return View("AccountStatusOrClose");
             }
 
             try
             {
-                var result = RedirectToAction(nameof(this.AccountOperations));
-
-                string accountOwnerEmail = await Task.Run(() => this.GetAccountEmail(accountId.AccountNumber));
-                string subject = "Account closed";
-                string message = $"account with id={accountId.AccountNumber} is closed.";
-
                 await Task.Run(() => _accountService.CloseAccount(accountId.AccountNumber));
-               
-                await this.SendMailAsync(accountOwnerEmail, subject, message);
 
-                ViewBag.Error = false;
-                return result;
+                TempData["isError"] = false;
+                return RedirectToAction(nameof(this.AccountOperations));
             }
             catch (Exception e)
             {
                 ModelState.AddModelError(nameof(accountId.AccountNumber), e.Message);
-                ViewBag.Error = true;
+                TempData["isError"] = true;
                 return View("AccountStatusOrClose");
             }
         }
@@ -308,67 +242,42 @@ namespace PL.ASP_NET_MVC.Controllers
             };
         }
 
-        private Task SendMailAsync(string to, string subject, string message)
-        {
-            var mailData = new MailData
-            {
-                To = to,
-                From = HostEmail,
-                FromPassword = HostEmailPassword,
-                Subject = subject,
-                Message = message
-            };
-
-            return _mailService.SendMailAsync(mailData);
-        }
-
         private ActionResult AccountOperationView(string operation, string operationName, string viewName)
         {
-            ViewBag.Error = false;
+            TempData["isError"] = false;
             ViewBag.Operation = operation;
+            ViewBag.OperationName = operationName;
             if (Request.IsAjaxRequest())
             {
                 return PartialView("_" + viewName);
             }
-
-            ViewBag.operationName = operationName;
+                       
             return View(viewName);
         }
 
         private ActionResult DepositWithdrawOperation(
             AccountOperationViewModel data, 
-            Action<IAccountService, AccountOperationViewModel> operation,
-            out bool isError)
+            Action<IAccountService, AccountOperationViewModel> operation)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Error = true;
-                isError = true;
+                TempData["isError"] = true;
                 return View("DepositOrWithdrawMoney");
             }
 
             try
             {
                 operation(_accountService, data);
-                ViewBag.Error = false;
+                TempData["isError"] = false;
             }
             catch (Exception e)
             {
                 ModelState.AddModelError(nameof(data.AccountNumber), e.Message);
-                ViewBag.Error = true;
-                isError = true;
+                TempData["isError"] = true;
                 return View("DepositOrWithdrawMoney");
             }
 
-            isError = false;
             return RedirectToAction(nameof(this.AccountOperations));
-        }
-
-        private string GetAccountEmail(string accountId)
-        {
-            string accountInfo = _accountService.GetAccountStatus(accountId);
-            var data = accountInfo.Split(' ');
-            return data[data.Length - 1];
         }
 
         #endregion // !private.

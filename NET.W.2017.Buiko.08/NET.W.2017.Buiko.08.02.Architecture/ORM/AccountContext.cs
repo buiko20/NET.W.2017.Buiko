@@ -1,9 +1,9 @@
 ﻿using System.Data.Entity;
-using DAL.EF.Model;
+using ORM.Model;
 
-namespace DAL.EF
+namespace ORM
 {
-    internal class AccountContext : DbContext
+    public class AccountContext : DbContext
     {
         public AccountContext() : base("Accounts")
         {

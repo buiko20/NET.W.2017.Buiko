@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{33B9BF56-6277-4E63-A9EF-4CE517A4F3C5}</ProjectGuid>
+    <ProjectGuid>{B722790D-DD22-404E-B726-177C63BFF7D7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DependencyResolver</RootNamespace>
-    <AssemblyName>DependencyResolver</AssemblyName>
+    <RootNamespace>ORM</RootNamespace>
+    <AssemblyName>ORM</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -38,14 +38,6 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ninject.Web.Common, Version=3.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.Web.Common.3.3.0\lib\net45\Ninject.Web.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -57,37 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NInjectDependencyResolver.cs" />
+    <Compile Include="AccountContext.cs" />
+    <Compile Include="Model\Account.cs" />
+    <Compile Include="Model\AccountOwner.cs" />
+    <Compile Include="Model\AccountType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BLL.Interface\BLL.Interface.csproj">
-      <Project>{5dfd7788-2152-4398-937a-303dc3f7a8c1}</Project>
-      <Name>BLL.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BLL\BLL.csproj">
-      <Project>{1e948058-83da-4c2d-b235-bdce78d860e3}</Project>
-      <Name>BLL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DAL.BinaryFile\DAL.BinaryFile.csproj">
-      <Project>{1de9886f-efcd-4975-b5d0-579a84334558}</Project>
-      <Name>DAL.BinaryFile</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DAL.EF\DAL.EF.csproj">
-      <Project>{11604d6c-8a59-422f-9645-84b4bcd11cf3}</Project>
-      <Name>DAL.EF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DAL.Interface\DAL.Interface.csproj">
-      <Project>{4b8492fa-a752-4be3-964e-cb30fcebbe5f}</Project>
-      <Name>DAL.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ORM\ORM.csproj">
-      <Project>{b722790d-dd22-404e-b726-177c63bff7d7}</Project>
-      <Name>ORM</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

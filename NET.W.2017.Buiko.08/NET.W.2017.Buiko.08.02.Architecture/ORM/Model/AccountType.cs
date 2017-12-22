@@ -1,6 +1,6 @@
-﻿namespace DAL.EF.Model
+﻿namespace ORM.Model
 {
-    internal class AccountType
+    public class AccountType
     {
         public int Id { get; set; }
 
