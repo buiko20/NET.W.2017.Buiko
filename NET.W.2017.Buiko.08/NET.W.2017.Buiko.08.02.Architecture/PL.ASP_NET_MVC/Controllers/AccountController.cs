@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using BLL.Interface.AccountIdService;
@@ -7,6 +8,7 @@ using PL.ASP_NET_MVC.Models.ViewModels;
 
 namespace PL.ASP_NET_MVC.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
@@ -15,7 +17,16 @@ namespace PL.ASP_NET_MVC.Controllers
         public AccountController(IAccountService accountService, IAccountIdService accountIdService)
         {
             _accountService = accountService;
-            _accountIdService = accountIdService;
+            _accountIdService = accountIdService; 
+        }
+
+        [HttpGet]
+        [HandleError(ExceptionType = typeof(AccountServiceException), View = "AccountServiceError")]
+        public async Task<ActionResult> Home()
+        {
+            var ownerAccountsInfo = await Task.Run(() => _accountService.GetOwnerAccounts(User.Identity.Name));
+            var ownerAccounts = ownerAccountsInfo.Select(GetAccountStatusModel).ToArray();
+            return View(ownerAccounts);
         }
 
         #region open account
@@ -34,7 +45,7 @@ namespace PL.ASP_NET_MVC.Controllers
             }
 
             await Task.Run(() => _accountService.OpenAccount(account.Type, account.OwnerFirstName,
-                account.OwnerSecondName, account.Sum, account.OwnerEmail, _accountIdService));
+                account.OwnerSecondName, account.Sum, User.Identity.Name, _accountIdService));
 
             TempData["isAccountOpened"] = true;
             return RedirectToAction(nameof(this.AccountSuccessfullyOpened));

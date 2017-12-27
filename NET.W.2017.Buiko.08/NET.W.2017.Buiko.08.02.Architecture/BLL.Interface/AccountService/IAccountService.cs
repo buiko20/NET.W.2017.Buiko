@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BLL.Interface.AccountIdService;
 
 namespace BLL.Interface.AccountService
@@ -103,5 +104,7 @@ namespace BLL.Interface.AccountService
         /// Thrown when an exception occurred in service or accounts does not exists.
         /// </exception>
         void TransferFunds(string sourceAccountId, string destinationAccountId, decimal transferSum);
+
+        IEnumerable<string> GetOwnerAccounts(string ownerEmail);
     }
 }

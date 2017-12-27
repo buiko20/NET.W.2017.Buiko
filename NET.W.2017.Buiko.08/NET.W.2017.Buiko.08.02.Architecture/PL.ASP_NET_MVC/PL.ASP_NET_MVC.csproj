@@ -137,12 +137,15 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\AccountOperationViewModel.cs" />
     <Compile Include="Models\ViewModels\AccountNumberViewModel.cs" />
     <Compile Include="Models\ViewModels\AccountStatusViewModel.cs" />
+    <Compile Include="Models\ViewModels\AuthModels\LoginViewModel.cs" />
+    <Compile Include="Models\ViewModels\AuthModels\RegisterViewModel.cs" />
     <Compile Include="Models\ViewModels\TransferFundsViewModel.cs" />
     <Compile Include="Models\ViewModels\OpenAccountViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -204,6 +207,10 @@
     <Content Include="Views\Account\DepositOrWithdrawMoney.cshtml" />
     <Content Include="Views\Account\TransferFunds.cshtml" />
     <Content Include="Views\Account\AccountStatusOrClose.cshtml" />
+    <Content Include="Views\Auth\Register.cshtml" />
+    <Content Include="Views\Auth\Login.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Account\Home.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -216,6 +223,10 @@
     <ProjectReference Include="..\BLL.Interface\BLL.Interface.csproj">
       <Project>{5dfd7788-2152-4398-937a-303dc3f7a8c1}</Project>
       <Name>BLL.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL.Interface\DAL.Interface.csproj">
+      <Project>{4b8492fa-a752-4be3-964e-cb30fcebbe5f}</Project>
+      <Name>DAL.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\DependencyResolver\DependencyResolver.csproj">
       <Project>{33b9bf56-6277-4e63-a9ef-4ce517a4f3c5}</Project>

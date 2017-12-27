@@ -38,6 +38,10 @@ namespace DependencyResolver
                 .WithConstructorArgument("unitOfWork", unitOfWork)
                 .WithConstructorArgument("accountRepository", accountRepository)
                 .WithConstructorArgument("mailService", mailService);
+
+            var dbUser = new UserContext();
+            kernel.Bind<IUserRepository>().To<UserRepository>().InSingletonScope().
+                WithConstructorArgument("dbContext", dbUser);
         }
     }
 }

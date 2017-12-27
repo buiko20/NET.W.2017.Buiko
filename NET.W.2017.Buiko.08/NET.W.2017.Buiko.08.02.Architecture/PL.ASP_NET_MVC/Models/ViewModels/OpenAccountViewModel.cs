@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using BLL.Interface.AccountService;
 
 namespace PL.ASP_NET_MVC.Models.ViewModels
@@ -23,9 +24,9 @@ namespace PL.ASP_NET_MVC.Models.ViewModels
         [Range(typeof(decimal), "0", "50000", ErrorMessage = "The initial sum must be at least 0 and not more than 50,000")]
         public decimal Sum { get; set; }
 
-        [Display(Name = "Email")]
+        /*[Display(Name = "Email")]
         [Required(ErrorMessage = "Field must not be empty", AllowEmptyStrings = false)]
         [DataType(DataType.EmailAddress)]
-        public string OwnerEmail { get; set; }
+        public string OwnerEmail { get; set; }*/
     }
 }

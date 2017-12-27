@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Security.Cryptography;
@@ -11,6 +12,7 @@ using BLL.Interface.MailService;
 using BLL.Mappers;
 using DAL.Interface;
 using DAL.Interface.DTO;
+using System.Web.Configuration;
 
 namespace BLL.Services
 {
@@ -19,8 +21,8 @@ namespace BLL.Services
     {
         #region private fields
 
-        private const string HostEmail = "tempmail4222@gmail.com";
-        private const string HostEmailPassword = "05191997a";
+        private readonly string _hostEmail;
+        private readonly string _hostEmailPassword;
 
         private const int BaseAccountInitialBonuses = 0;
         private const int GoldAccountInitialBonuses = 100;
@@ -64,6 +66,9 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
             _accountRepository = accountRepository;
             _mailService = mailService;
+
+            _hostEmail = WebConfigurationManager.AppSettings["HostEmail"];
+            _hostEmailPassword = WebConfigurationManager.AppSettings["HostEmailPassword"];
         }
 
         #endregion // !constructors.
@@ -227,6 +232,21 @@ namespace BLL.Services
             {
                 throw new AccountServiceException("Transfer funds error", e);
             }
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<string> GetOwnerAccounts(string ownerEmail)
+        {
+            if (string.IsNullOrWhiteSpace(ownerEmail))
+            {
+                throw new ArgumentException($"{nameof(ownerEmail)} is invalid.", nameof(ownerEmail));
+            }
+
+            var accounts = _accountRepository.GetAccounts().Where(account =>
+                string.Equals(account.OwnerEmail, ownerEmail, StringComparison.Ordinal))
+                .Select(account => account.ToBllAccount().ToString()).ToArray();
+
+            return accounts;
         }
 
         #endregion // !interface implementation.
@@ -408,8 +428,8 @@ namespace BLL.Services
             var mailData = new MailData
             {
                 To = to,
-                From = HostEmail,
-                FromPassword = HostEmailPassword,
+                From = _hostEmail,
+                FromPassword = _hostEmailPassword,
                 Subject = subject,
                 Message = message
             };
