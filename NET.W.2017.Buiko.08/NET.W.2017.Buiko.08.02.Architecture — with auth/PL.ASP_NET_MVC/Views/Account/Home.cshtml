@@ -1,0 +1,54 @@
+﻿@model IEnumerable<PL.ASP_NET_MVC.Models.ViewModels.AccountStatusViewModel>
+
+@{
+    ViewBag.Title = "Home";
+}
+
+<h2>Home</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OwnerFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OwnerSecondName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BonusPoints)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OwnerEmail)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OwnerFirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OwnerSecondName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BonusPoints)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OwnerEmail)
+        </td>
+    </tr>
+}
+</table>

@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Account operations";
+}
+
+<h2 style="text-align: center">Account operations</h2>
+
+@using (Ajax.BeginForm("DepositMoney", "Bank", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div style="text-align: center">
+        <button type="submit" class="btn-custom btn-primary btn-lg">Deposit money</button> <br />
+    </div>
+}
+
+@using (Ajax.BeginForm("WithdrawMoney", "Bank", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div style="text-align: center">
+        <button type="submit" class="btn-custom btn-primary btn-lg">Withdraw money</button> <br />
+    </div>
+}
+
+@using (Ajax.BeginForm("TransferFunds", "Bank", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div style="text-align: center">
+        <button type="submit" class="btn-custom btn-primary btn-lg">Transfer funds</button> <br />
+    </div>
+}
+
+@using (Ajax.BeginForm("CloseAccount", "Bank", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div style="text-align: center">
+        <button type="submit" class="btn-custom btn-primary btn-lg" style="margin-bottom: 0;">Close account</button> <br />
+    </div>
+}
+
+<div id="results" style="margin-top: 10px">
+    @{
+        var notEnoughFunds = TempData["NotEnoughFunds"] as bool?;
+        if (notEnoughFunds.HasValue && notEnoughFunds.Value)
+        {
+            <h2 style="text-align: center">There are not enough funds on the account</h2>
+            TempData["IsError"] = null;
+        }
+
+        var isError = TempData["IsError"] as bool?;
+        if (isError.HasValue && !isError.Value)
+        {
+            <h2 style="text-align: center">The operation was completed successfully!</h2>
+        }
+
+        if (isError.HasValue && isError.Value)
+        {
+            <h2 style="text-align: center">An error occurred while processing your request</h2>
+        }
+    }
+</div>

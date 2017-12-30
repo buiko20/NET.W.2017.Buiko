@@ -1,0 +1,70 @@
+﻿@model IEnumerable<PL.Web.Models.ViewModels.BankModels.AccountInfoViewModel>
+
+@{
+    ViewBag.Title = "Home";
+}
+<div id="results">
+    <h2>Home</h2>
+
+    <p>
+        @Html.ActionLink("Open new account", "OpenAccount", "Bank")
+    </p>
+    <table class="table">
+        
+        <tr>
+            <th>
+                @Ajax.ActionLink(
+                   "Account number",
+                   "OrderBy",
+                   "Bank",
+                   new { sortOrder = "AccountNumber" },
+                   new AjaxOptions {UpdateTargetId = "results", HttpMethod = "GET", InsertionMode = InsertionMode.Replace})
+            </th>
+            <th>
+                @Ajax.ActionLink(
+                   "Account type",
+                   "OrderBy",
+                   "Bank",
+                   new { sortOrder = "AccountType" },
+                   new AjaxOptions {UpdateTargetId = "results", HttpMethod = "GET", InsertionMode = InsertionMode.Replace})
+            </th>
+            <th>
+                @Ajax.ActionLink(
+                    "Sum",
+                    "OrderBy",
+                    "Bank",
+                    new { sortOrder = "Sum" },
+                    new AjaxOptions {UpdateTargetId = "results", HttpMethod = "GET", InsertionMode = InsertionMode.Replace})
+            </th>
+            <th>
+                @Ajax.ActionLink(
+                    "Bonus points",
+                    "OrderBy",
+                    "Bank",
+                    new { sortOrder = "BonusPoints" },
+                    new AjaxOptions {UpdateTargetId = "results", HttpMethod = "GET", InsertionMode = InsertionMode.Replace})
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccountNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccountType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BonusPoints)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>

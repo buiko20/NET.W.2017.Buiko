@@ -1,0 +1,32 @@
+﻿@model PL.Web.Models.ViewModels.BankModels.PasswordViewModel
+
+@{
+    ViewBag.Title = "Users info";
+}
+
+@using (Html.BeginForm("UsersInfo", "Bank", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <br />
+
+    <div class="form-horizontal row">
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+        <div class="col-md-1">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new {@class = "control-label"})
+        </div>
+
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.Password, new {htmlAttributes = new {@class = "form-control", placeholder = "your_admin_password"}})
+            @Html.ValidationMessageFor(model => model.Password, "", new {@class = "text-danger"})
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-default">Show user info</button>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

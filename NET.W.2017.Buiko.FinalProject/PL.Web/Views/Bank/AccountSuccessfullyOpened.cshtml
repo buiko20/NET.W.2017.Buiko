@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Successfully opened";
+}
+
+<div style="text-align: center;">
+    <h1>Account was successfully opened!</h1> <br/>
+    <p>
+        <h4>
+            Your account number has been sent to your email. <br/>
+            Also you can get information about your accounts on the home page.<br/><br/>
+            @Html.ActionLink("Home", "Home", "Bank", htmlAttributes: new { style= "margin-right: 15px;  margin-left: 20px;" })
+            @Html.ActionLink("Account operations", "AccountOperations", "Bank")
+        </h4>
+    </p>
+</div>
